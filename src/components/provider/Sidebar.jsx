@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminLogout } from "../../store/slice/admin";
 import { useDispatch } from "react-redux";
-import { faUser, faHouse, faServer, faWeightHanging, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { providerLogout } from '../../store/slice/provider'
+import {  faServer,faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useWidthSize from "../../utils/useWidthSize";
-import NavItem from "./NavItem";
-
 const Sidebar = () => {
-    const dipatch = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const widthSize = useWidthSize();
@@ -20,11 +19,11 @@ const Sidebar = () => {
         setIsOpen(false);
     };
 
-
     const logout = () => {
-        dipatch(adminLogout());
-        navigate('/admin/login')
+        navigate('/provider/login');
+        dispatch(providerLogout());
     }
+   
     return (
 
         <div className="flex ">
@@ -59,25 +58,34 @@ const Sidebar = () => {
                 </div>
                 <div >
 
-                    <div className="bg-gray-200">
-                        <img src="https://res.cloudinary.com/dq0tq9rf5/image/upload/v1687756276/partifylogo_rbt1jn.jpg" style={{height:'4rem',width:'8rem'}} alt="Logo" />
+                    <div className="mt-5 ml-5">
+                        <img src="https://res.cloudinary.com/dq0tq9rf5/image/upload/v1687756276/partifylogo_rbt1jn.jg" style={{ height: '4rem', width: '8rem' }} alt="Logo" />
 
                     </div>
 
-                  
-
-                    <NavItem icon={faHouse} name={"HOME"} path={''}/>
-                    <NavItem icon={faUser} name={"USERS"} path={'/userDetails'} />
-                    <NavItem icon={faWeightHanging} name={"PROVIDER"} path={'/providerDetails'} />
-                    <NavItem icon={faServer} name={"SERVICES"} path={'/serviceDetails'} />
-                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'}/>
-
-                    
 
 
-                        
+                    <div onClick={() => navigate('/provider/services')} className="flex  items-center justify-between p-4 hover:bg-gray-100 cursor-pointer ">
+                        <p className="flex items-center space-x-2" >
+                            <FontAwesomeIcon icon={faServer} />
+                            <span className="text-black font-bold  ">Services</span>
+                        </p>
 
-                    
+                    </div>
+
+                    <div onClick={logout} className="flex  items-center justify-between p-4 hover:bg-gray-100 cursor-pointer ">
+                        <p className="flex items-center space-x-2" >
+                            <FontAwesomeIcon icon={faRightFromBracket} />
+                            <span className="text-black font-bold  ">Logout</span>
+                        </p>
+
+                    </div>
+
+
+
+
+
+
 
                 </div>
             </div>
