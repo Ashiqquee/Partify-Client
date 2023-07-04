@@ -22,7 +22,7 @@ const App = () => {
     <BrowserRouter >
       <Routes>
 
-        {/* Admin Pages */}
+        {/* User Pages */}
 
 
         <Route path="/" element={<UserHome />}></Route>
@@ -35,9 +35,9 @@ const App = () => {
 
         <Route path="/admin/login" element={adminAuth ? <Navigate to='/admin' /> : <Login name='admin' url='admin/login' />}></Route>
         <Route path="/admin" element={adminAuth ? <AdminHome /> : <Navigate to='/admin/login' />}></Route>
-        <Route path="/admin/serviceDetails" element={adminAuth ? <Service /> : <Navigate to='/admin/login' />}></Route>
-        <Route path="/admin/userDetails" element={adminAuth ? <UserList /> : <Navigate to='/admin/login' />}></Route>
-        <Route path="/admin/providerDetails" element={adminAuth ? <ProviderList /> : <Navigate to='/admin/login' />}></Route>
+        <Route path="/admin/services" element={adminAuth ? <Service /> : <Navigate to='/admin/login' />}></Route>
+        <Route path="/admin/users" element={adminAuth ? <UserList /> : <Navigate to='/admin/login' />}></Route>
+        <Route path="/admin/providers" element={adminAuth ? <ProviderList /> : <Navigate to='/admin/login' />}></Route>
 
 
 

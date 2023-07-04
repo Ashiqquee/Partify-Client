@@ -67,10 +67,10 @@ const Sidebar = () => {
                   
 
                     <NavItem icon={faHouse} name={"HOME"} path={''}/>
-                    <NavItem icon={faUser} name={"USERS"} path={'/userDetails'} />
-                    <NavItem icon={faWeightHanging} name={"PROVIDER"} path={'/providerDetails'} />
-                    <NavItem icon={faServer} name={"SERVICES"} path={'/serviceDetails'} />
-                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'}/>
+                    <NavItem icon={faUser} name={"USERS"} path={'/users'} />
+                    <NavItem icon={faWeightHanging} name={"PROVIDER"} path={'/providers'} />
+                    <NavItem icon={faServer} name={"SERVICES"} path={'/services'} />
+                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/admin/login'}/>
 
                     
 

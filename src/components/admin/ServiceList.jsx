@@ -1,26 +1,23 @@
 import { useEffect, useState } from "react";
 import axiosInstance from '../../api/axios';
-import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ShimmerPostDetails } from "react-shimmer-effects";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 
-
-
 const ServiceList = () => {
 
     const token = useSelector((state) => state.admin.token);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate()
     const [serviceList, setServiceList] = useState([]);
     const [modalShow, setModalShow] = useState(true);
     const [editService, setEditService] = useState(null);
-    const openEditModal = ({ serviceImage, serviceName }) => {
+    const [imageEdited, setImageEdited] = useState(true)
+    const openEditModal = ({ serviceImage, serviceName,_id}) => {
         setEditService(serviceName)
-        console.log(serviceImage, serviceName);
-        setEditFormData({ serviceName, serviceImage })
+        setEditFormData({ serviceName,file:serviceImage,_id });
+        
     };
 
     const [formData, setFormData] = useState({
@@ -31,7 +28,8 @@ const ServiceList = () => {
 
     const [editFormData, setEditFormData] = useState({
         serviceName: '',
-        serviceImage: null,
+        file: null,
+        _id:null,
     });
 
     const validateFormData = () => {
@@ -50,8 +48,26 @@ const ServiceList = () => {
     };
 
     const handleEditChange = (event) => {
-
+        const { name, value } = event.target;
+        
+        setEditFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value
+        }));
     }
+
+    const handleEditFileChange = (event) => {
+        
+        setImageEdited(false);
+        const file = event.target.files[0];
+        setEditFormData(prevFormData => ({
+            ...prevFormData,
+            file
+        }));
+    
+
+    };
+
 
     const handleChange = (event) => {
 
@@ -100,6 +116,47 @@ const ServiceList = () => {
         }
     };
 
+   const handleEditService  = async() => {
+  
+       const editService = serviceList.find(services => services._id===editFormData._id);
+        console.log(editService);
+        console.log(editFormData);
+       if (editService.serviceName !== editFormData.serviceName || editService.serviceImage !== editFormData.file){
+           try {
+               const response = await axiosInstance.patch('/admin/services', editFormData, {
+                   headers: {
+                       Authorization: `Bearer ${token}`,
+                       'Content-Type': 'multipart/form-data'
+                   }
+               });
+            
+               if (response.status === 200) {
+                   toast.success('Updated Successfully');
+                   setServiceList(prevList => {
+                    const updatedList = prevList.map(services => {
+                        if(services._id===editFormData._id){
+                            return {
+                                ...services,
+                                serviceImage:response?.data?.service?.serviceImage,
+                                serviceName:response?.data?.service?.serviceName,
+                            }
+                        }
+                        return services;
+                    });
+                    return updatedList;
+                   })
+               }
+               
+           } catch (error) {
+            toast.error(error?.response?.data?.errMsg)
+                
+           }
+           
+        }
+        else {
+            toast('No Changes Made')
+        }
+    }
 
     const getServiceList = async () => {
         try {
@@ -214,9 +271,9 @@ const ServiceList = () => {
                                                     <img className="h-12 font-bold " src={obj.serviceImage} alt="Service Image" />
                                                 </td>
                                                 <td className="px-4 py-2 border-solid border-2 border-gray-300 ">
-                                                    <label htmlFor="my_modal_6" onClick={() => openEditModal(obj)} className="btn w-14 h-1 bg-green-700 text-white rounded-md hover:cursor-pointer">Edit</label>
+                                                    <label htmlFor="my_modal_6" onClick={() => openEditModal(obj)} className="btn w-14 h-1 bg-green-700 text-white rounded-md hover:cursor-pointer ">Edit</label>
 
-                                                    {/* Put this part before </body> tag */}
+
                                                     <input type="checkbox" id="my_modal_6" className="modal-toggle" />
                                                     <div className="modal">
                                                         <div className="modal-box">
@@ -229,10 +286,10 @@ const ServiceList = () => {
                                                                         <input
                                                                             type="text"
                                                                             id="edit_name"
-                                                                            name="name"
+                                                                            name="serviceName"
                                                                             placeholder={editFormData.serviceName}
                                                                             value={editFormData.serviceName}
-                                                                            onChange={handleChange}
+                                                                            onChange={handleEditChange}
                                                                             className="text-black font-semibold form-input p-1 mt-1 block w-full h-10"
                                                                         />
                                                                     </div>
@@ -242,27 +299,30 @@ const ServiceList = () => {
                                                                         <h4>Previous Image:</h4>
                                                                         <img
                                                                             className="h-12 font-bold mt-3"
-                                                                            src={editFormData.serviceImage}
+                                                                            src={imageEdited ? editFormData.file : URL.createObjectURL(editFormData.file)}
                                                                             alt="Selected"
                                                                         />
                                                                     </div>
 
                                                                     <div className="mb-4 mt-2">
                                                                         <input
-
+                                                                            onChange={handleEditFileChange}
                                                                             type="file"
-                                                                            name="file"
+                                                                            name="serviceImage"
+
                                                                             className="file-input file-input-bordered file-input-sm w-full max-w-xs"
                                                                         />
                                                                     </div>
                                                                     <div className="modal-action">
-                                                                        <button type="submit" onClick={handleModal} className="px-4 font-semibold py-2 bg-blue-500 text-white rounded hover:bg-blue-900 my_modal_6">Update</button>
+                                                                        {/* <button type="submit" onClick={handleModal} className="px-4 font-semibold py-2 bg-blue-500 text-white rounded hover:bg-blue-900 my_modal_6">Update</button> */}
+                                                                        <label onClick={handleEditService} htmlFor="my_modal_6" className="btn px-4 font-semibold py-2 bg-blue-500 text-white rounded hover:bg-blue-900">Update</label>
+
                                                                     </div>
 
                                                                 </form>}
-                                                            <div className="modal-action">
+                                                            {/* <div className="modal-action">
                                                                 <label htmlFor="my_modal_6" className="btn">Close!</label>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </div>
                                                 </td>
