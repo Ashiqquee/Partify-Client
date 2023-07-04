@@ -21,10 +21,7 @@ const Sidebar = () => {
     };
 
 
-    const logout = () => {
-        dipatch(adminLogout());
-        navigate('/admin/login')
-    }
+  
     return (
 
         <div className="flex ">
@@ -70,7 +67,7 @@ const Sidebar = () => {
                     <NavItem icon={faUser} name={"USERS"} path={'/users'} />
                     <NavItem icon={faWeightHanging} name={"PROVIDER"} path={'/providers'} />
                     <NavItem icon={faServer} name={"SERVICES"} path={'/services'} />
-                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/admin/login'}/>
+                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'}/>
 
                     
 

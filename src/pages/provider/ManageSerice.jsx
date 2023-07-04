@@ -11,11 +11,8 @@ const ManageServices = () => {
             <div className="flex md:ml-64 lg:ml-64 ">
                 
                 <ServiceButton />
-                
-
-               
-
             </div>
+\
         </>
     )
 }
