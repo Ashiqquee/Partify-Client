@@ -21,7 +21,7 @@ const Login = ({url,name}) => {
       
    },[]);
 
-   const[formData,setFormDate] = useState({
+   const[formData,setFormData] = useState({
       phone:'',
       password:''
 
@@ -45,7 +45,7 @@ const Login = ({url,name}) => {
 
    const handleChange = (e) => {
       const {name,value} = e.target;
-      setFormDate((prev) => ({
+      setFormData((prev) => ({
          ...prev,
          [name] : value
       }))
@@ -114,7 +114,7 @@ const Login = ({url,name}) => {
                <div className="w-full mt-20 mr-0 mb-0 ml-0 relative z-10 max-w-2xl lg:mt-0 lg:w-5/12">
                   <div
                      className="flex flex-col items-start justify-start pt-10 pr-10 pb-10 pl-10 bg-white shadow-2xl rounded-xl
-            relative z-10"
+                      relative z-10"
                   >
                      <p className="w-full text-4xl font-medium text-center leading-snug font-serif">
                         <span className="font-medium">partify | </span>
@@ -155,15 +155,15 @@ const Login = ({url,name}) => {
                                     onChange={handleChange}
                                     name="password"
                                  className=" border placeholder-gray-400 focus:outline-none
-                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-4 mr-0 mb-0 ml-0 text-base block bg-white
-                  border-gray-300 rounded-md"
+                                focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-4 mr-0 mb-0 ml-0 text-base block bg-white
+                                 border-gray-300 rounded-md"
                                  />
                               </div>
                               <div className="relative">
                                  <button
                                  type='submit'
                                     className="w-full inline-block pt-4 pr-5 pb-4 pl-5 mt-3 text-xl font-medium text-center text-white bg-indigo-500
-                  rounded-lg transition duration-200 hover:bg-indigo-600 ease"
+                                  rounded-lg transition duration-200 hover:bg-indigo-600 ease"
                                     
                                  >
                                     Continue

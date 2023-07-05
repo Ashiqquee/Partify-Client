@@ -10,7 +10,9 @@ import ProviderSignup from '../src/components/provider/Signup';
 import ProviderList from "./pages/admin/Provider";
 import ProviderHome from "./pages/provider/Home";
 import ManageServices from "./pages/provider/ManageSerice";
-
+import Verthe from "./components/admin/Verthe";
+import Profile from "./components/user/Profile";
+import Post from "./pages/provider/Post";
 
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
@@ -28,6 +30,7 @@ const App = () => {
         <Route path="/" element={<UserHome />}></Route>
         <Route path="/login" element={userAuth ? <Navigate to='/' /> : <Login name='user'  url= 'login' /> }></Route>
         <Route path="/signup" element={userAuth ? <Navigate to='/' /> : <Register />}></Route>
+        <Route path="/profile" element={userAuth ? <Profile /> : <Navigate to='/login' />}></Route>
 
 
         {/* Admin Pages */}
@@ -38,6 +41,7 @@ const App = () => {
         <Route path="/admin/services" element={adminAuth ? <Service /> : <Navigate to='/admin/login' />}></Route>
         <Route path="/admin/users" element={adminAuth ? <UserList /> : <Navigate to='/admin/login' />}></Route>
         <Route path="/admin/providers" element={adminAuth ? <ProviderList /> : <Navigate to='/admin/login' />}></Route>
+        <Route path="/admin/verthe" element={adminAuth ? <Verthe /> : <Navigate to='/admin/login' />}></Route>
 
 
 
@@ -48,6 +52,8 @@ const App = () => {
         <Route path="/provider" element={providerAuth ? <ProviderHome/> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/login" element={providerAuth ? <Navigate to='/provider' /> : <Login name='Provider' url='provider/login' />}></Route>
         <Route path="/provider/services" element={providerAuth ? <ManageServices/> : <Navigate to='/provider/login' />}></Route>
+        <Route path="/provider/post" element={providerAuth ? <Post /> : <Navigate to='/provider/login' />}></Route>
+
 
 
         
