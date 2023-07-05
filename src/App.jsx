@@ -11,7 +11,8 @@ import ProviderList from "./pages/admin/Provider";
 import ProviderHome from "./pages/provider/Home";
 import ManageServices from "./pages/provider/ManageSerice";
 import Verthe from "./components/admin/Verthe";
-import Profile from "./components/user/Profile";
+import Profile from "./pages/user/Profile";
+import AddPost from "./pages/provider/AddPost";
 import Post from "./pages/provider/Post";
 
 const App = () => {
@@ -52,7 +53,9 @@ const App = () => {
         <Route path="/provider" element={providerAuth ? <ProviderHome/> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/login" element={providerAuth ? <Navigate to='/provider' /> : <Login name='Provider' url='provider/login' />}></Route>
         <Route path="/provider/services" element={providerAuth ? <ManageServices/> : <Navigate to='/provider/login' />}></Route>
+        <Route path="/provider/addPost" element={providerAuth ? <AddPost /> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/post" element={providerAuth ? <Post /> : <Navigate to='/provider/login' />}></Route>
+
 
 
 

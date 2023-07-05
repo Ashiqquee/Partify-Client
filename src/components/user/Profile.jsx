@@ -1,101 +1,293 @@
+import { useEffect, useState } from "react";
+import axiosInstance from '../../api/axios'
+import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify';
+
 const Profile = () => {
-   
+
+    const token = useSelector(state => state.user.token);
+
+    const [dp, setDp] = useState('');
+    const [profile, setProfile] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        image: '',
+        place: '',
+        referalNumber: '',
+
+    });
+
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        place: '',
+
+    });
+    const imageSrc = dp ? URL.createObjectURL(dp) : (profile.image || 'https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg');
+
+    const handleFile = async (event) => {
+        const file = event.target.files[0];
+        setDp(file);
+        const formData = new FormData();
+        formData.append('file', file)
+
+        const response = await axiosInstance.patch('/profile', formData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+
+        if (response.status === 200) {
+            toast.success('Profile Updated');
+        }
+
+
+
+    };
+
+    const fetchProfile = async () => {
+        try {
+            const response = await axiosInstance.get('/profile', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            const { name, email, phone, referalNumber, image, place } = response.data.user;
+
+            setProfile({
+                name,
+                email,
+                phone,
+                referalNumber,
+                image,
+                place
+            });
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const editForm = () => {
+        setFormData({
+            name: profile?.name,
+            place: profile?.place,
+            email: profile?.email,
+            phone: profile?.phone,
+        });
+
+        console.log(formData);
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value
+        }));
+    }
+
+    const keralaDistricts = [
+        "Alappuzha",
+        "Ernakulam",
+        "Idukki",
+        "Kannur",
+        "Kasaragod",
+        "Kollam",
+        "Kottayam",
+        "Kozhikode",
+        "Malappuram",
+        "Palakkad",
+        "Pathanamthitta",
+        "Thiruvananthapuram",
+        "Thrissur",
+        "Wayanad",
+    ];
+
+    useEffect(() => {
+        fetchProfile();
+
+    }, []);
+
+
 
     return (
-        <>
-            <div className="justify-center bg-transparent items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                    {/*content*/}
-                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                        {/*header*/}
-                        <div className="flex justify-center p-5 border-b border-solid border-slate-200 rounded-t">
-                            <h3 className="text-3xl font-semibold">
-                                Edit Details
-                            </h3>
+        <section className=" flex ml-6 ">
+            <div className="container py-5">
+
+
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                    <div className="col-span-1">
+                        <div className="bg-white rounded-md shadow-md mb-4">
+                            <div className="p-4 text-center">
+                                <div className="avatar">
+                                    <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                        <img src={imageSrc} alt="profile" />
+                                    </div>
+                                </div>
+                                <h5 className="my-3">John Smith</h5>
+
+                                <div className="flex justify-center mb-2">
+                                    <input type="file" onChange={handleFile} className="hidden" id="fileInput" />
+                                    <label htmlFor="fileInput" className="bg-blue-500 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Change dp</label>
+                                    <button onClick={() => window.my_modal_3.showModal() || editForm()} type="button" className="border border-blue-500 text-blue-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
+                                </div>
+                            </div>
                         </div>
-                        {/*body*/}
-                        <div className="relative p-6 flex-auto">
-                            <div className='px-5'>
-                                <div className="space-y-12">
-                                    <div className="border-b border-gray-900/10 pb-12">
 
-                                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                            <div className="sm:col-span-3">
-                                                <label className="block text-sm font-medium leading-6 text-gray-900">Name</label>
-                                                <div className="mt-2">
-                                                    <input type="text"   name="name" id="name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                                </div>
-                                            </div>
+                    </div>
+                    <div className="col-span-3">
+                        <div className="bg-white rounded-md shadow-md mb-4">
+                            <div className="p-4">
+                                <div className="flex items-center">
+                                    <div className="w-1/3">
+                                        <p className="mb-0">Full Name</p>
+                                    </div>
+                                    <div className="w-2/3">
+                                        <p className="text-gray-500 mb-0">{profile?.name}</p>
+                                    </div>
+                                </div>
+                                <hr className="my-4" />
+                                <div className="flex items-center">
+                                    <div className="w-1/3">
+                                        <p className="mb-0">Email</p>
+                                    </div>
+                                    <div className="w-2/3">
+                                        <p className="text-gray-500 mb-0">{profile?.email}</p>
+                                    </div>
+                                </div>
+                                <hr className="my-4" />
+                                <div className="flex items-center">
+                                    <div className="w-1/3">
+                                        <p className="mb-0">Phone</p>
+                                    </div>
+                                    <div className="w-2/3">
+                                        <p className="text-gray-500 mb-0">{profile?.phone}</p>
+                                    </div>
+                                </div>
+                                <hr className="my-4" />
+                                <div className="flex items-center">
+                                    <div className="w-1/3">
+                                        <p className="mb-0">Referal Link</p>
+                                    </div>
+                                    <div className="w-2/3">
+                                        <p className="text-gray-500 mb-0">{profile?.referalNumber}</p>
+                                    </div>
+                                </div>
+                                <hr className="my-4" />
+                                <div className="flex items-center">
+                                    <div className="w-1/3">
+                                        <p className="mb-0">Place</p>
+                                    </div>
+                                    <div className="w-2/3">
+                                        {profile?.place === undefined ? (
+                                            <>
+                                                <p className="text-blue-500 font-semibold mb-0 hover:cursor-pointer" onClick={() => window.my_modal_3.showModal() || editForm()}>Add place +</p>
+                                                
 
-                                            <div className="sm:col-span-3">
-                                                <label className="block text-sm font-medium leading-6 text-gray-900">Email</label>
-                                                <div className="mt-2">
-                                                    <input type="text"  name="last-name" id="last-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                                </div>
-                                            </div>
-                                            <div className=''>
-                                                <div>
-                                                    <div className='md:flex'>
-                                                        <img
-                                                            
-                                                            alt="...."
-                                                            className="avatar"
-                                                        />
-                                                    </div>
-                                                    <div className="pt-5">
-                                                        <input
-                                                            type="file"
-                                                            name="photo"
-                                                            acceptedfiles=".jpg,.jpeg,.png"
-                                                            id="file"
-                                                            multiple
-                                                            //  multiple 
-                                                            // onChange={handleImageChange}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            </>
+
+
+                                        ) : (
+                                            <p className="text-gray-500 mb-0">{profile.place}</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className='flex justify-center'>
-                            {/* <span className='text-red-600'>{err&&err}</span> */}
-                        </div>
-                        {/*footer*/}
-                        <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                            <button
-                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                type="button"
-                                onClick={() => {
+                        <dialog id="my_modal_3" className="modal">
+                            <form method="dialog" className="modal-box flex justify-center">
+                                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-                                    // setEdit(false)
-                                }
-                                }
-                            >
-                                Close
-                            </button>
-                            <button
-                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                type="button"
-                                onClick={() => {
-                                    // submitEdits()
-                                }}
+                                <div className="border-b border-gray-900/10 pb-12">
+                                    <h2 className="text-base font-bold leading-7 text-gray-900">Edit Personal Information</h2>
+                                    <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent phone where you can receive updates.</p>
 
-                            >
-                                Submit
-                            </button>
+                                    <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+
+
+                                        <div className="sm:col-span-4">
+                                            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">Full name</label>
+                                            <div className="mt-2">
+                                                <input type="text" name="name" onChange={handleChange} value={formData.name} placeholder={formData.name} id="name" autoComplete="family-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                            </div>
+                                        </div>
+
+                                        <div className="sm:col-span-4">
+                                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+                                            <div className="mt-2">
+                                                <input id="email" name="email" type="email" onChange={handleChange} value={formData.email} placeholder={formData.email} autoComplete="email" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                            </div>
+                                        </div>
+
+                                        <div className="sm:col-span-4">
+                                            <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
+                                            <div className="mt-2">
+                                                <input id="phone" name="phone" type="text" onChange={handleChange} value={formData.phone} placeholder={formData.phone} autoComplete="phone" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                            </div>
+                                        </div>
+
+                                        <div className="sm:col-span-3">
+                                            <label htmlFor="Place" className="block text-sm font-medium leading-6 text-gray-900">Place</label>
+                                            <div className="mt-2">
+                                                <select
+                                                    id="Place"
+                                                    name="Place"
+                                                    autoComplete="Place"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                                    value={formData.place}
+                                                    onChange={(e) =>
+                                                        setFormData({ ...formData, place: e.target.value })
+                                                    }
+                                                >
+                                                    <option value="" disabled hidden>
+                                                        {formData.place ? formData.place : "Select a place"}
+                                                    </option>
+                                                    {keralaDistricts.map((district) => (
+                                                        <option key={district} value={district}>
+                                                            {district}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                    </div>
+                                    <button type="submit" className="bg-blue-500 mt-4 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Submit</button>
+
+                                </div>
+                            </form>
+                        </dialog>
+
+                    </div>
+
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
+
+                    <div className="bg-white rounded-md shadow-md">
+                        <div className="p-4">
+                            <p className="mb-4">
+                                <span className="text-blue-500 italic font-medium mr-1">Latest</span> Orders
+                            </p>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div> 
+        </section>
+    );
+};
 
-        </>
-    )
-
-}
 
 
 export default Profile;

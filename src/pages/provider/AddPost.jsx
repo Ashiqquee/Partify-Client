@@ -1,8 +1,8 @@
-import Post from "../../components/provider/Post";
+import AddPost from "../../components/provider/AddPost";
 import Sidebar from "../../components/provider/Sidebar";
 
 
-const PostPage = () => {
+const AddNewPost = () => {
     return (
         <>
             <Sidebar />
@@ -10,11 +10,11 @@ const PostPage = () => {
 
             <div className="flex md:ml-64 lg:ml-64 ">
 
-                <Post />
+                <AddPost />
             </div>
             \
         </>
     )
 }
 
-export default PostPage;
+export default AddNewPost;
