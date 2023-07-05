@@ -12,7 +12,7 @@ const Navbar = () => {
                             <div className="text-sm font-medium text-gray-900">Partify</div>
                         </div>
                     </div>
-                    {/* Add any other items to the right side of the navbar */}
+                    
                 </div>
             </div>
         </nav>
