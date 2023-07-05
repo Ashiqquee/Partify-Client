@@ -25,6 +25,20 @@ const Profile = () => {
         place: '',
 
     });
+    const [showModal, setShowModal] = useState(true);
+
+    const closeModal = () => {
+        let close = setTimeout(() => {
+            setShowModal(false);
+            clearTimeout(close); 
+        }, 50);
+
+        let show = setTimeout(() => {
+            setShowModal(true);
+            clearTimeout(show); 
+        }, 100);
+    };
+   
     const imageSrc = dp ? URL.createObjectURL(dp) : (profile.image || 'https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg');
 
     const handleFile = async (event) => {
@@ -33,16 +47,21 @@ const Profile = () => {
         const formData = new FormData();
         formData.append('file', file)
 
-        const response = await axiosInstance.patch('/profile', formData, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data',
-            },
-        })
+       try {
+           const response = await axiosInstance.patch('/profile', formData, {
+               headers: {
+                   Authorization: `Bearer ${token}`,
+                   'Content-Type': 'multipart/form-data',
+               },
+           });
 
-        if (response.status === 200) {
-            toast.success('Profile Updated');
-        }
+           if (response.status === 200) {
+               toast.success('Profile Updated');
+           }
+       } catch (error) {
+        console.log(error);
+        toast.error('Something went wrong')
+       }
 
 
 
@@ -73,6 +92,38 @@ const Profile = () => {
             console.log(error);
         }
     };
+
+
+    const editDetails = async(event) => {
+        event.preventDefault(); 
+
+        if (formData.email !== profile.email || formData.name !== profile.name || formData.place !== profile.place || formData.phone !== profile.phone ){
+            try {
+
+                const response = await axiosInstance.patch('/profile', formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                setProfile(prev => ({
+                    ...prev,
+                    name: formData.name,
+                    email: formData.email,
+                    place: formData.place,
+                    phone: formData.phone
+                }));
+                toast.success('Profile Updated');
+
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            toast('Nothing to change')
+        }
+
+      
+    }
 
     const editForm = () => {
         setFormData({
@@ -131,7 +182,7 @@ const Profile = () => {
                                         <img src={imageSrc} alt="profile" />
                                     </div>
                                 </div>
-                                <h5 className="my-3">John Smith</h5>
+                                <h5 className="my-3">{profile.name}</h5>
 
                                 <div className="flex justify-center mb-2">
                                     <input type="file" onChange={handleFile} className="hidden" id="fileInput" />
@@ -188,7 +239,7 @@ const Profile = () => {
                                     <div className="w-2/3">
                                         {profile?.place === undefined ? (
                                             <>
-                                                <p className="text-blue-500 font-semibold mb-0 hover:cursor-pointer" onClick={() => window.my_modal_3.showModal() || editForm()}>Add place +</p>
+                                                <p className="text-blue-500 font-semibold mb-0 hover:cursor-pointer" onClick={() =>  window.my_modal_3.showModal() || editForm()}>Add place +</p>
                                                 
 
                                             </>
@@ -201,9 +252,11 @@ const Profile = () => {
                                 </div>
                             </div>
                         </div>
+                        {showModal && (
                         <dialog id="my_modal_3" className="modal">
-                            <form method="dialog" className="modal-box flex justify-center">
-                                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+                            <form method="dialog" onSubmit={editDetails} className="modal-box flex justify-center">
+                                    <p className=" btn-ghost absolute right-2 top-2 hover:cursor-pointer" onClick={() => closeModal()}>✕</p>
 
                                 <div className="border-b border-gray-900/10 pb-12">
                                     <h2 className="text-base font-bold leading-7 text-gray-900">Edit Personal Information</h2>
@@ -263,12 +316,12 @@ const Profile = () => {
 
 
                                     </div>
-                                    <button type="submit" className="bg-blue-500 mt-4 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Submit</button>
+                                        <button onClick={closeModal} type="submit" className="bg-blue-500 mt-4 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Submit</button>
 
                                 </div>
                             </form>
                         </dialog>
-
+                        )}
                     </div>
 
                 </div>
