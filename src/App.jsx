@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Login from "@/components/user/login";
+import Login from "./components/Login";
 import Register  from "./components/user/register";
 import UserHome from '@/pages/user/Home';
 import AdminHome from './pages/admin/Home'
@@ -14,6 +14,7 @@ import Verthe from "./components/admin/Verthe";
 import Profile from "./pages/user/Profile";
 import AddPost from "./pages/provider/AddPost";
 import Post from "./pages/provider/Post";
+import ProviderPage from "./pages/user/Provider";
 
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
@@ -32,6 +33,8 @@ const App = () => {
         <Route path="/login" element={userAuth ? <Navigate to='/' /> : <Login name='user'  url= 'login' /> }></Route>
         <Route path="/signup" element={userAuth ? <Navigate to='/' /> : <Register />}></Route>
         <Route path="/profile" element={userAuth ? <Profile /> : <Navigate to='/login' />}></Route>
+        <Route path="/user/providers" element={userAuth ? <ProviderPage /> : <Navigate to='/login' />}></Route>
+
 
 
         {/* Admin Pages */}

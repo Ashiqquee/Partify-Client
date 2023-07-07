@@ -1,18 +1,17 @@
-import { useDispatch } from "react-redux";
-import { userLogout } from "../../store/slice/user";
-import { useNavigate } from "react-router-dom";
+import Sidebar from "../../components/user/Sidebar";
+import Feed from "../../components/user/Feed";
+import FavProvider  from "../../components/user/FavProvider";
 
 const Home = () => {
-    const navigate = useNavigate()
-    const dispatch = useDispatch();
-    const logout = () => {
-        dispatch(userLogout())
-        navigate('/login')
-    }
+   
+   
     return (
         <>
-            <h1>Home</h1>
-            <button onClick={logout}>Logout</button>
+            <Sidebar />
+            <div className="flex  md:ml-72  lg:ml-96 ">
+                <Feed />
+                
+            </div>    
         </>
     )
 }

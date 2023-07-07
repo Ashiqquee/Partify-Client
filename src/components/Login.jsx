@@ -2,10 +2,10 @@ import { useEffect,useState } from 'react';
 import {useLocation} from 'react-router-dom';
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axiosInstance from '../../api/axios';
-import {userLogin} from '../../store/slice/user';
-import {adminLogin} from '../../store/slice/admin'
-import {providerLogin} from '../../store/slice/provider'
+import axiosInstance from '../api/axios';
+import {userLogin} from '../store/slice/user';
+import {adminLogin} from '../store/slice/admin'
+import {providerLogin} from '../store/slice/provider'
 import { useNavigate } from 'react-router-dom';
 import {useDispatch} from 'react-redux'
 const Login = ({url,name}) => {

@@ -11,6 +11,6 @@ export default {
       },
     },
   },
-  plugins: [require('daisyui'), require('flowbite/plugin')],
+  plugins: [require("tailwind-scrollbar-hide"), require("daisyui")],
 }
 

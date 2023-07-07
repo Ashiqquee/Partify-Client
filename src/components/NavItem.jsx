@@ -1,18 +1,32 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useNavigate} from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { adminLogout } from '../../store/slice/admin';
+import { adminLogout } from '../store/slice/admin';
+import { providerLogout } from '../store/slice/provider';
+import { userLogout } from '../store/slice/user';
+
+
 
 const NavItem = ({icon,name,path}) => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    const handleRoute = () => {
-        navigate(`/admin${path}`);
+  
 
-        if(name==='LOGOUT'){
-            dispatch(adminLogout())
+    const handleRoute = () => {
+        if (name === 'LOGOUT') {
+            if (path === '/admin/login') {
+                dispatch(adminLogout())
+            }
+            else if (path === '/provider/login') {
+                dispatch(providerLogout())
+            } else if (path === '/login') {
+                dispatch(userLogout())
+            }
         }
+        navigate(`${path}`);
+
+       
     }
 
     return(

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import useSize from '../../utils/useWidthSize'
+import NavItem from "../NavItem";
+import { faHouse, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar = () => {
 
@@ -50,27 +52,16 @@ const Sidebar = () => {
                 <div >
 
                     <div className="mt-5 ml-5">
-                        <img src="https://res.cloudinary.com/dq0tq9rf5/image/upload/v1687756276/partifylogo_rbt1jn.jpg" style={{ height: '4rem', width: '8rem' }} alt="Logo" />
+                       
 
                     </div>
+                    <NavItem icon={faHouse} name={"HOME"} path={'/'} />
+                    <NavItem icon={faUser} name={"PROFILE"} path={'/profile'} />
+                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'} />
 
 
 
-                    <div  className="flex  items-center justify-between p-4 hover:bg-gray-100 cursor-pointer ">
-                        <p className="flex items-center space-x-2" >
-                            ok
-                            <span className="text-black font-bold  ">Services</span>
-                        </p>
-
-                    </div>
-
-                    <div className="flex  items-center justify-between p-4 hover:bg-gray-100 cursor-pointer ">
-                        <p className="flex items-center space-x-2" >
-                            new
-                            <span className="text-black font-bold  ">Logout</span>
-                        </p>
-
-                    </div>
+                   
 
 
 

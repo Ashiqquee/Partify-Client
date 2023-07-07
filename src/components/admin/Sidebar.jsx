@@ -4,7 +4,7 @@ import { adminLogout } from "../../store/slice/admin";
 import { useDispatch } from "react-redux";
 import { faUser, faHouse, faServer, faWeightHanging, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import useWidthSize from "../../utils/useWidthSize";
-import NavItem from "./NavItem";
+import NavItem from "../NavItem";
 
 const Sidebar = () => {
     const dipatch = useDispatch();
@@ -63,11 +63,11 @@ const Sidebar = () => {
 
                   
 
-                    <NavItem icon={faHouse} name={"HOME"} path={''}/>
-                    <NavItem icon={faUser} name={"USERS"} path={'/users'} />
-                    <NavItem icon={faWeightHanging} name={"PROVIDER"} path={'/providers'} />
-                    <NavItem icon={faServer} name={"SERVICES"} path={'/services'} />
-                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'}/>
+                    <NavItem icon={faHouse} name={"HOME"} path={'/admin'}/>
+                    <NavItem icon={faUser} name={"USERS"} path={'/admin/users'} />
+                    <NavItem icon={faWeightHanging} name={"PROVIDER"} path={'/admin/providers'} />
+                    <NavItem icon={faServer} name={"SERVICES"} path={'/admin/services'} />
+                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/admin/login'}/>
 
                     
 
