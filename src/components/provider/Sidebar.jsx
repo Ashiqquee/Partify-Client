@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { providerLogout } from '../../store/slice/provider'
-import {  faServer,faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faServer, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useWidthSize from "../../utils/useWidthSize";
+import NavItem from '../NavItem'
 const Sidebar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -59,27 +60,20 @@ const Sidebar = () => {
                 <div >
 
                     <div className="mt-5 ml-5">
-                        <img src="https://res.cloudinary.com/dq0tq9rf5/image/upload/v1687756276/partifylogo_rbt1jn.jg" style={{ height: '4rem', width: '8rem' }} alt="Logo" />
+                        <img src="https://res.cloudinary.com/dq0tq9rf5/image/upload/v1687756276/partifylogo_rbt1jn.jpg" style={{ height: '4rem', width: '8rem' }} alt="Logo" />
 
                     </div>
 
 
 
-                    <div onClick={() => navigate('/provider/services')} className="flex  items-center justify-between p-4 hover:bg-gray-100 cursor-pointer ">
-                        <p className="flex items-center space-x-2" >
-                            <FontAwesomeIcon icon={faServer} />
-                            <span className="text-black font-bold  ">Services</span>
-                        </p>
+              
 
-                    </div>
+                    <NavItem icon={faUser} name={"PROFILE"} path={'/provider/profile'} />
+                    <NavItem icon={faServer} name={"SERVICES"} path={'/provider/services'} />
+                    <NavItem icon={faRightFromBracket} name={"LOGOUT"} path={'/provider/login'} />
 
-                    <div onClick={logout} className="flex  items-center justify-between p-4 hover:bg-gray-100 cursor-pointer ">
-                        <p className="flex items-center space-x-2" >
-                            <FontAwesomeIcon icon={faRightFromBracket} />
-                            <span className="text-black font-bold  ">Logout</span>
-                        </p>
 
-                    </div>
+
 
 
 

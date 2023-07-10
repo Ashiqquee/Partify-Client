@@ -255,7 +255,7 @@ const Signup = () => {
                                     <div className="mb-4">
                                         <label htmlFor="services" className="block text-black font-semibold">Place</label>
                                         <Select
-                                            name="services"
+                                            name="places"
                                             options={keralaDistrictsOptions}
                                             isMulti
                                             value={formData.places.map((place) => ({

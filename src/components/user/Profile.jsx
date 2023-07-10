@@ -40,7 +40,7 @@ const Profile = () => {
         }, 100);
     };
 
-    const imageSrc = dp ? URL.createObjectURL(dp) : (profile.image || 'https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg');
+    const imageSrc = dp ? URL.createObjectURL(dp) : (profile?.image || 'https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg');
 
     const handleFile = async (event) => {
         const file = event.target.files[0];
@@ -57,7 +57,13 @@ const Profile = () => {
             });
 
             if (response.status === 200) {
+                setProfile(prev => ({
+                    ...prev,
+                    image: response.data.image
+                }));
+                setDp('');
                 toast.success('Profile Updated');
+                
             }
         } catch (error) {
             console.log(error);

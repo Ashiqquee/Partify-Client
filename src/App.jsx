@@ -15,6 +15,7 @@ import Profile from "./pages/user/Profile";
 import AddPost from "./pages/provider/AddPost";
 import Post from "./pages/provider/Post";
 import ProviderPage from "./pages/user/Provider";
+import ProviderProfile from './pages/provider/Profile'
 
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
@@ -58,6 +59,8 @@ const App = () => {
         <Route path="/provider/services" element={providerAuth ? <ManageServices/> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/addPost" element={providerAuth ? <AddPost /> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/post" element={providerAuth ? <Post /> : <Navigate to='/provider/login' />}></Route>
+        <Route path="/provider/profile" element={providerAuth ? <ProviderProfile /> : <Navigate to='/provider/login' />}></Route>
+
 
 
 
