@@ -119,8 +119,7 @@ const ServiceList = () => {
    const handleEditService  = async() => {
   
        const editService = serviceList.find(services => services._id===editFormData._id);
-        console.log(editService);
-        console.log(editFormData);
+     
        if (editService.serviceName !== editFormData.serviceName || editService.serviceImage !== editFormData.file){
            try {
                const response = await axiosInstance.patch('/admin/services', editFormData, {
@@ -144,6 +143,11 @@ const ServiceList = () => {
                         return services;
                     });
                     return updatedList;
+                   })
+                   setEditFormData({
+                       serviceName: '',
+                       file: null,
+                       _id: null,
                    })
                }
                

@@ -1,14 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { providerLogout } from '../../store/slice/provider'
-import { faServer, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faServer, faRightFromBracket, faUser, faImage } from '@fortawesome/free-solid-svg-icons';
 import useWidthSize from "../../utils/useWidthSize";
 import NavItem from '../NavItem'
 const Sidebar = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+   
     const [isOpen, setIsOpen] = useState(false);
     const widthSize = useWidthSize();
 
@@ -20,10 +15,6 @@ const Sidebar = () => {
         setIsOpen(false);
     };
 
-    const logout = () => {
-        navigate('/provider/login');
-        dispatch(providerLogout());
-    }
    
     return (
 
@@ -70,6 +61,7 @@ const Sidebar = () => {
 
                     <NavItem icon={faUser} name={"PROFILE"} path={'/provider/profile'} />
                     <NavItem icon={faServer} name={"SERVICES"} path={'/provider/services'} />
+                    <NavItem icon={faImage} name={'ADD POSTS'} path={'/provider/addpost'} />
                     <NavItem icon={faRightFromBracket} name={"LOGOUT"} path={'/provider/login'} />
 
 

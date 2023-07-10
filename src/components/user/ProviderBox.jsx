@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
+import useWidthSize from "../../utils/useWidthSize";
 
 
 
 const ProviderBox = () => {
 
     const[providers,setProviders] = useState([]);
-
+    const size = useWidthSize()
     const fetchProviders = async() => {
         try {
             const response =await  axiosInstance.get('/providersList');
@@ -34,11 +35,12 @@ const ProviderBox = () => {
                     Discover service providers that meet your criteria and connect with them through messaging to place your orders.
                 </p>
 
-                <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 xl:grid-cols-3 h-5">
+                <div className={size > 880 ? "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-2" : "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-1"}>
+
 
                     {providers.map((provider) => {
                        return(
-                           <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-blue-400 dark:border-gray-700 dark:hover:border-transparent">
+                           <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent">
                                <div className="w-full h-40" style={{ backgroundImage: `url(${provider?.coverPic})`, backgroundSize: 'cover' }}>
                                    
                                    <div className="avatar">
@@ -54,7 +56,7 @@ const ProviderBox = () => {
                                <div className="flex mt-3 -mx-2 ">
                           
 
-                                   <p className="mx-2 text-gray-600 d btn btn-sm  group-hover:text-black font-bold">
+                                   <p className="mx-2 text-white d btn btn-sm bg-indigo-500  group-hover:text-indigo-500 group-hover:bg-white font-bold ">
                                     MESSAGE
                                    </p>
 

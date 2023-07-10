@@ -3,10 +3,11 @@ import axiosInstance from '../../api/axios'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
 import Select from 'react-select';
+import PostComponent from '../Post'
 
 const Profile = () => {
     const token = useSelector(state => state.provider.token);
-
+    const[posts,setPosts] = useState([]);
     const [dp, setDp] = useState('');
     const [profile, setProfile] = useState({
         name: '',
@@ -17,6 +18,21 @@ const Profile = () => {
         profilePic:'',
         coverPic:'',
     });
+
+    const providerPosts = async() => {
+        try {
+          const response = await axiosInstance.get('/provider/post',{
+              headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'multipart/form-data',
+              },
+          })  ;
+            console.log(response.data.posts);
+          setPosts(response.data.posts)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const [formData, setFormData] = useState({
         name: '',
@@ -199,7 +215,7 @@ const Profile = () => {
 
     useEffect(() => {
         fetchProfile();
-
+        providerPosts()
     }, []);
 
 
@@ -211,23 +227,22 @@ const Profile = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 ">
                     <div className="col-span-1 ">
-                        <div className=" rounded-md shadow-md mb-4 " >
+                        <div className=" rounded-md  mb-4  " >
                           
 
-                            <div className="p-4 text-center  " style={{ backgroundImage: `url(${profile?.coverPic})`, backgroundSize: 'cover' }}>
+                            <div className="p-4 text-cente h-48" style={{ backgroundImage: `url(${profile?.coverPic})`, backgroundSize: 'cover' }}>
                                 <div className="avatar ">
-                                    <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                    <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                                         <img src={imageSrc} alt="profile" />
                                     </div>
                                 </div>
-                                <h5 className="my-3">{profile.name}</h5>
 
                                 
                             </div>
                             <div className="flex justify-center mb-2 mt-1">
                                 <input type="file" onChange={handleFile} className="hidden" id="fileInput" />
-                                <label htmlFor="fileInput" className="bg-blue-500 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Change dp</label>
-                                <button onClick={() => window.my_modal_3.showModal() || editForm()} type="button" className="border border-blue-500 text-blue-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
+                                <label htmlFor="fileInput" className="bg-indigo-500 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Change dp</label>
+                                <button onClick={() => window.my_modal_3.showModal() || editForm()} type="button" className="border border-indigo-500 text-indigo-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
                             </div>
                         </div>
 
@@ -237,7 +252,7 @@ const Profile = () => {
                             <div className="p-4">
                                 <div className="flex items-center">
                                     <div className="w-1/3">
-                                        <p className="mb-0">Full Name</p>
+                                        <p className="mb-0">Company Name</p>
                                     </div>
                                     <div className="w-2/3">
                                         <p className="text-gray-500 mb-0">{profile?.name}</p>
@@ -389,7 +404,7 @@ const Profile = () => {
                                             <div className="sm:col-span-4">
                                             {formData.coverPic && (
                                                     <img
-                                                        src={formData.coverPic.startsWith('https:') ? formData.coverPic : URL.createObjectURL(formData.coverPic)}
+                                                        src={(typeof formData.coverPic === 'string' && formData.coverPic.startsWith('https:')) ? formData.coverPic : URL.createObjectURL(formData.coverPic)}
                                                         className="w-16 h-16"
                                                         alt="Selected Cover Image"
                                                     />
@@ -408,12 +423,12 @@ const Profile = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
 
-                    <div className="bg-white rounded-md shadow-md">
-                        <div className="p-4">
+                    <div className="bg-white rounded-md shadow-md ">
+                        <div className="p-4  w-3/4">
                             <p className="mb-4">
-                                <span className="text-blue-500 italic font-medium mr-1">Latest</span> Orders
+                                <span className="text-indigo-500 italic font-medium mr-1">Latest</span> posts
                             </p>
-                            <h1>You haven't placed any order yet.</h1>
+                            <PostComponent posts={posts} role={'provider'}/>
                         </div>
                     </div>
                 </div>

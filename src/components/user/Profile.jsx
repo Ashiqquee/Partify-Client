@@ -26,6 +26,30 @@ const Profile = () => {
         place: '',
 
     });
+
+    const validateFormData = () => {
+        const { name, email, phone, place } = formData;
+        const errors = {};
+
+       
+
+        if (name?.trim().length < 2) {
+            errors.name = 'add valid name';
+        }
+
+        if (place.length < 2) {
+            errors.file = "add valid place"
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            errors.email = "Enter a valid email address";
+        }
+        console.log();
+        if (phone.toString().length!==10) {
+            errors.phone = 'Enter 10 digits';
+        }
+        return errors;
+    };
     const [showModal, setShowModal] = useState(true);
 
     const closeModal = () => {
@@ -44,6 +68,9 @@ const Profile = () => {
 
     const handleFile = async (event) => {
         const file = event.target.files[0];
+        if(!file){
+          return  toast.error('Add a image')
+        }
         setDp(file);
         const formData = new FormData();
         formData.append('file', file)
@@ -104,6 +131,9 @@ const Profile = () => {
 
     const editDetails = async (event) => {
         event.preventDefault();
+        const errors = validateFormData();
+        console.log(errors);
+        if (Object.keys(errors).length === 0) {
 
         if (formData.email !== profile.email || formData.name !== profile.name || formData.place !== profile.place || formData.phone !== profile.phone) {
             try {
@@ -131,8 +161,23 @@ const Profile = () => {
                 console.log(error);
                 toast.error('Something went wrong');
             }
-        } else {
+        }
+         else {
             toast('Nothing to change')
+        }
+        } else if (Object.keys(errors).length === 4) {
+            toast.error('Enter all fields')
+        } else if (errors.name) {
+            
+            toast.error(errors.name)
+        }
+         else if (errors.email) {
+            toast.error(errors.email)
+        }
+        else if (errors.phone) {
+            toast.error(errors.phone)
+        } else if (errors.place) {
+            toast.error(errors.place)
         }
 
 

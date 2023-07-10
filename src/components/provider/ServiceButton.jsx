@@ -118,7 +118,7 @@ const ServiceButton = () => {
                     {serviceList.map((services) => (
                         <div
                             key={services._id}
-                            className="bg-blue-300 p-4 text-white font-bold text-center mx-6"
+                            className="bg-indigo-500 p-4 text-white font-bold text-center mx-6"
                         >
                             {services.serviceName}
                             <span onClick={() => removeService(services._id)} className="mx-2 hover:cursor-pointer">
@@ -139,7 +139,7 @@ const ServiceButton = () => {
                 {remainingServices.map((service) => (
                     <div
                         key={service._id}
-                        className="bg-blue-300 p-4 text-white font-bold text-center mx-6"
+                        className="bg-indigo-500 p-4 text-white font-bold text-center mx-6"
                     >
                         {service.serviceName}
                         <span

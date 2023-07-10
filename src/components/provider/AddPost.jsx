@@ -1,11 +1,12 @@
 import { useState } from "react";
 import axiosInstance from "../../api/axios";
 import { useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 const AddPost = () => {
-
+    
     const token = useSelector(state => state.provider.token);
-    console.log(token);
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         caption: '',
@@ -19,11 +20,33 @@ const AddPost = () => {
             file: files
         }));
       
-    }
+    };
+
+    const validateFormData = () => {
+        const { caption, tagline,file } = formData;
+        const errors = {};
+
+        if (caption.trim().length < 5) {
+            errors.phone = 'Caption needed';
+        }
+
+        if (tagline.trim().length < 6) {
+            errors.password = 'add some tags';
+        }
+
+        if(file.length<1){
+            errors.file = "Add atleast 1 image"
+        }
+
+
+        return errors;
+    };
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-
+        const errors = validateFormData();
+        
+        if (Object.keys(errors).length === 0) {
        try {
            const form = new FormData();
            form.append('caption',formData.caption)
@@ -38,10 +61,21 @@ const AddPost = () => {
                    'Content-Type': 'multipart/form-data',
                },
            });
-           console.log(response);
+           if(response.status === 200){
+               navigate('/provider/profile')
+           }
        } catch (error) {
         console.log(error);
        }
+        } else if (Object.keys(errors).length === 3) {
+            toast.error('Enter all fields')
+        } else if (errors.caption) {
+            toast.error(errors.caption)
+        } else if (errors.tagline) {
+            toast.error(errors.tagline)
+        } else if (errors.file){
+            toast.error(errors.file)
+        }
     }
 
     const handleChange = (event) => {
@@ -65,14 +99,14 @@ const AddPost = () => {
 
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="col-span-full">
-                            <label htmlFor="about" className="block font-bold text-sm  leading-6 text-gray-900">About</label>
+                            <label htmlFor="about" className="block font-bold text-sm  leading-6 text-gray-900">Caption</label>
                             <div className="mt-2">
                                 <textarea id="about" value={formData.caption} onChange={handleChange} name="caption" rows="3" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
                             </div>
                             <p className="mt-3 text-sm leading-6 text-gray-600">Insights shared in the post</p>
                         </div>
                         <div className="col-span-full">
-                            <label htmlFor="about" className="block font-bold text-sm  leading-6 text-gray-900">Caption</label>
+                            <label htmlFor="about" className="block font-bold text-sm  leading-6 text-gray-900">Tagline</label>
                             <div className="mt-2">
                                 <textarea id="about" placeholder="eg: #latest #new" name="tagline" value={formData.tagline} onChange={handleChange} rows="3" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
                             </div>

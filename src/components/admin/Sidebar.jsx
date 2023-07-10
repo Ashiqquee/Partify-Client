@@ -1,14 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { adminLogout } from "../../store/slice/admin";
-import { useDispatch } from "react-redux";
-import { faUser, faHouse, faServer, faWeightHanging, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+
+import { faUser, faHouse, faServer, faWeightHanging, faRightFromBracket,faImage } from '@fortawesome/free-solid-svg-icons'
 import useWidthSize from "../../utils/useWidthSize";
 import NavItem from "../NavItem";
 
 const Sidebar = () => {
-    const dipatch = useDispatch();
-    const navigate = useNavigate();
+
     const [isOpen, setIsOpen] = useState(false);
     const widthSize = useWidthSize();
 
@@ -67,7 +64,9 @@ const Sidebar = () => {
                     <NavItem icon={faUser} name={"USERS"} path={'/admin/users'} />
                     <NavItem icon={faWeightHanging} name={"PROVIDER"} path={'/admin/providers'} />
                     <NavItem icon={faServer} name={"SERVICES"} path={'/admin/services'} />
+                    <NavItem icon={faImage} name={'POSTS'} path={'/admin/posts'} />
                     <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/admin/login'}/>
+                    
 
                     
 
