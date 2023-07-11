@@ -4,7 +4,7 @@ import axiosInstance from '../../api/axios';
 import { toast } from 'react-toastify'
 import { signInWithPhoneNumber, RecaptchaVerifier } from 'firebase/auth'
 import { auth } from "../../api/firebase";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 
 const Signup = () => {

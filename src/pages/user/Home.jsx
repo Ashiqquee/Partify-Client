@@ -1,6 +1,6 @@
 import Sidebar from "../../components/user/Sidebar";
 import Feed from "../../components/user/Feed";
-import FavProvider  from "../../components/user/FavProvider";
+// import FavProvider  from "../../components/user/FavProvider";
 
 const Home = () => {
    

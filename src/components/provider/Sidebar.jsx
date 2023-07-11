@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { faServer, faRightFromBracket, faUser, faImage } from '@fortawesome/free-solid-svg-icons';
+import { faServer, faRightFromBracket, faUser, faImage, faBagShopping } from '@fortawesome/free-solid-svg-icons';
 import useWidthSize from "../../utils/useWidthSize";
 import NavItem from '../NavItem'
 const Sidebar = () => {
@@ -55,21 +55,11 @@ const Sidebar = () => {
 
                     </div>
 
-
-
-              
-
                     <NavItem icon={faUser} name={"PROFILE"} path={'/provider/profile'} />
                     <NavItem icon={faServer} name={"SERVICES"} path={'/provider/services'} />
                     <NavItem icon={faImage} name={'ADD POSTS'} path={'/provider/addpost'} />
+                    <NavItem icon={faBagShopping} name={"ORDERS"} path={'/provider/order'} />
                     <NavItem icon={faRightFromBracket} name={"LOGOUT"} path={'/provider/login'} />
-
-
-
-
-
-
-
 
 
 

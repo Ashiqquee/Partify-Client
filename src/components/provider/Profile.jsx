@@ -240,7 +240,7 @@ const Profile = () => {
                                 
                             </div>
                             <div className="flex justify-center mb-2 mt-1">
-                                <input type="file" onChange={handleFile} className="hidden" id="fileInput" />
+                                <input type="file" onChange={handleFile} className="hidden" id="fileInput" accept="image/*" />
                                 <label htmlFor="fileInput" className="bg-indigo-500 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Change dp</label>
                                 <button onClick={() => window.my_modal_3.showModal() || editForm()} type="button" className="border border-indigo-500 text-indigo-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
                             </div>
@@ -364,7 +364,6 @@ const Profile = () => {
                                                             value: place,
                                                             label: place
                                                         }))}
-                                                        isMulti
                                                         value={formData?.places?.map(place => ({
                                                             value: place,
                                                             label: place
@@ -423,8 +422,8 @@ const Profile = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
 
-                    <div className="bg-white rounded-md shadow-md ">
-                        <div className="p-4  w-3/4">
+                    <div className="bg-white rounded-md shadow-md w-3/4">
+                        <div className="p-4  ">
                             <p className="mb-4">
                                 <span className="text-indigo-500 italic font-medium mr-1">Latest</span> posts
                             </p>

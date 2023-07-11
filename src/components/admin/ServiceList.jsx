@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from '../../api/axios';
 import { useSelector } from 'react-redux';
-import { ShimmerPostDetails } from "react-shimmer-effects";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
@@ -233,7 +232,9 @@ const ServiceList = () => {
                             {formData.file && (
                                 <div className="mt-3">
                                     <h4>Selected Image:</h4>
+                                   { formData.file instanceof File ? (
                                     <img className="h-12 font-bold mt-3" src={URL.createObjectURL(formData.file)} alt="Selected" />
+                                    ) : null}
                                 </div>
                             )}
                         </form>
@@ -249,7 +250,30 @@ const ServiceList = () => {
             <div className="flex justify-center bg-white w-full my-12 mr-24 border-solid border-2 border-gray-300 shadow-lg rounded-lg">
 
                 {loading ? (
-                    <ShimmerPostDetails card cta variant="SIMPLE" />
+                    <section className="bg-white dark:bg-gray-900">
+                        <div className="container px-6 py-8 mx-auto animate-pulse">
+                            <div className="text-center">
+                                <p className="w-32 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+
+                                <div className="flex flex-wrap justify-center gap-4 mt-10">
+                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                                </div>
+
+                            </div>
+
+                            <hr className="my-6 border-gray-200 md:my-10 dark:border-gray-700" />
+
+                            <div className="flex flex-col items-center sm:flex-row sm:justify-between">
+                                <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+
+                                <p className="w-64 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                            </div>
+                        </div>
+                    </section>
                 ) : (
                     <div className="w-full">
                         <table className="w-full">
@@ -303,7 +327,7 @@ const ServiceList = () => {
                                                                         <h4>Previous Image:</h4>
                                                                         <img
                                                                             className="h-12 font-bold mt-3"
-                                                                            src={imageEdited ? editFormData.file : URL.createObjectURL(editFormData.file)}
+                                                                            src={imageEdited ? editFormData.file : (editFormData.file instanceof File ? URL.createObjectURL(editFormData.file) : null)}
                                                                             alt="Selected"
                                                                         />
                                                                     </div>

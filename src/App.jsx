@@ -16,7 +16,8 @@ import AddPost from "./pages/provider/AddPost";
 import ProviderPage from "./pages/user/Provider";
 import ProviderProfile from './pages/provider/Profile'
 import PostsList from "./pages/admin/Posts";
-
+import Chat from './pages/user/Chat'
+import ProviderOrder from './pages/provider/Order'
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
   const adminAuth = Boolean(useSelector((state) => state.admin.token));
@@ -34,7 +35,9 @@ const App = () => {
         <Route path="/login" element={userAuth ? <Navigate to='/' /> : <Login name='user'  url= 'login' /> }></Route>
         <Route path="/signup" element={userAuth ? <Navigate to='/' /> : <Register />}></Route>
         <Route path="/profile" element={userAuth ? <Profile /> : <Navigate to='/login' />}></Route>
-        <Route path="/user/providers" element={userAuth ? <ProviderPage /> : <Navigate to='/login' />}></Route>
+        <Route path="/user/providers" element={<ProviderPage /> }></Route>
+        <Route path="/chat" element={userAuth ? <Chat /> : <Navigate to='/login' />}></Route>
+
 
 
 
@@ -60,6 +63,8 @@ const App = () => {
         <Route path="/provider/services" element={providerAuth ? <ManageServices/> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/addPost" element={providerAuth ? <AddPost /> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/profile" element={providerAuth ? <ProviderProfile /> : <Navigate to='/provider/login' />}></Route>
+        <Route path="/provider/order" element={providerAuth ? <ProviderOrder /> : <Navigate to='/provider/login' />}></Route>
+
 
 
 

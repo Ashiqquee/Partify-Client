@@ -243,7 +243,7 @@ const Profile = () => {
                                 <h5 className="my-3">{profile.name}</h5>
 
                                 <div className="flex justify-center mb-2">
-                                    <input type="file" onChange={handleFile} className="hidden" id="fileInput" />
+                                    <input type="file" onChange={handleFile} className="hidden" id="fileInput" accept="image/*" />
                                     <label htmlFor="fileInput" className="bg-blue-500 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Change dp</label>
                                     <button onClick={() => window.my_modal_3.showModal() || editForm()} type="button" className="border border-blue-500 text-blue-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
                                 </div>

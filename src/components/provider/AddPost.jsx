@@ -12,7 +12,8 @@ const AddPost = () => {
         caption: '',
         tagline: '',
         file: []
-    })
+    });
+    const[loading,setLoading] = useState(false);
     const handleFileChange = (event) => {
         const files = Array.from(event.target.files);
         setFormData(prevFormData => ({
@@ -44,9 +45,11 @@ const AddPost = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
+        
         const errors = validateFormData();
         
         if (Object.keys(errors).length === 0) {
+            setLoading(true);
        try {
            const form = new FormData();
            form.append('caption',formData.caption)
@@ -62,7 +65,8 @@ const AddPost = () => {
                },
            });
            if(response.status === 200){
-               navigate('/provider/profile')
+               navigate('/provider/profile');
+               setLoading(false);
            }
        } catch (error) {
         console.log(error);
@@ -126,7 +130,7 @@ const AddPost = () => {
                                     <div className="mt-4 flex text-sm leading-6 text-gray-600">
                                         <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                                             <span>Upload a file</span>
-                                            <input id="file-upload" name="file" onChange={handleFileChange} multiple  type="file" className="sr-only" />
+                                            <input id="file-upload" accept="image/*" name="file" onChange={handleFileChange} multiple  type="file" className="sr-only" />
                                         </label>
                                         <p className="pl-1">or drag and drop</p>
                                     </div>
@@ -150,9 +154,13 @@ const AddPost = () => {
                             </div>
 
                         </div>
-
-                        <button type="submit" className="w-full btn-sm  font-medium text-center text-white bg-indigo-500
-                                  rounded-lg transition duration-200 hover:bg-indigo-600 ease">Submit</button>
+                        {
+                            loading ? <button type="submit" className="loading loading-dots loading-md   font-medium text-center text-white bg-indigo-500
+                                  rounded-lg transition duration-200 hover:bg-indigo-600 ease"></button>
+                                : <button type="submit" className="w-full btn-sm  font-medium text-center text-white bg-indigo-500
+                                  rounded-lg transition duration-200 hover:bg-indigo-600 ease">Add</button>
+                        }
+                       
 
 
                     </div>

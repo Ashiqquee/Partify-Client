@@ -39,7 +39,7 @@ const PostList = () => {
 
            }
        });
-
+       setConfirmAction(false)
        if (response.status === 200) {
            toast.success('Deleted Successfully');
            setPosts(prevList => prevList.filter(post => post._id !== postId));
@@ -97,7 +97,10 @@ const PostList = () => {
                                         </tr>
                                     </thead>
                                     <tbody className=" divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900 ">
-                                     { posts?.map((post) => (
+                                        
+                                     {
+                                     posts?.length > 0 ? (
+                                     posts?.map((post) => (
                                         <tr key={post._id}>
                                             <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                 <div>
@@ -135,11 +138,11 @@ const PostList = () => {
                                                  <button className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900" onClick={() => setPost(post) || window.my_modal_3.showModal()}>Caption</button>
                                                      <dialog id="my_modal_3" className="modal">
                                                          <form method="dialog" className="modal-box">
-                                                             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                                             <button className="btn btn-sm btn-circle btn-ghost absolute">✕</button>
                                                              <h3 className="font-bold text-lg text-center ">Caption</h3>
                                                          {selectedPost  && (
                                                              <p className="py-4 font-sans font-bold">
-                                                                 {selectedPost.caption}
+                                                                 {selectedPost?.caption}
                                                              </p>
 
                                                          )}
@@ -194,7 +197,13 @@ const PostList = () => {
                                                  )
                                              )} 
                                         </tr>
-                                        ))}
+                                        ))) : (
+                                            <tr>
+                                                <td className="px-4 py-4 text-sm font-medium text-gray-500" colSpan={3}>
+                                                    No Posts found
+                                                </td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
                                 
