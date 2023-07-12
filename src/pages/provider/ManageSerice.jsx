@@ -12,7 +12,7 @@ const ManageServices = () => {
                 
                 <ServiceButton />
             </div>
-\
+
         </>
     )
 }

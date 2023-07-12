@@ -58,7 +58,7 @@ const Sidebar = () => {
                     <NavItem icon={faUser} name={"PROFILE"} path={'/provider/profile'} />
                     <NavItem icon={faServer} name={"SERVICES"} path={'/provider/services'} />
                     <NavItem icon={faImage} name={'ADD POSTS'} path={'/provider/addpost'} />
-                    <NavItem icon={faBagShopping} name={"ORDERS"} path={'/provider/order'} />
+                    <NavItem icon={faBagShopping} name={"ORDERS"} path={'/provider/orders'} />
                     <NavItem icon={faRightFromBracket} name={"LOGOUT"} path={'/provider/login'} />
 
 

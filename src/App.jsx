@@ -5,8 +5,8 @@ import Register  from "./components/user/register";
 import UserHome from '@/pages/user/Home';
 import AdminHome from './pages/admin/Home'
 import Service from "./pages/admin/Service";
-import UserList from '../src/pages/admin/User';
-import ProviderSignup from '../src/components/provider/Signup';
+import UserList from './pages/admin/User';
+import ProviderSignup from './components/provider/Signup';
 import ProviderList from "./pages/admin/Provider";
 import ProviderHome from "./pages/provider/Home";
 import ManageServices from "./pages/provider/ManageSerice";
@@ -18,10 +18,14 @@ import ProviderProfile from './pages/provider/Profile'
 import PostsList from "./pages/admin/Posts";
 import Chat from './pages/user/Chat'
 import ProviderOrder from './pages/provider/Order'
+import SingleOrderProvider from './pages/provider/SingleOrder';
+import SingleOrder from "./pages/user/SingleOrder";
+
+
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
   const adminAuth = Boolean(useSelector((state) => state.admin.token));
-  const providerAuth = Boolean(useSelector((state) => state.provider.token))
+  const providerAuth = Boolean(useSelector((state) => state.provider.token));
 
   return (
 
@@ -36,6 +40,7 @@ const App = () => {
         <Route path="/signup" element={userAuth ? <Navigate to='/' /> : <Register />}></Route>
         <Route path="/profile" element={userAuth ? <Profile /> : <Navigate to='/login' />}></Route>
         <Route path="/user/providers" element={<ProviderPage /> }></Route>
+        <Route path="/order/:id" element={userAuth ? <SingleOrder /> : <Navigate to='/login' />}></Route>
         <Route path="/chat" element={userAuth ? <Chat /> : <Navigate to='/login' />}></Route>
 
 
@@ -63,7 +68,9 @@ const App = () => {
         <Route path="/provider/services" element={providerAuth ? <ManageServices/> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/addPost" element={providerAuth ? <AddPost /> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/profile" element={providerAuth ? <ProviderProfile /> : <Navigate to='/provider/login' />}></Route>
-        <Route path="/provider/order" element={providerAuth ? <ProviderOrder /> : <Navigate to='/provider/login' />}></Route>
+        <Route path="/provider/orders" element={providerAuth ? <ProviderOrder /> : <Navigate to='/provider/login' />}></Route>
+        <Route path="/provider/order/:id" element={providerAuth ? <SingleOrderProvider /> : <Navigate to='/provider/login' />}></Route>
+
 
 
 

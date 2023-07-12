@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from '../../api/axios'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
-
+import Orders from './Orders'
 const Profile = () => {
 
     const token = useSelector(state => state.user.token);
@@ -407,10 +407,8 @@ const Profile = () => {
 
                     <div className="bg-white rounded-md shadow-md">
                         <div className="p-4">
-                            <p className="mb-4">
-                                <span className="text-blue-500 italic font-medium mr-1">Latest</span> Orders
-                            </p>
-                            <h1>You haven't placed any order yet.</h1>
+                         
+                            <Orders/>
                         </div>
                     </div>
                 </div>

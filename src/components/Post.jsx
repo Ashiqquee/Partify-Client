@@ -1,8 +1,22 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faComment, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
+import { useState } from "react";
 
-const Post = ({ posts,role }) => {
+const Post = ({ posts, role }) => {
+    const [showOptionIndex, setShowOptionIndex] = useState(null);
+    const [showOption, setShowOption] = useState(false)
+
+    const handleOptions = (index) => {
+        if (showOption && showOptionIndex === index) {
+            setShowOption(false);
+        } else {
+            setShowOption(true);
+            setShowOptionIndex(index);
+        }
+    };
+
+
     return (
         <>
             {posts?.map((post, index) => (
@@ -13,13 +27,39 @@ const Post = ({ posts,role }) => {
                                 <div className="avatar">
                                     <div className="w-11 my-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                                         <img src={post.providerId?.profilePic} alt="" />
+
                                     </div>
                                 </div>
                             </div>
-                            <p className="username font-bold text-black text-sm ml-10">
+                            <p className="username font-bold text-black text-sm ml-10 ">
                                 {post.providerId?.name}
                             </p>
+
                         </div>
+                        <div className="relative">
+                       
+                            <FontAwesomeIcon
+                                icon={faEllipsisVertical}
+                                onClick={() => handleOptions(index)}
+                            />
+                            <div className="absolute z-10 right-0 mt-2 w-40 bg-white rounded shadow-lg">
+                                 
+                                    {showOption && showOptionIndex === index ? 
+                                    <>
+                                        <ul className="py-2">
+                                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" >
+                                                Delete
+                                            </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" >
+                                                Edit
+                                            </li>
+                                        </ul>
+                                    </>
+                                    : ''}
+                            
+                            </div>
+
+                        </div>
+
                     </div>
                     <div className="h-80  carousel carousel-vertical w-full">
                         {post?.postImages?.map((image, index) => {
@@ -58,8 +98,8 @@ const Post = ({ posts,role }) => {
                             {post.createdAt ? new Date(post.createdAt).toDateString() : ""}
                         </p>
                     </div>
-                   {
-                    role==='user'&&(
+                    {
+                        role === 'user' && (
                             <div className="comment-wrapper w-full h-12 mt-2 border-t border-gray-300 flex justify-between items-center">
                                 <div className="avatar">
                                     <div className="w-8 ml-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -75,8 +115,8 @@ const Post = ({ posts,role }) => {
                                     post
                                 </button>
                             </div>
-                    )
-                   }
+                        )
+                    }
                 </div>
             ))}
         </>
