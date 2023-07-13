@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from "../api/axios";
 import { toast } from 'react-toastify'
-
+import OrderForm from "./provider/OrderForm";
 const OrderDetails = ({ token }) => {
-    const [orderStatus, setOrderStatus] = useState('');
-    const [payClicked, setPayClicked] = useState(false);
+
     const details = ['orderId', 'Customer Name', 'Customer Phone', 'Alternative Number', 'Order Date', 'Event Date'];
     const providerDetails = ['Provider Name', 'Provider Phone', 'Status', 'Services', 'Amount', 'Advance Amount'];
     const address = ['Street', 'City', 'Zip', 'District'];
@@ -17,8 +16,45 @@ const OrderDetails = ({ token }) => {
     const [isChecked, setIsChecked] = useState(false);
     const { id } = useParams();
     const [selectedOption, setSelectedOption] = useState('');
+    const [confirmAction,setConfirmAction] =  useState(false);
+    const[indicator,setIndicator] = useState(false)
+    const [editFormData,setEditFormData] = useState({
+        alternativePhone:'',
+        eventDate:'',
+        services:[],
+        amount:'',
+        street:'',
+        city:'',
+        zip:'',
+        district:'',
 
+    });
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+       
+        try {
+            const response = await axiosInstance.patch(`/provider/order/${order?._id}`,  editFormData , {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleFormChange = (field, value) => {
+        setEditFormData((prevFormData) => ({
+            ...prevFormData,
+            [field]: value,
+        }));
+    };
+
+    const handleIndicator = () => {
+        setIndicator(true)
+    }
 
     const handleSelectChange = (event) => {
 
@@ -46,6 +82,18 @@ const OrderDetails = ({ token }) => {
 
             if (response.status === 200) {
                 setOrder(response.data.order);
+                const { alternativeNumber, eventDate, services, totalAmount, address } = response.data.order;
+                const serviceIds = services.map(service => ({ value: service._id }));
+                setEditFormData({
+                    alternativePhone:alternativeNumber,
+                    eventDate: new Date(eventDate) ,
+                    amount:totalAmount,
+                    services: serviceIds,
+                    street:address.street, 
+                    zip: address.zip,
+                    city: address.city,
+                    district:address.district
+                })
             }
 
         } catch (error) {
@@ -77,29 +125,23 @@ const OrderDetails = ({ token }) => {
                                 }
 
                             } catch (error) {
-                                toast.error('Something Went Wrong');
+                                return  toast.error('Something Went Wrong');
                             }
                         }
                     }
 
                     if (selectedOption === 'fullAmount') {
-
-
                         if (wallet >= order?.totalAmount) {
-
                             try {
                                 const response = await axiosInstance.get(`/orderSuccess/${orderId}?wallet=${order?.remainingAmount}&selectedOption=${selectedOption}&stripe=no`);
                                 if (response.status === 200) {
                                     return navigate('/profile')
                                 }
                             } catch (error) {
-                                toast.error('Something Went Wrong');
+                               return  toast.error('Something Went Wrong');
                             }
                         }
                     }
-
-
-
                 }
                 const response = await axiosInstance.post(`/payment/${orderId}`, { wallet, selectedOption }, {
                     headers: {
@@ -122,6 +164,33 @@ const OrderDetails = ({ token }) => {
 
     }
 
+    const handleConfirmation = () => {
+        setConfirmAction(true);
+    };
+
+    const cancelOrder = async(orderId) => {
+        try {
+            let cancel = 'yes';
+            const response = await axiosInstance.patch(`/provider/order/${orderId}`, { cancel },{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if(response.status === 200){
+                setOrder((prevOrder) => ({
+                    ...prevOrder,
+                    status:'cancelled by provider',
+
+                }))
+                toast.success('Cancelled Successfully');
+            }
+
+        } catch (error) {
+            toast.error('Something went wrong');
+
+        }
+    }
 
     useEffect(() => {
         if (location.pathname.startsWith('/provider')) {
@@ -136,14 +205,64 @@ const OrderDetails = ({ token }) => {
 
     return (
         <>
-            <div className="flex w-full justify-center font-semibold text-lg">
+            {
+                role === 'provider' ? 
+                    <div className="flex w-full justify-between  font-semibold ">
+                        
+                        <label htmlFor="my_modal_6" className="btn  btn-sm bg-indigo-500 text-white hover:text-black ml-2">Edit</label>
+                        <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+                        <div className="modal">
+                            <div className="modal-box">
+                                
+                                <OrderForm onFormChange={handleFormChange} formData={editFormData} onSubmit={handleSubmit} onIndicator={handleIndicator} indicator={indicator} action='edit' />
+                                <div className="modal-action">
+                                    <label htmlFor="my_modal_6" className="btn btn-sm">Close!</label>
+                                </div>
+                            </div>
+                        </div>
+                        {
+                            (order.status === 'pending' || order.status === 'confirmed') && (Date.now() < new Date(order.eventDate)  - 48 * 60 * 60 * 1000) ? 
+                                <button className="btn btn-sm bg-red-500 text-white hover:text-black" onClick={handleConfirmation}>Cancel</button>
+                                :null
+                        }
+                    </div> 
+                    : null
+            }
+
+            {confirmAction && (
+                toast.info(
+                    <div>
+                        <p>Are you sure you want to proceed?</p>
+                        <button
+                            className="btn-sm bg-indigo-500 text-white rounded-md"
+                            onClick={() => cancelOrder(order._id)}
+                        >
+                            Confirm
+                        </button>
+                        <button
+                            className="btn-sm bg-red-500 ml-1 text-white rounded-md"
+                            onClick={() => setConfirmAction(false)}
+                        >
+                            Cancel
+                        </button>
+                    </div>,
+                    {
+                        toastId: '',
+                        autoClose: false,
+                        closeOnClick: true,
+                        draggable: false,
+                    }
+                )
+            )} 
+            <div className="flex w-full justify-center font-semibold text-lg mt-2">
                 <h1>ORDER </h1>
+                
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 ">
                 <div className="order-1 bg-gray-100 m-4 p-1">
                     <div>
-                        <h1 className="flex justify-center font-bold p-2"> DETAILS </h1>
+                        <h1 className="flex justify-center font-bold p-2 "> DETAILS </h1>
                         {
                             details.map((details, index) => {
                                 return (
@@ -267,12 +386,12 @@ const OrderDetails = ({ token }) => {
                                             <span className="order-label font-bold"> {index !== payment.length - 1 && index !== payment.length - 2 ? (
 
                                                 details
-                                            ) : index === payment.length - 2 && role === 'user' && order?.remainingAmount!==0 ? (
+                                            ) : index === payment.length - 2 && role === 'user' && order?.remainingAmount !== 0 ? (
 
                                                 <>
                                                     <label htmlFor="">Use Wallet</label> : $.{order?.customerId?.wallet || 0}
                                                 </>
-                                            ) : index === payment.length - 1 && role === 'user' && order?.remainingAmount!==0 ? (
+                                            ) : index === payment.length - 1 && role === 'user' && order?.remainingAmount !== 0 ? (
 
 
                                                 <div>
@@ -298,11 +417,19 @@ const OrderDetails = ({ token }) => {
                                                     </select>
                                                 </div>
 
-                                                    ) : order?.remainingAmount === 0 && index !== payment.length - 2 ? 
-                                                    <div className=" lg:ml-36 md:ml-16 ">
-                                                                <p className="bg-green-100 font-bold text-center">The payment for the order has been settled </p>
-                                                    </div>
-                                                    : null }</span>
+                                            ) : order?.remainingAmount === 0 && index !== payment.length - 2 ?
+                                                <div className=" lg:ml-36 md:ml-16 ">
+                                                    {
+                                                        (order?.status === 'confirmed' || order?.status === 'completed')  ?
+                                                            <p className="bg-green-100 font-bold text-center">The payment for the order has been settled </p>
+                                                            :
+                                                            role === 'user' ? (
+                                                                            <p className="bg-green-100 font-bold text-center">Your  refund has been credited to your wallet.</p>
+                                                            ):null
+                                                    }
+
+                                                </div>
+                                                : null}</span>
 
                                         </div>
                                         <div className="order-2">

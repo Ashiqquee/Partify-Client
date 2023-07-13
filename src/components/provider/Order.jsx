@@ -11,7 +11,7 @@ const Order = () => {
     
     const navigate = useNavigate();
 
-    const[modalOpen,setModal] = useState(true);
+    
 
 
     const handleView = (orderId) => {
@@ -158,7 +158,7 @@ const Order = () => {
     return (
         <>
 
-            <section className="container px-4 mx-auto">
+            <section className="container px-4 mx  ">
                 <div className="sm:flex sm:items-center sm:justify-between ">
                     <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-x-3">
@@ -169,7 +169,7 @@ const Order = () => {
                             <h2 className="btn btn-sm bg-indigo-500 text-white hover:text-black" onClick={() => window.my_modal_2.showModal()}>ADD ORDER +</h2>
                             <dialog id="my_modal_2" className="modal">
                                 <div method="dialog" className="modal-box">
-                                    <OrderForm onFormChange={handleFormChange} formData={formData} onSubmit={handleSubmit} />
+                                    <OrderForm onFormChange={handleFormChange} formData={formData} onSubmit={handleSubmit} action='add'/>
                                 </div>
                                 <form method="dialog" className="modal-backdrop">
                                     <button>close</button>
