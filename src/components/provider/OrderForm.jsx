@@ -4,8 +4,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../api/axios';
 
-const OrderForm = ({ formData, onFormChange, onSubmit, action, onIndicator,indicator }) => {
-    console.log(indicator);
+const OrderForm = ({ formData, onFormChange, onSubmit, action,  }) => {
+  
    
     const keralaDistricts = [
         "Alappuzha",
@@ -25,7 +25,7 @@ const OrderForm = ({ formData, onFormChange, onSubmit, action, onIndicator,indic
     ];
 
     const[services,setServices] = useState([]);
-    console.log(services);
+    
     const serviceOption = services.map((service) => ({
         label: service.serviceName,
         value: service._id,
@@ -47,9 +47,7 @@ const OrderForm = ({ formData, onFormChange, onSubmit, action, onIndicator,indic
         onFormChange(name, value);
     };
 
-    const handleIndicator = () => {
-        onIndicator()
-    }
+   
 
     useEffect(() =>{
         fetchServices()
@@ -259,8 +257,8 @@ const OrderForm = ({ formData, onFormChange, onSubmit, action, onIndicator,indic
                    </div>
                </div>
            </div>
-               <button type='submit' className='btn btn-sm mt-4 bg-indigo-500 text-white' onClick={handleIndicator}>
-                   {indicator ? <span className="loading loading-dots loading-md"></span> : 'Submit'}
+               <button type='submit' className='btn btn-sm mt-4 bg-indigo-500 text-white' >
+                    Submit
                </button>
            </form>
        </div>

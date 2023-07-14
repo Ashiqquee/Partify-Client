@@ -65,8 +65,9 @@ const AddPost = () => {
                },
            });
            if(response.status === 200){
-               navigate('/provider/profile');
                setLoading(false);
+               navigate('/provider/profile');
+               
            }
        } catch (error) {
         console.log(error);

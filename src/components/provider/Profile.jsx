@@ -19,6 +19,10 @@ const Profile = () => {
         coverPic:'',
     });
 
+    const deletePost = (postId) => {
+        setPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
+    };
+
     const providerPosts = async() => {
         try {
           const response = await axiosInstance.get('/provider/post',{
@@ -422,12 +426,12 @@ const Profile = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
 
-                    <div className="bg-white rounded-md shadow-md w-3/4">
+                    <div className="bg-white rounded-md shadow-md lg:w-3/4">
                         <div className="p-4  ">
                             <p className="mb-4">
                                 <span className="text-indigo-500 italic font-medium mr-1">Latest</span> posts
                             </p>
-                            <PostComponent posts={posts} role={'provider'}/>
+                            <PostComponent posts={posts} role={'provider'} onDeletePost={deletePost} />    
                         </div>
                     </div>
                 </div>

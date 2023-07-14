@@ -2,11 +2,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
 import { useState } from "react";
-
-const Post = ({ posts, role }) => {
+import axiosInstance from '../api/axios'
+import { useSelector } from "react-redux";
+import {toast} from 'react-toastify'
+const Post = ({ posts, onDeletePost, role }) => {
     const [showOptionIndex, setShowOptionIndex] = useState(null);
     const [showOption, setShowOption] = useState(false)
-
+    const token = useSelector(state => state.provider.token);
+    const[confirmAction,setConfirmAction] = useState(false);
     const handleOptions = (index) => {
         if (showOption && showOptionIndex === index) {
             setShowOption(false);
@@ -14,6 +17,33 @@ const Post = ({ posts, role }) => {
             setShowOption(true);
             setShowOptionIndex(index);
         }
+    };
+
+    const handleDelete = async (postId) => {
+        try {
+            const response = await axiosInstance.delete(`/provider/post/${postId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if (response.status === 200) {
+                setShowOption(false);
+                toast.success('Post Deleted');
+                handlePostState(postId);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    const handleConfirmation = () => {
+        setConfirmAction(true);
+    };
+
+    const handlePostState = (postId) => {
+        onDeletePost(postId);
     };
 
 
@@ -47,7 +77,7 @@ const Post = ({ posts, role }) => {
                                     {showOption && showOptionIndex === index ? 
                                     <>
                                         <ul className="py-2">
-                                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" >
+                                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleConfirmation}  >
                                                 Delete
                                             </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" >
                                                 Edit
@@ -61,6 +91,31 @@ const Post = ({ posts, role }) => {
                         </div>
 
                     </div>
+                    {confirmAction && (
+                        toast.info(
+                            <div>
+                                <p>Are you sure you want to proceed?</p>
+                                <button
+                                    className="btn-sm bg-indigo-500 text-white rounded-md"
+                                    onClick={() => handleDelete(post?._id)}
+                                >
+                                    Confirm
+                                </button>
+                                <button
+                                    className="btn-sm bg-red-500 ml-1 text-white rounded-md"
+                                    onClick={() => setConfirmAction(false)}
+                                >
+                                    Cancel
+                                </button>
+                            </div>,
+                            {
+                                toastId: '',
+                                autoClose: false,
+                                closeOnClick: true,
+                                draggable: false,
+                            }
+                        )
+                    )}
                     <div className="h-80  carousel carousel-vertical w-full">
                         {post?.postImages?.map((image, index) => {
                             return (

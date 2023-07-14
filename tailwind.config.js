@@ -8,6 +8,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['"SF Pro"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
+        pacifico: ['Pacifico', 'cursive'],
       },
     },
   },

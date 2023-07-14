@@ -15,9 +15,9 @@ const OrderDetails = ({ token }) => {
     const [role, setRole] = useState('');
     const [isChecked, setIsChecked] = useState(false);
     const { id } = useParams();
+    const [modalOpen,setModalOpen] = useState(true)
     const [selectedOption, setSelectedOption] = useState('');
     const [confirmAction,setConfirmAction] =  useState(false);
-    const[indicator,setIndicator] = useState(false)
     const [editFormData,setEditFormData] = useState({
         alternativePhone:'',
         eventDate:'',
@@ -32,13 +32,46 @@ const OrderDetails = ({ token }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-       
+
         try {
             const response = await axiosInstance.patch(`/provider/order/${order?._id}`,  editFormData , {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
+            
+            if(response?.status === 200){
+                setOrder((prevOrder) => ({
+                    ...prevOrder,
+                    alternativeNumber: editFormData.alternativePhone,
+                    eventDate: editFormData.eventDate,
+                    totalAmount: editFormData.amount,
+                    services: editFormData.services.map((service) => ({
+                        _id: service.value,
+                        serviceName: service.label,
+                    })),
+                    address: {
+                        ...prevOrder.address,
+                        city: editFormData.city,
+                        district: editFormData.district,
+                        zip: editFormData.zip,
+                        street: editFormData.street,
+                    },
+                }));
+                 setTimeout(() => {
+                    
+                    setModalOpen(false)
+                }, 50);
+                setTimeout(() => {
+                    setModalOpen(true)
+                }, 100);
+
+                
+
+                toast.success('Updated Succesfully')
+            
+            }
+
 
         } catch (error) {
             console.log(error);
@@ -52,9 +85,6 @@ const OrderDetails = ({ token }) => {
         }));
     };
 
-    const handleIndicator = () => {
-        setIndicator(true)
-    }
 
     const handleSelectChange = (event) => {
 
@@ -83,7 +113,8 @@ const OrderDetails = ({ token }) => {
             if (response.status === 200) {
                 setOrder(response.data.order);
                 const { alternativeNumber, eventDate, services, totalAmount, address } = response.data.order;
-                const serviceIds = services.map(service => ({ value: service._id }));
+                console.log(services);
+                const serviceIds = services.map(service => ({ value: service._id,serviceName:service.serviceName }));
                 setEditFormData({
                     alternativePhone:alternativeNumber,
                     eventDate: new Date(eventDate) ,
@@ -192,6 +223,29 @@ const OrderDetails = ({ token }) => {
         }
     }
 
+    const handleCompleted = async(orderId) => {
+        try {
+            let completed = 'yes';
+            const response = await axiosInstance.patch(`/provider/order/${orderId}`, { completed }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                setOrder((prevOrder) => ({
+                    ...prevOrder,
+                    status: 'completed',
+
+                }))
+                toast.success('Amount has been credited to your wallet');
+            }
+        } catch (error) {
+        
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         if (location.pathname.startsWith('/provider')) {
             setRole('provider');
@@ -209,22 +263,36 @@ const OrderDetails = ({ token }) => {
                 role === 'provider' ? 
                     <div className="flex w-full justify-between  font-semibold ">
                         
-                        <label htmlFor="my_modal_6" className="btn  btn-sm bg-indigo-500 text-white hover:text-black ml-2">Edit</label>
-                        <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+                        {order?.status === 'pending' ? (
+                            <label htmlFor="my_modal_6" className="btn btn-sm bg-indigo-500 text-white hover:text-black ml-2">
+                                Edit
+                            </label>
+                        ) : null}
+                        {modalOpen ?
+                            <>
+                            <input type="checkbox" id="my_modal_6" className="modal-toggle" />
                         <div className="modal">
                             <div className="modal-box">
                                 
-                                <OrderForm onFormChange={handleFormChange} formData={editFormData} onSubmit={handleSubmit} onIndicator={handleIndicator} indicator={indicator} action='edit' />
+                                <OrderForm onFormChange={handleFormChange} formData={editFormData} onSubmit={handleSubmit}  action='edit' />
                                 <div className="modal-action">
                                     <label htmlFor="my_modal_6" className="btn btn-sm">Close!</label>
                                 </div>
                             </div>
                         </div>
+                            </> : null}
                         {
-                            (order.status === 'pending' || order.status === 'confirmed') && (Date.now() < new Date(order.eventDate)  - 48 * 60 * 60 * 1000) ? 
+                            (order.status === 'pending' || order.status === 'confirmed') && (Date.now() < new Date(order?.eventDate)  - 48 * 60 * 60 * 1000) ? 
                                 <button className="btn btn-sm bg-red-500 text-white hover:text-black" onClick={handleConfirmation}>Cancel</button>
                                 :null
                         }
+
+                        {
+                            order.status === 'confirmed' && Date.now() > new Date(order?.eventDate).getTime() + 24 * 60 * 60 * 1000 ?
+                                <button className="btn btn-sm bg-green-700 text-white hover:text-black ml-1" onClick={() => handleCompleted(order?._id)}>Done</button>
+                                : null
+                        }
+
                     </div> 
                     : null
             }
@@ -260,7 +328,7 @@ const OrderDetails = ({ token }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 ">
-                <div className="order-1 bg-gray-100 m-4 p-1">
+                <div className="order-1 bg-gray-100 m-4 p-1 shadow-md">
                     <div>
                         <h1 className="flex justify-center font-bold p-2 "> DETAILS </h1>
                         {
@@ -270,7 +338,7 @@ const OrderDetails = ({ token }) => {
                                         <div className="order-1">
                                             <span className="order-label font-bold font-sans">{details}</span>
                                         </div>
-                                        <div className="order-2">
+                                        <div className="order-2 mx-5">
                                             {index === 0 ? (
                                                 <p className="font-medium font-sans">{order?._id}</p>
                                             ) : index === 1 ? (
@@ -294,7 +362,7 @@ const OrderDetails = ({ token }) => {
 
                     </div>
                 </div>
-                <div className="order-1 bg-gray-100 m-4 p-1">
+                <div className="order-1 bg-gray-100 m-4 p-1 shadow-md">
                     <div>
                         <h1 className="flex justify-center font-bold p-2">ORDER DETAILS </h1>
                         {
@@ -304,7 +372,7 @@ const OrderDetails = ({ token }) => {
                                         <div className="order-1">
                                             <span className="order-label font-bold">{details}</span>
                                         </div>
-                                        <div className="order-2">
+                                        <div className="order-2 mx-5">
                                             {index === 0 ? (
                                                 <p className="font-medium font-sans">{order?.providerId?.name}</p>
                                             ) : index === 1 ? (
@@ -346,7 +414,7 @@ const OrderDetails = ({ token }) => {
 
                     </div>
                 </div>
-                <div className="order-1 bg-gray-100 m-4 p-1">
+                <div className="order-1 bg-gray-100 m-4 p-1 shadow-md">
                     <div>
                         <h1 className="flex justify-center font-bold p-2">ADDRESS DETAILS </h1>
                         {
@@ -356,7 +424,7 @@ const OrderDetails = ({ token }) => {
                                         <div className="order-1">
                                             <span className="order-label font-bold">{address}</span>
                                         </div>
-                                        <div className="order-2">
+                                        <div className="order-2 mx-5">
                                             {index === 0 ? (
                                                 <p className="font-medium font-sans">{order?.address?.street}</p>
                                             ) : index === 1 ? (
@@ -375,7 +443,7 @@ const OrderDetails = ({ token }) => {
 
                     </div>
                 </div>
-                <div className="order-1 bg-gray-100 m-4 p-1">
+                <div className="order-1 bg-gray-100 m-4 p-1 shadow-md">
                     <div>
                         <h1 className="flex justify-center font-bold p-2">PAYMENT DETAILS </h1>
                         {
@@ -432,7 +500,7 @@ const OrderDetails = ({ token }) => {
                                                 : null}</span>
 
                                         </div>
-                                        <div className="order-2">
+                                        <div className="order-2 mx-5">
                                             {index === 0 ? (
                                                 <p className="font-medium font-sans">{order?.totalAmount}</p>
                                             ) : index === 1 ? (
