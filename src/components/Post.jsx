@@ -1,15 +1,21 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faComment, faEllipsisVertical, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useState } from "react";
 import axiosInstance from '../api/axios'
 import { useSelector } from "react-redux";
 import {toast} from 'react-toastify'
-const Post = ({ posts, onDeletePost, role }) => {
+import {useNavigate} from 'react-router-dom'
+
+const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
     const [showOptionIndex, setShowOptionIndex] = useState(null);
     const [showOption, setShowOption] = useState(false)
     const token = useSelector(state => state.provider.token);
+    const userToken = useSelector(state => state.user.token);
+    const userId = useSelector(state => state.user.id);
+    const navigate = useNavigate()
     const[confirmAction,setConfirmAction] = useState(false);
+    const[liked,setLiked] = useState(false);
     const handleOptions = (index) => {
         if (showOption && showOptionIndex === index) {
             setShowOption(false);
@@ -19,12 +25,12 @@ const Post = ({ posts, onDeletePost, role }) => {
         }
     };
 
+    console.log(userToken);
     const handleDelete = async (postId) => {
         try {
             const response = await axiosInstance.delete(`/provider/post/${postId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
                 },
             });
             if (response.status === 200) {
@@ -37,6 +43,40 @@ const Post = ({ posts, onDeletePost, role }) => {
         }
     };
 
+    const handleLike = async(postId) => {
+        try {
+            if (!userToken) return navigate('/login');
+            setLiked(!liked)
+            let like = 'yes';
+            const response = await axiosInstance.patch(`/post/${postId}`, { like }, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            });
+            if (response.status === 200) {
+                onLike(postId)
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleUnLike = async(postId) => {
+        if (!userToken) return navigate('/login');
+        setLiked(!liked)
+        
+        let like = 'no';
+        const response = await axiosInstance.patch(`/post/${postId}`, { like }, {
+            headers: {
+                Authorization: `Bearer ${userToken}`,
+            },
+        });
+        if (response.status === 200) {
+            onUnlike(postId)
+        }
+
+    }
 
     const handleConfirmation = () => {
         setConfirmAction(true);
@@ -45,6 +85,105 @@ const Post = ({ posts, onDeletePost, role }) => {
     const handlePostState = (postId) => {
         onDeletePost(postId);
     };
+
+
+
+    const [formData, setFormData] = useState({
+        _id:'',
+        caption: '',
+        tagline: '',
+        file: []
+    });
+    const [loading, setLoading] = useState(false);
+    const handleFileChange = (event) => {
+        const files = Array.from(event.target.files);
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            file: files
+        }));
+
+    };
+
+    const validateFormData = () => {
+        const { caption, tagline, file } = formData;
+        const errors = {};
+
+        if (caption.trim().length < 1) {
+            errors.phone = 'Caption needed';
+        }
+
+        if (tagline.trim().length < 1) {
+            errors.password = 'add some tags';
+        }
+
+        if (file.length < 1) {
+            errors.file = "Add atleast 1 image"
+        }
+
+
+        return errors;
+    };
+
+    const handleEditPost = (postId) => {
+        const post = posts?.find((post) => post._id === postId);
+        setFormData({
+            _id:post?._id,
+            caption:post?.caption,
+            tagline:post?.tagline,
+            file:post?.postImages
+        })
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const errors = validateFormData();
+
+        if (Object.keys(errors).length === 0) {
+            setLoading(true);
+            try {
+                const form = new FormData();
+                form.append('caption', formData.caption)
+                form.append('tagline', formData.tagline)
+                formData.file.forEach((file) => {
+                    form.append('file', file);
+                });
+
+                const response = await axiosInstance.post('/provider/post', form, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                if (response.status === 200) {
+                    setLoading(false);
+                    navigate('/provider/profile');
+
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        } else if (Object.keys(errors).length === 3) {
+            toast.error('Enter all fields')
+        } else if (errors.caption) {
+            toast.error(errors.caption)
+        } else if (errors.tagline) {
+            toast.error(errors.tagline)
+        } else if (errors.file) {
+            toast.error(errors.file)
+        }
+    }
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+
+
+    }
+
 
 
     return (
@@ -79,9 +218,86 @@ const Post = ({ posts, onDeletePost, role }) => {
                                         <ul className="py-2">
                                             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleConfirmation}  >
                                                 Delete
-                                            </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" >
+                                            </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() =>handleEditPost(post?._id) || window.my_modal_2.showModal()}>
                                                 Edit
                                             </li>
+                                            <dialog id="my_modal_2" className="modal">
+                                                <div method="dialog" className="modal-box">
+                                                    <form className="flex justify-center p-4  w-full" onSubmit={handleSubmit}>
+                                                        <div className="border-b border-gray-900/10 pb-12 ">
+                                                            <h2 className="text-base font-black leading-7 text-gray-900">Add New Post</h2>
+                                                            <p className="mt-1 text-sm leading-6 text-gray-600">Publishing new posts enhances your ability to attract and engage with users.</p>
+
+                                                            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                                                <div className="col-span-full">
+                                                                    <label htmlFor="about" className="block font-bold text-sm  leading-6 text-gray-900">Caption</label>
+                                                                    <div className="mt-2">
+                                                                        <textarea id="about" value={formData.caption} onChange={handleChange} name="caption" rows="3" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                                                                    </div>
+                                                                    <p className="mt-3 text-sm leading-6 text-gray-600">Insights shared in the post</p>
+                                                                </div>
+                                                                <div className="col-span-full">
+                                                                    <label htmlFor="about" className="block font-bold text-sm  leading-6 text-gray-900">Tagline</label>
+                                                                    <div className="mt-2">
+                                                                        <textarea id="about" placeholder="eg: #latest #new" name="tagline" value={formData.tagline} onChange={handleChange} rows="3" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                                                                    </div>
+                                                                    <p className="mt-3 text-sm leading-6 text-gray-600">Write some Tagline.</p>
+                                                                </div>
+
+
+
+
+                                                                <div className="col-span-full">
+                                                                    <label htmlFor="cover-photo" className="block text-sm font-bold leading-6 text-gray-900">Cover photo</label>
+                                                                    <div className="mt-2 flex  rounded-lg border border-dashed border-gray-900/25 px-6 py-4">
+                                                                        <div className="flex">
+                                                                            {formData.file.length > 0 && (
+                                                                                <ul className="flex list-none p-0">
+                                                                                    {formData.file.map((file, index) => (
+                                                                                        <li key={index} className="mr-4">
+                                                                                            {typeof file === 'string' ? (
+                                                                                                <img
+                                                                                                    src={file}
+                                                                                                    alt={`Image ${index + 1}`}
+                                                                                                    className="w-24 h-28 mt-1"
+                                                                                                />
+                                                                                            ) : (
+                                                                                                <img
+                                                                                                    src={URL.createObjectURL(file)}
+                                                                                                    alt={`Image ${index + 1}`}
+                                                                                                        className="w-24 h-28 mt-1"
+                                                                                                />
+                                                                                            )}
+                                                                                            <FontAwesomeIcon icon={faTrash}
+                                                                                                
+                                                                                            />
+                                                                                        </li>
+                                                                                    ))}
+                                                                                </ul>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                 
+
+                                                                </div>
+                                                                {
+                                                                    loading ? <button type="submit" className="loading loading-dots loading-md   font-medium text-center text-white bg-indigo-500
+                                  rounded-lg transition duration-200 hover:bg-indigo-600 ease"></button>
+                                                                        : <button type="submit" className="w-full btn-sm  font-medium text-center text-white bg-indigo-500
+                                  rounded-lg transition duration-200 hover:bg-indigo-600 ease">Add</button>
+                                                                }
+
+
+
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <form method="dialog" className="modal-backdrop">
+                                                    <button>close</button>
+                                                </form>
+                                            </dialog>
+                                            
                                         </ul>
                                     </>
                                     : ''}
@@ -130,18 +346,24 @@ const Post = ({ posts, onDeletePost, role }) => {
                         })}
                     </div>
                     <div className="post-content px-4">
-                        <div className="reaction-wrapper flex items-center mt-0">
-                            <FontAwesomeIcon
-                                icon={faHeart}
-                                className="h-6"
-                                style={{ color: "#c1c8c9" }}
-                            />
+                        {role === 'user' ? <div className="reaction-wrapper flex items-center mt-0">
+                            {post?.likes?.includes(userId) ? 
+                                <FontAwesomeIcon
+                                    icon={faHeart}
+                                    className={`h-6 text-indigo-500  `}
+                                    onClick={() =>   handleUnLike(post?._id)}
+                                /> : <FontAwesomeIcon
+                                    icon={faHeart}
+                                    className={`h-6 text-indigo-300`}
+                                    onClick={() =>  handleLike(post?._id)}
+                                />
+                            }
                             <FontAwesomeIcon
                                 icon={faComment}
-                                className="h-6 ml-2"
-                                style={{ color: "#c1c8c9" }}
+                                className="h-6  ml-2 text-indigo-300"
+                                
                             />
-                        </div>
+                        </div> : null}
                         <p className="likes font-bold">
                             {post.likes?.length || 0} Likes
                         </p>

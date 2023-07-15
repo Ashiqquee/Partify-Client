@@ -52,7 +52,8 @@ const Sidebar = () => {
                 <div >
 
                     <div className="mt-5 ml-5">
-                       
+                        <h1 className="font-sans font-black text-indigo-500 text-3xl ">PARTIFY</h1>
+                        <p className="text-sm font-semibold pb-6">parties simplified</p>
 
                     </div>
                     <NavItem icon={faHouse} name={"HOME"} path={'/'} />
@@ -100,9 +101,7 @@ const Sidebar = () => {
                                 </svg>
                             </button>
                         </div>
-                        <div className="h-9 text-black">
-                            <h1 className="px-3 text-lg font-black antialiased" >PARTIFY</h1>
-                        </div>
+                       
                         <div>
 
                         </div>

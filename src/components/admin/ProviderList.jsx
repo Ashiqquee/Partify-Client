@@ -15,7 +15,7 @@ const ProviderList = () => {
 
     const [providerList, setProviderList] = useState([]);
 
-
+    const [providerAction,setProviderAction] = useState({});
 
     const getUserData = async () => {
         try {
@@ -27,7 +27,7 @@ const ProviderList = () => {
             });
            
             setProviderList(response.data.providerData);
-            console.log(response.data.providerData);
+            
 
             setLoading(false);
         } catch (error) {
@@ -128,18 +128,23 @@ const ProviderList = () => {
         }
     }
 
-    const handleConfirmation = () => {
+    const handleConfirmation = (id) => {
+        console.log(id);
+        const provider = providerList.find((provider) => provider._id === id);
+        console.log(provider);
+        setProviderAction(provider)
         setConfirmAction(true);
     };
 
-    const handleConfirmAction = (id, action, adminConfirmed) => {
-        if(!adminConfirmed){
-            handleTBC(id)
+    const handleConfirmAction = () => {
+       
+        if(!providerAction.adminConfirmed){
+            handleTBC(providerAction._id)
         }
-        else if (action === true) {
-            handleUnBlock(id)
+        else if (providerAction.isBanned === true) {
+            handleUnBlock(providerAction._id)
         } else {
-            handleBlock(id)
+            handleBlock(providerAction._id)
         }
     };
 
@@ -251,14 +256,14 @@ const ProviderList = () => {
                                                         {obj.adminConfirmed ? (
                                                             obj.isBanned ? (
                                                                 <button
-                                                                    onClick={handleConfirmation}
+                                                                    onClick={() => handleConfirmation(obj._id)}
                                                                     className="btn-sm bg-green-900 text-white rounded shadow hover:bg-green-950"
                                                                 >
                                                                     access
                                                                 </button>
                                                             ) : (
                                                                 <button
-                                                                    onClick={handleConfirmation}
+                                                                        onClick={() => handleConfirmation(obj._id)}
                                                                     className="btn-sm bg-red-500 text-white rounded shadow hover:bg-red-900"
                                                                 >
                                                                     block
@@ -268,43 +273,45 @@ const ProviderList = () => {
                                                             
                                                             
                                                                     <button
-                                                                        onClick={handleConfirmation}
+                                                                    onClick={() => handleConfirmation(obj._id)}
                                                                         className="btn-sm bg-indigo-500 text-white rounded shadow hover:bg-indigo-900"
                                                                     >
                                                                         Confirm
                                                                     </button>
                                                                
                                                         )}
+                                                        {confirmAction && (
+                                                            toast.info(
+                                                                <div>
+                                                                    <p>Are you sure you want to proceed?</p>
+                                                                    <button
+                                                                        className="btn-sm bg-indigo-500 text-white rounded-md"
+                                                                        onClick={() => handleConfirmAction()}
+                                                                    >
+                                                                        Confirm
+                                                                    </button>
+                                                                    <button
+                                                                        className="btn-sm bg-red-500 ml-1 text-white rounded-md"
+                                                                        onClick={() => setConfirmAction(false)}
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                </div>,
+                                                                {
+                                                                    toastId: '',
+                                                                    autoClose: false,
+                                                                    closeOnClick: true,
+                                                                    draggable: false,
+                                                                }
+                                                            )
+                                                        )}
                                                     <div>
-                                                             {confirmAction && (
-                                                                    toast.info(
-                                                                        <div>
-                                                                            <p>Are you sure you want to proceed?</p>
-                                                                            <button
-                                                                                className="btn-sm bg-indigo-500 text-white rounded-md"
-                                                                                onClick={() => handleConfirmAction(obj._id, obj.isBanned,obj.adminConfirmed)}
-                                                                            >
-                                                                                Confirm
-                                                                            </button>
-                                                                            <button
-                                                                                className="btn-sm bg-red-500 ml-1 text-white rounded-md"
-                                                                                onClick={() => setConfirmAction(false)}
-                                                                            >
-                                                                                Cancel
-                                                                            </button>
-                                                                        </div>,
-                                                                        {
-                                                                            toastId: '',
-                                                                            autoClose: false,
-                                                                            closeOnClick: true,
-                                                                            draggable: false,
-                                                                        }
-                                                                    )
-                                                                )}
+                                                           
                                                                 
                                                             </div>
                                                 </td>
                                             </tr>
+                                            
                                         ))}
                                     </tbody>
                                 </>

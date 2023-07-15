@@ -27,11 +27,11 @@ const AddPost = () => {
         const { caption, tagline,file } = formData;
         const errors = {};
 
-        if (caption.trim().length < 5) {
+        if (caption.trim().length < 1) {
             errors.phone = 'Caption needed';
         }
 
-        if (tagline.trim().length < 6) {
+        if (tagline.trim().length < 1) {
             errors.password = 'add some tags';
         }
 

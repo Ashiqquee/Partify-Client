@@ -454,12 +454,12 @@ const OrderDetails = ({ token }) => {
                                             <span className="order-label font-bold"> {index !== payment.length - 1 && index !== payment.length - 2 ? (
 
                                                 details
-                                            ) : index === payment.length - 2 && role === 'user' && order?.remainingAmount !== 0 ? (
+                                            ) : index === payment.length - 2 && role === 'user' && order?.remainingAmount !== 0 && (order?.status === 'pending' || order?.status === 'confirmed') ? (
 
                                                 <>
                                                     <label htmlFor="">Use Wallet</label> : $.{order?.customerId?.wallet || 0}
                                                 </>
-                                            ) : index === payment.length - 1 && role === 'user' && order?.remainingAmount !== 0 ? (
+                                                ) : index === payment.length - 1 && role === 'user' && order?.remainingAmount !== 0 && (order?.status === 'pending' || order?.status === 'confirmed') ? (
 
 
                                                 <div>
@@ -488,7 +488,7 @@ const OrderDetails = ({ token }) => {
                                             ) : order?.remainingAmount === 0 && index !== payment.length - 2 ?
                                                 <div className=" lg:ml-36 md:ml-16 ">
                                                     {
-                                                        (order?.status === 'confirmed' || order?.status === 'completed')  ?
+                                                        (order?.status === 'confirmed' || order?.status === 'completed' )  ?
                                                             <p className="bg-green-100 font-bold text-center">The payment for the order has been settled </p>
                                                             :
                                                             role === 'user' ? (
@@ -511,7 +511,7 @@ const OrderDetails = ({ token }) => {
                                                 <p className="font-medium font-sans">{order?.walletAmount || 0}</p>
                                             ) : index === 4 ? (
                                                 <p className="font-medium font-sans">{order?.remainingAmount}</p>
-                                            ) : index === 5 && order?.remainingAmount !== 0 && role === 'user' ? (
+                                                            ) : index === 5 && order?.remainingAmount !== 0 && role === 'user' && (order?.status === 'pending' || order?.status === 'confirmed') ? (
                                                 <input
                                                     checked={isChecked}
                                                     onChange={handleCheckboxChange}
@@ -520,7 +520,7 @@ const OrderDetails = ({ token }) => {
                                                 />
                                             ) : null}
 
-                                            {index === 6 && order?.remainingAmount !== 0 && role === 'user' ? (
+                                            {index === 6 && order?.remainingAmount !== 0 && role === 'user' && (order?.status === 'pending' || order?.status === 'confirmed') ?  (
                                                 <button
                                                     className="btn btn-sm bg-indigo-500 text-white hover:text-black"
                                                     onClick={() => handlePayment(order?._id)}

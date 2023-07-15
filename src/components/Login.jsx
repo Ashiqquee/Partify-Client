@@ -63,9 +63,10 @@ const Login = ({url,name}) => {
             const name = response?.data?.name;
             const token = response?.data?.token;
             const role = response?.data?.role;
-            console.log(role,name,token);
+            const id = response?.data?.id;
+            console.log(role,name,token,id);
             if(role==='user'){
-               dispatch(userLogin({ name, token, role }));
+               dispatch(userLogin({ name, token, role,id }));
                navigate('/')
             } else if(role === 'admin'){
                
