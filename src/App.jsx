@@ -24,6 +24,7 @@ import PaymentStatus from "./pages/user/paymentStatus";
 import AdminOrders from "./pages/admin/Order";
 import AdminOrderDetails from "./pages/admin/OrderDetails";
 import ProviderChat from './pages/provider/Chat'
+import UserFAQ from './pages/user/FAQ'
 
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
@@ -46,6 +47,7 @@ const App = () => {
         <Route path="/order/:id" element={userAuth ? <SingleOrder /> : <Navigate to='/login' />}></Route>
         <Route path="/chat" element={userAuth ? <Chat /> : <Navigate to='/login' />}></Route>
         <Route path="/payment/:status" element={userAuth ? <PaymentStatus /> : <Navigate to='/login' />}></Route>
+        <Route path="/faq" element={<UserFAQ />}></Route>
 
 
 

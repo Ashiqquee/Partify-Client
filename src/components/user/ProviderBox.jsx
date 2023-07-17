@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
 import useWidthSize from "../../utils/useWidthSize";
-
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 const ProviderBox = () => {
-
+    const {token} = useSelector(state => state.user)
     const[providers,setProviders] = useState([]);
-    const size = useWidthSize()
+    const size = useWidthSize();
+    const navigate = useNavigate()
     const fetchProviders = async() => {
         try {
             const response =await  axiosInstance.get('/providersList');
@@ -22,7 +24,25 @@ const ProviderBox = () => {
 
     useEffect(() => {
         fetchProviders()
-    },[])
+    },[]);
+
+    const handleMessage = async(providerId) => {
+        try {
+            const response = await axiosInstance.post('/chat',{providerId},{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                const chatId = response?.data?.chat._id;
+
+                navigate(`/chat?id=${chatId}`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
 
     return(
@@ -56,7 +76,7 @@ const ProviderBox = () => {
                                <div className="flex mt-3 -mx-2 ">
                           
 
-                                   <p className="mx-2 text-white d btn btn-sm bg-indigo-500  group-hover:text-indigo-500 group-hover:bg-white font-bold ">
+                                   <p className="mx-2 text-white d btn btn-sm bg-indigo-500  group-hover:text-indigo-500 group-hover:bg-white font-bold " onClick={() => handleMessage(provider?._id)}>
                                     MESSAGE
                                    </p>
 

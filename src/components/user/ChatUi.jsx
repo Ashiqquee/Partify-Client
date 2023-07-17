@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import axiosInstace from '../../api/axios'
 import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
+import { useLocation } from 'react-router-dom';
+
+
 const ENDPOINT = "http://localhost:4000";
 
 let socket;
@@ -13,7 +16,12 @@ const ChatUi = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [selectedChat, setSelectedChat] = useState(null);
-    const bottomRef = useRef(null)
+    const [initalImage,setInitialImage] = useState(null);
+    const bottomRef = useRef(null);
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const queryChatId = queryParams.get('id');
 
     const fetchUserChat = async () => {
         try {
@@ -22,10 +30,9 @@ const ChatUi = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response.data);
             const { chats } = response.data;
-            console.log('kjk');
-
+          
+            setInitialImage(chats[0]?.userId?.image);
             setAllChat(chats)
         } catch (error) {
             console.log(error);
@@ -49,8 +56,9 @@ const ChatUi = () => {
         event.preventDefault();
         const toGetProfile = messages.find((message) => message.senderId.image);
 
-        const image = toGetProfile?.senderId?.image;
-        const addedMessage = [...messages, { content: newMessage, senderId: { _id: userId, image: image } }];
+        const image = toGetProfile?.senderId?.image || initalImage;
+        console.log(image);
+        const addedMessage = [...messages, { content: newMessage, senderId: { _id: userId, image: image }, createdAt: Date.now() }];
         setMessages(addedMessage)
 
         const content = newMessage;
@@ -60,8 +68,8 @@ const ChatUi = () => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        response.data.message.image = image;
-        console.log(response.data.message);
+        response.data.message.image = image || initalImage;
+        console.log(response.data.message.image);
         socket.emit('new message', response?.data?.message)
         setNewMessage('');
 
@@ -74,7 +82,7 @@ const ChatUi = () => {
 
     const fetchChat = async (chatId) => {
         try {
-            if (!chatId) return null
+            if (!chatId) return null;
             const response = await axiosInstace.get(`/message/${chatId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -92,7 +100,8 @@ const ChatUi = () => {
 
     useEffect(() => {
         fetchUserChat();
-        fetchChat();
+        fetchChat(queryChatId);
+        setSelectedChat(queryChatId)
     }, []);
 
     useEffect(() => {
@@ -146,8 +155,8 @@ const ChatUi = () => {
                         <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
                             <div className="flex flex-col h-full overflow-x-auto scrollbar-hide mb-4">
                                 <div className="flex flex-col h-full">
-                                    {/* Messages loop */}
-                                    {
+                             
+                                    {selectedChat ?
                                         messages.map((message) => (
                                             <div key={message._id} className="grid grid-cols-12 gap-y-2">
                                                 {message?.senderId?._id?.toString() === userId || message?.senderId === userId ? (
@@ -163,7 +172,11 @@ const ChatUi = () => {
                                                                 </div>
                                                                 <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
                                                                     <div>{message.content}</div>
-                                                                    <small className="text-xs text-gray-400">Message Time</small>
+                                                                    <small className="text-xs text-gray-400">{new Date(message?.createdAt).toLocaleString('en-US', {
+                                                                        hour: 'numeric',
+                                                                        minute: 'numeric',
+                                                                        hour12: true
+                                                                    })}</small>
                                                                 </div>
                                                             </div>
                                                         </>
@@ -180,45 +193,56 @@ const ChatUi = () => {
                                                             </div>
                                                             <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                                                                 <div>{message.content}</div>
-                                                                <small>Message Time</small>
+                                                                    <small>{new Date(message?.createdAt).toLocaleString('en-US', {
+                                                                        hour: 'numeric',
+                                                                        minute: 'numeric',
+                                                                        hour12: true
+                                                                    })}</small>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 )}
                                                 <div ref={bottomRef}/>
                                             </div>
-                                        ))}
-                                    {/* End of messages loop */}
+                                        )) : 
+                                        <div className=' w-full h-full flex justify-center '>
+                                            <h1 className='mt-72 font-bold  text-2xl'>Select Any Chats</h1>
+                                        </div>
+                                        }
+                                    
                                 </div>
 
                             </div>
 
-                            <form onSubmit={handleSubmit}>
-                                <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
-                                    <div className="flex-grow ml-4">
-                                        <div className="relative w-full">
-                                            <input
-                                                type="text"
-                                                className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
-                                                placeholder="Type your message..."
-                                                value={newMessage}
-                                                onChange={handleNewMessage}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="ml-4">
-                                        <button
-                                            type="submit"
-                                            className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
-                                        >
-                                            <span>Send</span>
-                                            <span className="ml-2">
+                            {
+                                selectedChat ? 
+                                    <form onSubmit={handleSubmit}>
+                                        <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+                                            <div className="flex-grow ml-4">
+                                                <div className="relative w-full">
+                                                    <input
+                                                        type="text"
+                                                        className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                                                        placeholder="Type your message..."
+                                                        value={newMessage}
+                                                        onChange={handleNewMessage}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="ml-4">
+                                                <button
+                                                    type="submit"
+                                                    className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
+                                                >
+                                                    <span>Send</span>
+                                                    <span className="ml-2">
 
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form> : null
+                            }
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
     const token = useSelector(state => state.provider.token);
     const userToken = useSelector(state => state.user.token);
     const userId = useSelector(state => state.user.id);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const[confirmAction,setConfirmAction] = useState(false);
     const[liked,setLiked] = useState(false);
     const handleOptions = (index) => {
