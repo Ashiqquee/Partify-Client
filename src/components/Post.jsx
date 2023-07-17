@@ -207,10 +207,11 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
                         </div>
                         <div className="relative">
                        
-                            <FontAwesomeIcon
-                                icon={faEllipsisVertical}
-                                onClick={() => handleOptions(index)}
-                            />
+                           {role === 'provider' ?
+                                <FontAwesomeIcon
+                                    icon={faEllipsisVertical}
+                                    onClick={() => handleOptions(index)}
+                                /> : null}
                             <div className="absolute z-10 right-0 mt-2 w-40 bg-white rounded shadow-lg">
                                  
                                     {showOption && showOptionIndex === index ? 

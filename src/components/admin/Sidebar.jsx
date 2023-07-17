@@ -53,8 +53,9 @@ const Sidebar = () => {
                 </div>
                 <div >
 
-                    <div className="bg-gray-200">
-                        <img src="https://res.cloudinary.com/dq0tq9rf5/image/upload/v1687756276/partifylogo_rbt1jn.jpg" style={{height:'4rem',width:'8rem'}} alt="Logo" />
+                    <div className="mt-5 ml-5">
+                        <h1 className="font-sans font-black text-indigo-500 text-3xl ">PARTIFY</h1>
+                        <p className="text-sm font-semibold pb-6">parties simplified</p>
 
                     </div>
 

@@ -103,6 +103,7 @@ const OrderDetails = ({ token }) => {
 
     const fetchOrder = async (api, navigation) => {
         try {
+            console.log(token);
             const response = await axiosInstance.get(api + id, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -253,6 +254,9 @@ const OrderDetails = ({ token }) => {
         } else if (location.pathname.startsWith('/order')) {
             setRole('user');
             fetchOrder('/order/', '/profile');
+        }else {
+            setRole('admin');
+            fetchOrder('/admin/order/', '/admin/orders'); 
         }
 
     }, [])

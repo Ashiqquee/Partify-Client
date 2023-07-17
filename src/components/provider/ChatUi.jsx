@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axiosInstace from '../../api/axios'
 import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
@@ -7,83 +7,91 @@ const ENDPOINT = "http://localhost:4000";
 let socket;
 
 const ChatUi = () => {
-    const token = useSelector(state => state.user.token);
-    const userId = useSelector(state => state.user.id)
+    const token = useSelector(state => state.provider.token);
+    const providerId = useSelector(state => state.provider.id);
     const [allChat, setAllChat] = useState([]);
     const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState('');
+    const[newMessage,setNewMessage] = useState('')
     const [selectedChat, setSelectedChat] = useState(null);
-    const bottomRef = useRef(null)
 
-    const fetchUserChat = async () => {
+
+
+    const fetchProviderChat = async () => {
         try {
-            const response = await axiosInstace.get('/chat', {
+            const response = await axiosInstace.get('/provider/chat', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response.data);
+
             const { chats } = response.data;
-            console.log('kjk');
 
             setAllChat(chats)
+
         } catch (error) {
             console.log(error);
         }
     };
 
+    useEffect(() => {
+        console.log("Connecting to Socket.io...");
+        socket = io(ENDPOINT);
+        socket.emit('setup', providerId);
+        console.log(providerId);
+        socket.on('connection');
+
+    }, []);
+
     const handleProvider = (chatId) => {
         setSelectedChat(chatId)
         fetchChat(chatId);
-    }
-    useEffect(() => {
-        socket = io(ENDPOINT);
-        socket.emit('setup', userId);
-        socket.on('connection');
-        return () => {
-            socket.disconnect();
-        };
-
-    }, []);
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const toGetProfile = messages.find((message) => message.senderId.image);
-
-        const image = toGetProfile?.senderId?.image;
-        const addedMessage = [...messages, { content: newMessage, senderId: { _id: userId, image: image } }];
-        setMessages(addedMessage)
-
-        const content = newMessage;
-        const chatId = selectedChat;
-        const response = await axiosInstace.post('/message', { content, chatId }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        response.data.message.image = image;
-        console.log(response.data.message);
-        socket.emit('new message', response?.data?.message)
-        setNewMessage('');
-
     }
 
     const handleNewMessage = (event) => {
         let message = event.target.value;
         setNewMessage(message);
+        
     };
+
+    const handleSubmit = async(event) => {
+      try {
+          event.preventDefault();
+          const toGetProfile = messages.find((message) => message.senderId.profilePic);
+          const profilePic = toGetProfile?.senderId?.profilePic;
+          const addedMessage = [...messages, { content: newMessage, senderId: { _id: providerId, profilePic: profilePic } }];
+          setMessages(addedMessage)
+
+          const content = newMessage;
+          const chatId = selectedChat;
+          const response = await axiosInstace.post('/provider/message', { content, chatId }, {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          });
+          response.data.message.profilePic = profilePic;
+          socket.emit('new message', response?.data?.message)
+          setNewMessage('');
+      } catch (error) {
+        console.log(error);
+      }
+
+
+    }
+
+    
 
     const fetchChat = async (chatId) => {
         try {
-            if (!chatId) return null
-            const response = await axiosInstace.get(`/message/${chatId}`, {
+
+            const response = await axiosInstace.get(`/provider/message/${chatId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
 
             const { messages } = response.data;
-            setMessages(messages);
-            socket.emit('join chat', chatId);
+            setMessages(messages)
+            socket.emit('join chat', chatId)
 
         } catch (error) {
             console.log(error);
@@ -91,21 +99,19 @@ const ChatUi = () => {
     }
 
     useEffect(() => {
-        fetchUserChat();
+        fetchProviderChat();
         fetchChat();
+
     }, []);
 
     useEffect(() => {
         socket.on('messageResponse', (message) => {
-
-            if (message.senderId !== userId && selectedChat === message?.chatId?.toString()) {
+            if (message.senderId !== providerId && selectedChat === message?.chatId?.toString()) {
                 const addedMessage = [...messages, message];
                 setMessages(addedMessage);
             }
 
         })
-
-        bottomRef.current?.scrollIntoView({behaviour:'smooth'})
     })
 
 
@@ -117,22 +123,22 @@ const ChatUi = () => {
                         <div className="font-monoton text-2xl cursor-pointer flex items-center bg-white">
 
 
-                            Providers
+                            Users
 
                         </div>
                         {allChat.map((chat) => {
                             return (
                                 <>
-                                    <div key={allChat?._id} className={`flex  items-cente border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg ${selectedChat === chat._id ? 'bg-indigo-300' : 'bg-slate-100'}  `} onClick={() => handleProvider(chat?._id)}>
+                                    <div className={`flex  items-cente border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg ${selectedChat===chat._id ? 'bg-indigo-300' : 'bg-slate-100'}  `} onClick={() => handleProvider(chat?._id)}>
                                         <div className="h-12 w-12 rounded-full border overflow-hidden">
                                             <img
-                                                src={chat.providerId.profilePic}
+                                                src={chat.userId.image }
                                                 alt="Avatar"
                                                 className="h-full w-full"
                                             />
                                         </div>
-                                        <div className="text-sm font-semibold ml-3 mt-3">
-                                            {chat.providerId.name}
+                                        <div className="text-sm font-semibold mt-3 ml-2">
+                                            {chat.userId.name}
                                         </div>
 
                                     </div>
@@ -144,19 +150,19 @@ const ChatUi = () => {
                     </div>
                     <div className="flex flex-col flex-auto h-full p-6 w-full">
                         <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
-                            <div className="flex flex-col h-full overflow-x-auto scrollbar-hide mb-4">
+                            <div className="flex flex-col h-full overflow-x-auto mb-4">
                                 <div className="flex flex-col h-full">
                                     {/* Messages loop */}
                                     {
                                         messages.map((message) => (
                                             <div key={message._id} className="grid grid-cols-12 gap-y-2">
-                                                {message?.senderId?._id?.toString() === userId || message?.senderId === userId ? (
+                                                {message?.senderId?._id?.toString() === providerId || message?.senderId === providerId ? (
                                                     <div className="col-start-7 col-end-13 p-3 rounded-lg">
                                                         <>
                                                             <div className="flex items-center justify-start flex-row-reverse mt-1">
                                                                 <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                                                     <img
-                                                                        src={message.senderId.image}
+                                                                        src={message?.senderId?.profilePic}
                                                                         alt="Avatar"
                                                                         className="h-full w-full rounded-full"
                                                                     />
@@ -169,11 +175,11 @@ const ChatUi = () => {
                                                         </>
                                                     </div>
                                                 ) : (
-                                                    <div key={message._id} className="col-start-1 col-end-7 p-3 rounded-lg">
+                                                    <div className="col-start-1 col-end-7 p-3 rounded-lg">
                                                         <div className="flex flex-row items-center">
                                                             <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                                                 <img
-                                                                    src={message?.senderId?.profilePic || message?.profilePic}
+                                                                    src={message.senderId.image || message.image}
                                                                     alt="Avatar"
                                                                     className="h-full w-full rounded-full"
                                                                 />
@@ -185,7 +191,6 @@ const ChatUi = () => {
                                                         </div>
                                                     </div>
                                                 )}
-                                                <div ref={bottomRef}/>
                                             </div>
                                         ))}
                                     {/* End of messages loop */}

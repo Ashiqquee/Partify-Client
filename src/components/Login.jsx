@@ -73,7 +73,7 @@ const Login = ({url,name}) => {
                dispatch(adminLogin({ name, token, role }));
                navigate('/admin')
             } else if(role === 'provider'){
-               dispatch(providerLogin({name,token,role}));
+               dispatch(providerLogin({ name, token, role, id }));
                navigate('/provider')
             }
          }
