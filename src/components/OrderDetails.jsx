@@ -332,7 +332,7 @@ const OrderDetails = ({ token }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 ">
-                <div className="order-1 bg-gray-100 m-4 p-1 shadow-md">
+                <div className="order-1 bg-gray-200 m-4 p-1 shadow-md">
                     <div>
                         <h1 className="flex justify-center font-bold p-2 "> DETAILS </h1>
                         {
@@ -366,7 +366,7 @@ const OrderDetails = ({ token }) => {
 
                     </div>
                 </div>
-                <div className="order-1 bg-gray-100 m-4 p-1 shadow-md">
+                <div className="order-1 bg-gray-200 m-4 p-1 shadow-md">
                     <div>
                         <h1 className="flex justify-center font-bold p-2">ORDER DETAILS </h1>
                         {
@@ -418,7 +418,7 @@ const OrderDetails = ({ token }) => {
 
                     </div>
                 </div>
-                <div className="order-1 bg-gray-100 m-4 p-1 shadow-md">
+                <div className="order-1 bg-gray-200 m-4 p-1 shadow-md">
                     <div>
                         <h1 className="flex justify-center font-bold p-2">ADDRESS DETAILS </h1>
                         {
@@ -447,7 +447,7 @@ const OrderDetails = ({ token }) => {
 
                     </div>
                 </div>
-                <div className="order-1 bg-gray-100 m-4 p-1 shadow-md">
+                <div className="order-1 bg-gray-200 m-4 p-1 shadow-md">
                     <div>
                         <h1 className="flex justify-center font-bold p-2">PAYMENT DETAILS </h1>
                         {

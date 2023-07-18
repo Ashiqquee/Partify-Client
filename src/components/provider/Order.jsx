@@ -26,7 +26,7 @@ const Order = () => {
 
                 }
             });
-            console.log(response.data.orders);
+          
             setOrders(response.data.orders)
 
         } catch (error) {
@@ -114,14 +114,32 @@ const Order = () => {
         const errors = validateFormData();
         if (Object.keys(errors).length === 0) {
             
-            const response = await axiosInstance.post('/provider/orders', formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            if(response.status === 200){
-                toast.success('Order Added');
+            try {
+                const response = await axiosInstance.post('/provider/orders', formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (response.status === 200) {
+                    setOrders((prevOrders) => [...prevOrders, response?.data?.newOrder]);
+                    toast.success('Order Added');
+                    setFormData({
+                        phone: '',
+                        alternativePhone: '',
+                        services: [],
+                        amount: '',
+                        advanceAmount: '',
+                        eventDate: '',
+                        street: '',
+                        zip: '',
+                        city: '',
+                        district: '',
+                    });
 
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error(error?.response?.data?.errMsg)
             }
         }
         else if (errors.phone) {

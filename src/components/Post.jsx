@@ -4,21 +4,22 @@ import { faHeart, faComment, faEllipsisVertical, faTrash } from '@fortawesome/fr
 import { useState } from "react";
 import axiosInstance from '../api/axios'
 import { useSelector } from "react-redux";
-import {toast} from 'react-toastify'
-import {useNavigate} from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 
 
-const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
-    const[newComment,setNewComments] = useState('');
+const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
+    const [newComment, setNewComments] = useState('');
     const [showOptionIndex, setShowOptionIndex] = useState(null);
     const [showOption, setShowOption] = useState(false)
     const token = useSelector(state => state.provider.token);
     const userToken = useSelector(state => state.user.token);
     const userId = useSelector(state => state.user.id);
     const navigate = useNavigate();
-    const[confirmAction,setConfirmAction] = useState(false);
-    const[liked,setLiked] = useState(false);
+    const [confirmAction, setConfirmAction] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [liked, setLiked] = useState(false);
     const handleOptions = (index) => {
         if (showOption && showOptionIndex === index) {
             setShowOption(false);
@@ -28,7 +29,7 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
         }
     };
 
-    console.log(userToken);
+
     const handleDelete = async (postId) => {
         try {
             const response = await axiosInstance.delete(`/provider/post/${postId}`, {
@@ -46,7 +47,9 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
         }
     };
 
-    const handleLike = async(postId) => {
+
+
+    const handleLike = async (postId) => {
         try {
             if (!userToken) return navigate('/login');
             setLiked(!liked)
@@ -59,16 +62,16 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
             if (response.status === 200) {
                 onLike(postId)
             }
-            
+
         } catch (error) {
             console.log(error);
         }
     };
 
-    const handleUnLike = async(postId) => {
+    const handleUnLike = async (postId) => {
         if (!userToken) return navigate('/login');
         setLiked(!liked)
-        
+
         let like = 'no';
         const response = await axiosInstance.patch(`/post/${postId}`, { like }, {
             headers: {
@@ -92,12 +95,14 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
 
 
     const [formData, setFormData] = useState({
-        _id:'',
+        _id: '',
         caption: '',
         tagline: '',
         file: []
     });
     const [loading, setLoading] = useState(false);
+
+
     const handleFileChange = (event) => {
         const files = Array.from(event.target.files);
         setFormData(prevFormData => ({
@@ -130,10 +135,10 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
     const handleEditPost = (postId) => {
         const post = posts?.find((post) => post._id === postId);
         setFormData({
-            _id:post?._id,
-            caption:post?.caption,
-            tagline:post?.tagline,
-            file:post?.postImages
+            _id: post?._id,
+            caption: post?.caption,
+            tagline: post?.tagline,
+            file: post?.postImages
         })
     };
 
@@ -142,18 +147,20 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
         setNewComments(event.target.value);
     }
 
-    const addNewComment = async(postId) => {
+    const addNewComment = async (postId) => {
         if (!userToken) return navigate('/login');
         try {
-            if(newComment.length < 1)  return null;
+            if (newComment.length < 1) return null;
             let comment = 'yes';
-            const response = await axiosInstance.patch(`/post/${postId}`, { comment ,content:newComment},{
+            const response = await axiosInstance.patch(`/post/${postId}`, { comment, content: newComment }, {
                 headers: {
                     Authorization: `Bearer ${userToken}`,
                 },
             });
 
-
+            addComment(response?.data?.updatedPost);
+            setNewComments('');
+            setSelectedPost(response?.data?.updatedPost)
 
         } catch (error) {
             console.log(error);
@@ -208,20 +215,27 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
         }));
 
 
-    }
+    };
+
+
+    const handlePostClick = (postId) => {
+        console.log(postId);
+        setSelectedPost(postId);
+    };
+
 
 
 
     return (
         <>
             {posts?.map((post, index) => (
-                <div className="post bg-white border  border-gray-300 mt-8" key={index}>
+                <div className="post bg-white border  border-gray-300 mt-8 mb-8" key={index}>
                     <div className="info flex justify-between items-center px-4">
                         <div className="user flex items-center">
                             <div className="profile-pic h-16 w-10">
                                 <div className="avatar">
                                     <div className="w-11 my-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img src={post.providerId?.profilePic} alt="" />
+                                        <img src={post?.providerId?.profilePic} alt="" />
 
                                     </div>
                                 </div>
@@ -232,20 +246,20 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
 
                         </div>
                         <div className="relative">
-                       
-                           {role === 'provider' ?
+
+                            {role === 'provider' ?
                                 <FontAwesomeIcon
                                     icon={faEllipsisVertical}
                                     onClick={() => handleOptions(index)}
                                 /> : null}
                             <div className="absolute z-10 right-0 mt-2 w-40 bg-white rounded shadow-lg">
-                                 
-                                    {showOption && showOptionIndex === index ? 
+
+                                {showOption && showOptionIndex === index ?
                                     <>
                                         <ul className="py-2">
                                             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleConfirmation}  >
                                                 Delete
-                                            </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() =>handleEditPost(post?._id) || window.my_modal_2.showModal()}>
+                                            </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleEditPost(post?._id) || window.my_modal_2.showModal()}>
                                                 Edit
                                             </li>
                                             <dialog id="my_modal_2" className="modal">
@@ -292,11 +306,11 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
                                                                                                 <img
                                                                                                     src={URL.createObjectURL(file)}
                                                                                                     alt={`Image ${index + 1}`}
-                                                                                                        className="w-24 h-28 mt-1"
+                                                                                                    className="w-24 h-28 mt-1"
                                                                                                 />
                                                                                             )}
                                                                                             <FontAwesomeIcon icon={faTrash}
-                                                                                                
+
                                                                                             />
                                                                                         </li>
                                                                                     ))}
@@ -304,7 +318,7 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
                                                                             )}
                                                                         </div>
                                                                     </div>
-                                                                 
+
 
                                                                 </div>
                                                                 {
@@ -324,11 +338,11 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
                                                     <button>close</button>
                                                 </form>
                                             </dialog>
-                                            
+
                                         </ul>
                                     </>
                                     : ''}
-                            
+
                             </div>
 
                         </div>
@@ -374,23 +388,44 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
                     </div>
                     <div className="post-content px-4">
                         {role === 'user' ? <div className="reaction-wrapper flex items-center mt-0">
-                            {post?.likes?.includes(userId) ? 
+                            {post?.likes?.includes(userId) ?
                                 <FontAwesomeIcon
                                     icon={faHeart}
                                     className={`h-6 text-indigo-500  `}
-                                    onClick={() =>   handleUnLike(post?._id)}
+                                    onClick={() => handleUnLike(post?._id)}
                                 /> : <FontAwesomeIcon
                                     icon={faHeart}
-                                    className={`h-6 text-indigo-300`}
-                                    onClick={() =>  handleLike(post?._id)}
+                                    className={`h-6 text-gray-400`}
+                                    onClick={() => handleLike(post?._id)}
                                 />
                             }
-                            <FontAwesomeIcon
+                            {selectedPost?._id === post?._id ? <FontAwesomeIcon
                                 icon={faComment}
-                                className="h-6  ml-2 text-indigo-300"
-                                
+                                className="h-6   text-gray-400 ml-3"
+                                onClick={() => setSelectedPost(false)}
+
+                            /> : <FontAwesomeIcon
+                                icon={faComment}
+                                className="h-6   text-gray-400 ml-3"
+                                onClick={() => handlePostClick(post)}
+
+                            />}
+                        </div> :
+
+                            selectedPost ? <FontAwesomeIcon
+                                icon={faComment}
+                                className="h-6   text-gray-400"
+                                onClick={() => setSelectedPost(false)}
+
+                            /> : <FontAwesomeIcon
+                                icon={faComment}
+                                className="h-6   text-gray-400"
+                                onClick={() => handlePostClick(post)}
+
                             />
-                        </div> : null}
+
+
+                        }
                         <p className="likes font-bold">
                             {post.likes?.length || 0} Likes
                         </p>
@@ -398,16 +433,25 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
                             <span className="font-bold">{post.providerId?.name}</span>{" "}
                             {post.caption}
                         </p>
-                        <p className="post-time text-sm text-gray-500 mt-1 mb-2">
-                            {post.createdAt ? new Date(post.createdAt).toDateString() : ""}
-                        </p>
+                       <div className="flex justify-between">
+                            <p className="post-time text-sm text-gray-500 mt-1 mb-2">
+                                {post.createdAt ? new Date(post.createdAt).toDateString() : ""}
+                            </p>
+                            {
+                                selectedPost?._id === post?._id ?
+                                    <p className="post-time text-md text-indigo-500 mb-2 hover:cursor-pointer">
+                                      show more
+                                    </p> : null
+                            }
+                           
+                       </div>
                     </div>
                     {
-                        role === 'user' && (
+                        role === 'user' && selectedPost?._id !==post?._id && (
                             <div className="comment-wrapper w-full h-12 mt-2 border-t border-gray-300 flex justify-between items-center">
                                 <div className="avatar">
                                     <div className="w-8 ml-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img src="https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg" alt="" />
+                                        <img src="https://w7.pngwing.com/pngs/223/244/png-transparent-computer-icons-avatar-user-profile-avatar-heroes-rectangle-black.png" alt="" />
                                     </div>
                                 </div>
                                 <input
@@ -421,40 +465,43 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
                                     post
                                 </button>
                             </div>
-                            
+
                         )
                     }
-                    
+
 
                     {
-                    post?.comments.length > 0 ? 
-                            
-                                post?.comments?.map((comment) => {
-                                    return(
-                                        <div key={comment?._id} className="flex mb-3 mt-3   border-t-2">
-                                            <a>
-                                                <div className="avatar mt-2 pl-2">
-                                                    <div className="w-7 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                                        <img src={comment?.userId?.image} />
-                                                    </div>
+                        selectedPost?._id === post?._id ?
+
+                            selectedPost?.comments?.reverse()?.map((comment) => {
+                                return (
+                                    <div key={comment?._id} className="flex mb-3 mt-3   border-t-2">
+                                        <a>
+                                            <div className="avatar mt-2.5 pl-2">
+                                                <div className="w-7 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                                    <img src={comment?.userId?.image} />
                                                 </div>
-                                            </a>
-                                            <div>
-                                                <div className="bg-light rounded-3 px-3 py-1 ">
-                                                    <a className=" mb-0 t text-sm">
-                                                        <strong>{comment.userId.name} :</strong>
-                                                    </a>
-                                                    <a className="text-muted d-block ml-1">
-                                                        <small>
-                                                           {comment.content}
-                                                        </small>
-                                                    </a>
-                                                </div>
+                                            </div>
+                                        </a>
+                                        <div>
+                                            <div className="bg-light rounded-3 flex ">
+                                                <p className=" mb-0 mt-1.5 ml-3 text-sm font-sans font-bold">
+                                                    {comment?.userId?.name}
+                                                </p>
+                                                <p className="text-md d-block ml-1 mt-1 font-sans font-medium">
+
+                                                    : {comment?.content}
+
+                                                </p>
 
                                             </div>
+                                            <p className="text-xs  ml-3">
+                                                {new Date(comment?.createdAt).toDateString()}
+                                            </p>
                                         </div>
-                                    )
-                                })
+                                    </div>
+                                )
+                            })
                             : null
                     }
 

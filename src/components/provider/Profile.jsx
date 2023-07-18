@@ -364,6 +364,7 @@ const Profile = () => {
                                                 <label htmlFor="Place" className="block text-sm font-medium leading-6 text-gray-900">Place</label>
                                                 <div className="mt-2">
                                                     <Select
+                                                    isMulti
                                                         name="places"
                                                         options={keralaDistricts.map(place => ({
                                                             value: place,

@@ -3,10 +3,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../api/axios';
+import { useSelector } from 'react-redux';
 
 const OrderForm = ({ formData, onFormChange, onSubmit, action,  }) => {
   
-   
+   const {token} = useSelector(state => state.provider);
     const keralaDistricts = [
         "Alappuzha",
         "Ernakulam",
@@ -35,7 +36,11 @@ const OrderForm = ({ formData, onFormChange, onSubmit, action,  }) => {
 
     const fetchServices = async() => {
         try {
-            const response = await axiosInstance.get('/provider/serviceList');
+            const response = await axiosInstance.get('/provider/services',{
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             
             setServices(response.data.serviceList);
         } catch (error) {

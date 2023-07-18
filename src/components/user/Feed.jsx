@@ -47,6 +47,13 @@ const Feed = () => {
         setPosts(updatedPosts);
     };
 
+    const addComment = (newPost) => {
+        const indexToUpdate = posts.findIndex((post) => post?._id === newPost?._id);
+        const updatedPosts = [...posts];
+        updatedPosts[indexToUpdate] = newPost;
+        setPosts(updatedPosts);
+    }
+
     useEffect(() => {
 
         fetchFeed()
@@ -58,7 +65,7 @@ const Feed = () => {
             <div className={width > 1118 ? "wrapper px-4 w-5/6 " : "wrapper px-4 w-full" }>
                 <div className="left-col ">
                    
-                    <PostComponent posts={posts} role={'user'} onUnlike={onUnLike} onLike={onLike}/>
+                    <PostComponent posts={posts} role={'user'} onUnlike={onUnLike} onLike={onLike} addComment={addComment}/>
                     
                  
                 </div>
