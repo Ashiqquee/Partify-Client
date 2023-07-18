@@ -1,99 +1,300 @@
-
+import ChatBot from 'react-simple-chatbot';
+import { ThemeProvider } from 'styled-components';
+import {useSelector} from 'react-redux'
 
 const FAQ = () => {
+
+
+    const {name} = useSelector(state => state.user)
+
+    const steps = [
+        {
+            id: '0',
+            message: `Hey,${name}`,
+
+       
+            trigger: '1',
+        }, {
+            id: '1',
+
+        
+            message: 'Please enter your registered number',
+            trigger: '2'
+        }, {
+            id: '2',
+
+            user: true,
+            trigger: '3',
+        }, {
+            id: '3',
+            message: " hi {previousValue}, how can I help you?",
+            trigger: 4
+        }, {
+            id: '4',
+            options: [
+
+                
+                { value: 1, label: 'How to make referal' },
+                { value: 2, label: 'How to make orders' },
+
+            ],
+            end: true
+        }
+    ];
+
+    // Creating our own theme
+    const theme = {
+        background: 'white',
+        headerBgColor: '#596feb',
+        headerFontSize: '20px',
+        botBubbleColor: '#edeef2',
+        headerFontColor: 'white',
+        botFontColor: 'black',
+        userBubbleColor: 'black',
+        userFontColor: 'white',
+    };
+
+    // Set some properties of the bot
+    const config = {
+        botAvatar: "https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg",
+        floating: true,
+    };
+
     return(
-        <section className="bg-white dark:bg-gray-900">
-            <div className="container max-w-4xl px-6 py-10 mx-auto">
-                <h1 className="text-2xl font-semibold text-center text-gray-800 lg:text-3xl dark:text-white">Frequently asked questions</h1>
-
-                <div className="mt-12 space-y-8">
-                    <div className="border-2 border-gray-100 rounded-lg dark:border-gray-700">
-                        <div className="join join-vertical w-full">
-                            <div className="collapse collapse-arrow join-item border border-base-300">
-                                <input type="radio" name="my-accordion-4" checked="checked" />
-                                <div className="collapse-title text-xl font-medium">
-                                    Click to open this one and close others
-                                </div>
-                                <div className="collapse-content">
-                                    <p>hello</p>
-                                </div>
-                            </div>
-                            <div className="collapse collapse-arrow join-item border border-base-300">
-                                <input type="radio" name="my-accordion-4" />
-                                <div className="collapse-title text-xl font-medium">
-                                    Click to open this one and close others
-                                </div>
-                                <div className="collapse-content">
-                                    <p>hello</p>
-                                </div>
-                            </div>
-                            <div className="collapse collapse-arrow join-item border border-base-300">
-                                <input type="radio" name="my-accordion-4" />
-                                <div className="collapse-title text-xl font-medium">
-                                    Click to open this one and close others
-                                </div>
-                                <div className="collapse-content">
-                                    <p>hello</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr className="border-gray-200 dark:border-gray-700" />
-
-                        <p className="p-8 text-sm text-gray-500 dark:text-gray-300">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas eaque nobis, fugit odit omnis fugiat deleniti animi ab maxime cum laboriosam recusandae facere dolorum veniam quia pariatur obcaecati illo ducimus?
+        <>
+            <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+                <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
+                    <div>
+                        <p className="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-indigo-500 uppercase rounded-full bg-teal-accent-400">
+                            How to make orders
                         </p>
                     </div>
-
-                    <div className="border-2 border-gray-100 rounded-lg dark:border-gray-700">
-                        <button className="flex items-center justify-between w-full p-8">
-                            <h1 className="font-semibold text-gray-700 dark:text-white">Is the cost of the appointment covered by private health insurance?</h1>
-
-                            <span className="text-white bg-blue-500 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </span>
-                        </button>
+                    <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
+                        <span className="relative inline-block">
+                            <svg
+                                viewBox="0 0 52 24"
+                                fill="currentColor"
+                                className="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block"
+                            >
+                                <defs>
+                                    <pattern
+                                        id="b902cd03-49cc-4166-a0ae-4ca1c31cedba"
+                                        x="0"
+                                        y="0"
+                                        width=".135"
+                                        height=".30"
+                                    >
+                                        <circle cx="1" cy="1" r=".7" />
+                                    </pattern>
+                                </defs>
+                                <rect
+                                    fill="url(#b902cd03-49cc-4166-a0ae-4ca1c31cedba)"
+                                    width="52"
+                                    height="24"
+                                />
+                            </svg>
+                            <span className="relative">The</span>
+                        </span>{' '}
+                        quick, overview 
+                    </h2>
+                    <p className="text-base text-indigo-500 md:text-lg font-sans">
+                        If you face any problem with your orders, please contact ashiqqquee@gmail.com.
+                    </p>
+                </div>
+                
+                <div className="grid gap-10 lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-2">
+                    <div>
+                        <div className="flex items-center justify-between mb-6">
+                            <p className="text-2xl font-bold">Step 1</p>
+                            <svg
+                                className="w-6 text-gray-700 transform rotate-90 sm:rotate-0"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                viewBox="0 0 24 24"
+                            >
+                                <line
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    x1="2"
+                                    y1="12"
+                                    x2="22"
+                                    y2="12"
+                                />
+                                <polyline
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    points="15,5 22,12 15,19 "
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-gray-600">
+                          To sign up and access your account, you can conveniently register using your email address, phone number, or chosen username.
+                           This allows for easy login and ensures a seamless experience across platforms 
+                        </p>
                     </div>
-
-                    <div className="border-2 border-gray-100 rounded-lg dark:border-gray-700">
-                        <button className="flex items-center justify-between w-full p-8">
-                            <h1 className="font-semibold text-gray-700 dark:text-white">Do I need a referral?</h1>
-
-                            <span className="text-white bg-blue-500 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </span>
-                        </button>
+                    <div>
+                        <div className="flex items-center justify-between mb-6">
+                            <p className="text-2xl font-bold">Step 2</p>
+                            <svg
+                                className="w-6 text-gray-700 transform rotate-90 sm:rotate-0"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                viewBox="0 0 24 24"
+                            >
+                                <line
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    x1="2"
+                                    y1="12"
+                                    x2="22"
+                                    y2="12"
+                                />
+                                <polyline
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    points="15,5 22,12 15,19 "
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-gray-600">
+                            Choose the most suitable service provider from the available options in the providers section, tailored to your specific needs and location. 
+                            By doing so, you can ensure that you receive the best.
+                        </p>
                     </div>
-
-                    <div className="border-2 border-gray-100 rounded-lg dark:border-gray-700">
-                        <button className="flex items-center justify-between w-full p-8">
-                            <h1 className="font-semibold text-gray-700 dark:text-white">What are your opening hours?</h1>
-
-                            <span className="text-white bg-blue-500 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </span>
-                        </button>
+                    <div>
+                        <div className="flex items-center justify-between mb-6">
+                            <p className="text-2xl font-bold">Step 3</p>
+                            <svg
+                                className="w-6 text-gray-700 transform rotate-90 sm:rotate-0"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                viewBox="0 0 24 24"
+                            >
+                                <line
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    x1="2"
+                                    y1="12"
+                                    x2="22"
+                                    y2="12"
+                                />
+                                <polyline
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    points="15,5 22,12 15,19 "
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-gray-600">
+                            Engage in a direct and interactive conversation with the selected service provider, articulating your unique needs clearly to ensure they fully understand your requirements.
+                             Once all details are agreed upon, proceed to make a payment and advance amount talks.
+                        </p>
                     </div>
-
-                    <div className="border-2 border-gray-100 rounded-lg dark:border-gray-700">
-                        <button className="flex items-center justify-between w-full p-8">
-                            <h1 className="font-semibold text-gray-700 dark:text-white">What can I expect at my first consultation?</h1>
-
-                            <span className="text-white bg-blue-500 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </span>
-                        </button>
+                    <div>
+                        <div className="flex items-center justify-between mb-6">
+                            <p className="text-2xl font-bold">Step 4</p>
+                            <svg
+                                className="w-6 text-gray-700 transform rotate-90 sm:rotate-0"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                viewBox="0 0 24 24"
+                            >
+                                <line
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    x1="2"
+                                    y1="12"
+                                    x2="22"
+                                    y2="12"
+                                />
+                                <polyline
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    points="15,5 22,12 15,19 "
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-gray-600">
+                            Subsequently, the service provider will send you a comprehensive link containing all the essential order details, providing you with an opportunity to review and verify the information for accuracy and completeness. 
+                            Once you've ensured that everything aligns with your requirements, you can confidently ready to make the payment
+                        </p>
+                    </div>
+                    <div>
+                        <div className="flex items-center justify-between mb-6">
+                            <p className="text-2xl font-bold">Step 5</p>
+                            <svg
+                                className="w-6 text-gray-700 transform rotate-90 sm:rotate-0"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                viewBox="0 0 24 24"
+                            >
+                                <line
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    x1="2"
+                                    y1="12"
+                                    x2="22"
+                                    y2="12"
+                                />
+                                <polyline
+                                    fill="none"
+                                    strokeMiterlimit="10"
+                                    points="15,5 22,12 15,19 "
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-gray-600">
+                            Take advantage of Stripe, recognized as one of the finest and most reliable payment gateways available, to effortlessly settle your payment.
+                            Utilize your card details securely on the platform, ensuring a smooth and seamless transaction process.
+                        </p>
+                    </div>
+                    <div>
+                        <div className="flex items-center justify-between mb-6 ">
+                            <p className="text-2xl font-bold">Success</p>
+                            <svg
+                                className="w-8 text-gray-600"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <polyline
+                                    fill="none"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeMiterlimit="10"
+                                    points="6,12 10,16 18,8"
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-gray-600">
+                            Congratulations! Your order has been successfully processed and completed without any issues. Rest assured, your chosen items or services are on their way or being prepared as per your specifications.
+                          
+                        </p>
                     </div>
                 </div>
             </div>
-        </section>
+            <ThemeProvider theme={theme}>
+                <ChatBot
+
+                    headerTitle="Partify"
+                    steps={steps}
+                    {...config}
+
+                />
+            </ThemeProvider>
+       
+        </>
+
     )
 }
 

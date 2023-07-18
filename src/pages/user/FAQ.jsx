@@ -7,7 +7,7 @@ const FAQPage = () => {
     return(
         <>
         <Sidebar/>
-            <div className="flex  md:ml-72  lg:ml-96 ">
+            <div className="flex  md:ml-64  lg:ml-64 ">
                 <FAQ/>
             </div>
         </>
