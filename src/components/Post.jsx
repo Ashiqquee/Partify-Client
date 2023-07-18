@@ -7,7 +7,10 @@ import { useSelector } from "react-redux";
 import {toast} from 'react-toastify'
 import {useNavigate} from 'react-router-dom'
 
+
+
 const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
+    const[newComment,setNewComments] = useState('');
     const [showOptionIndex, setShowOptionIndex] = useState(null);
     const [showOption, setShowOption] = useState(false)
     const token = useSelector(state => state.provider.token);
@@ -132,6 +135,29 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
             tagline:post?.tagline,
             file:post?.postImages
         })
+    };
+
+
+    const handleNewComment = (event) => {
+        setNewComments(event.target.value);
+    }
+
+    const addNewComment = async(postId) => {
+        if (!userToken) return navigate('/login');
+        try {
+            if(newComment.length < 1)  return null;
+            let comment = 'yes';
+            const response = await axiosInstance.patch(`/post/${postId}`, { comment ,content:newComment},{
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            });
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const handleSubmit = async (event) => {
@@ -388,13 +414,51 @@ const Post = ({ posts, onDeletePost, role ,onUnlike,onLike}) => {
                                     type="text"
                                     className="comment-box w-4/5 h-full border-none outline-none text-sm ml-2"
                                     placeholder="Add a comment"
+                                    value={newComment}
+                                    onChange={handleNewComment}
                                 />
-                                <button className="comment-btn w-16 h-full bg-transparent border-none outline-none capitalize text-blue-500 opacity-50 text-base">
+                                <button className="comment-btn w-16 h-full bg-transparent border-none outline-none capitalize text-blue-500  text-base" onClick={() => addNewComment(post?._id)}>
                                     post
                                 </button>
                             </div>
+                            
                         )
                     }
+                    
+
+                    {
+                    post?.comments.length > 0 ? 
+                            
+                                post?.comments?.map((comment) => {
+                                    return(
+                                        <div key={comment?._id} className="flex mb-3 mt-3   border-t-2">
+                                            <a>
+                                                <div className="avatar mt-2 pl-2">
+                                                    <div className="w-7 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                                        <img src={comment?.userId?.image} />
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div>
+                                                <div className="bg-light rounded-3 px-3 py-1 ">
+                                                    <a className=" mb-0 t text-sm">
+                                                        <strong>{comment.userId.name} :</strong>
+                                                    </a>
+                                                    <a className="text-muted d-block ml-1">
+                                                        <small>
+                                                           {comment.content}
+                                                        </small>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            : null
+                    }
+
+
                 </div>
             ))}
         </>

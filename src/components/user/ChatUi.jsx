@@ -33,7 +33,13 @@ const ChatUi = () => {
             const { chats } = response.data;
           
             setInitialImage(chats[0]?.userId?.image);
-            setAllChat(chats)
+            setAllChat(chats);
+            allChat.forEach((chat) => {
+                chat.updatedAt = new Date(chat.updatedAt);
+            });
+
+            allChat.sort((a, b) => b.updatedAt - a.updatedAt);
+
         } catch (error) {
             console.log(error);
         }
@@ -58,7 +64,7 @@ const ChatUi = () => {
 
         const image = toGetProfile?.senderId?.image || initalImage;
         console.log(image);
-        const addedMessage = [...messages, { content: newMessage, senderId: { _id: userId, image: image }, createdAt: Date.now() }];
+        const addedMessage = [...messages, { content: newMessage, senderId: { _id: userId, image: image }, createdAt: Date.now()}];
         setMessages(addedMessage)
 
         const content = newMessage;
@@ -110,6 +116,9 @@ const ChatUi = () => {
             if (message.senderId !== userId && selectedChat === message?.chatId?.toString()) {
                 const addedMessage = [...messages, message];
                 setMessages(addedMessage);
+
+
+              
             }
 
         })
@@ -140,7 +149,7 @@ const ChatUi = () => {
                                                 className="h-full w-full"
                                             />
                                         </div>
-                                        <div className="text-sm font-semibold ml-3 mt-3">
+                                        <div className="text-sm font-semibold ml-3 ">
                                             {chat.providerId.name}
                                         </div>
 

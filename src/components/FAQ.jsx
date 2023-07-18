@@ -8,16 +8,35 @@ const FAQ = () => {
 
                 <div className="mt-12 space-y-8">
                     <div className="border-2 border-gray-100 rounded-lg dark:border-gray-700">
-                        <button className="flex items-center justify-between w-full p-8">
-                            <h1 className="font-semibold text-gray-700 dark:text-white">How can I pay for my appointment?</h1>
-
-                            <span className="text-gray-400 bg-gray-200 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 12H6" />
-                                </svg>
-                            </span>
-                        </button>
-
+                        <div className="join join-vertical w-full">
+                            <div className="collapse collapse-arrow join-item border border-base-300">
+                                <input type="radio" name="my-accordion-4" checked="checked" />
+                                <div className="collapse-title text-xl font-medium">
+                                    Click to open this one and close others
+                                </div>
+                                <div className="collapse-content">
+                                    <p>hello</p>
+                                </div>
+                            </div>
+                            <div className="collapse collapse-arrow join-item border border-base-300">
+                                <input type="radio" name="my-accordion-4" />
+                                <div className="collapse-title text-xl font-medium">
+                                    Click to open this one and close others
+                                </div>
+                                <div className="collapse-content">
+                                    <p>hello</p>
+                                </div>
+                            </div>
+                            <div className="collapse collapse-arrow join-item border border-base-300">
+                                <input type="radio" name="my-accordion-4" />
+                                <div className="collapse-title text-xl font-medium">
+                                    Click to open this one and close others
+                                </div>
+                                <div className="collapse-content">
+                                    <p>hello</p>
+                                </div>
+                            </div>
+                        </div>
                         <hr className="border-gray-200 dark:border-gray-700" />
 
                         <p className="p-8 text-sm text-gray-500 dark:text-gray-300">

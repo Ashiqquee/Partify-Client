@@ -29,7 +29,12 @@ const ChatUi = () => {
             const { chats } = response.data;
             console.log(chats);
             setInitialImage(chats[0]?.providerId?.profilePic);
-            setAllChat(chats)
+            setAllChat(chats);
+            allChat.forEach((chat) => {
+                chat.updatedAt = new Date(chat.updatedAt);
+            });
+
+            allChat.sort((a, b) => b.updatedAt - a.updatedAt);
 
         } catch (error) {
             console.log(error);
@@ -111,9 +116,11 @@ const ChatUi = () => {
     useEffect(() => {
         socket.on('messageResponse', (message) => {
             if (message.senderId !== providerId && selectedChat === message?.chatId?.toString()) {
+               
                 const addedMessage = [...messages, message];
-                console.log(message);
                 setMessages(addedMessage);
+             
+                
             }
 
         });
