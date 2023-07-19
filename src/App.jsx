@@ -47,7 +47,7 @@ const App = () => {
         <Route path="/order/:id" element={userAuth ? <SingleOrder /> : <Navigate to='/login' />}></Route>
         <Route path="/chat" element={userAuth ? <Chat /> : <Navigate to='/login' />}></Route>
         <Route path="/payment/:status" element={userAuth ? <PaymentStatus /> : <Navigate to='/login' />}></Route>
-        <Route path="/faq" element={<UserFAQ />}></Route>
+        <Route path="/help" element={<UserFAQ />}></Route>
 
 
 

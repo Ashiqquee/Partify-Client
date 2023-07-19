@@ -10,42 +10,62 @@ const FAQ = () => {
     const steps = [
         {
             id: '0',
-            message: `Hey,${name}`,
-
-       
+            message: `How i can help you`,
             trigger: '1',
-        }, {
+        },
+        {
             id: '1',
-
-        
             message: 'Please enter your registered number',
-            trigger: '2'
-        }, {
+            trigger: '2',
+        },
+        {
             id: '2',
-
             user: true,
+            validator: (value) => {
+                if (value.length < 10) {
+                    return '10 digits required';
+                }
+                return true;
+            },
             trigger: '3',
-        }, {
+        },
+        {
             id: '3',
-            message: " hi {previousValue}, how can I help you?",
-            trigger: 4
-        }, {
+            message: `hi ${name}, how can I help you?`,
+            trigger: '4',
+        },
+        {
+            id: '7',
+            message: `Do you need any other assistance?`,
+            trigger: '4',
+        },
+        {
             id: '4',
             options: [
-
+                { value: 1, label: 'How to make a referral', trigger: '5' },
+                { value: 2, label: 'How to contact admin', trigger: '6' },
                 
-                { value: 1, label: 'How to make referal' },
-                { value: 2, label: 'How to make orders' },
-
             ],
-            end: true
-        }
+           
+        },
+        {
+            id: '5',
+            message: "Go to Profile -> Get your referral number -> Send the referral link to your friends -> When friends use your referral link during signup, you will get $100 -> Success! ",
+            trigger:'7'
+          
+        },
+        {
+            id: '6',
+            message: "Contact admin : ashiqqquee@gmail.com",
+            trigger: '7'
+
+        },
     ];
 
-    // Creating our own theme
+  
     const theme = {
         background: 'white',
-        headerBgColor: '#596feb',
+        headerBgColor: '#3F51B5',
         headerFontSize: '20px',
         botBubbleColor: '#edeef2',
         headerFontColor: 'white',
@@ -54,7 +74,7 @@ const FAQ = () => {
         userFontColor: 'white',
     };
 
-    // Set some properties of the bot
+  
     const config = {
         botAvatar: "https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg",
         floating: true,
@@ -286,7 +306,7 @@ const FAQ = () => {
             <ThemeProvider theme={theme}>
                 <ChatBot
 
-                    headerTitle="Partify"
+                    headerTitle="PARTIFY"
                     steps={steps}
                     {...config}
 

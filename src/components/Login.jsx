@@ -7,12 +7,58 @@ import { userLogin } from '../store/slice/user';
 import { adminLogin } from '../store/slice/admin'
 import { providerLogin } from '../store/slice/provider'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux';
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+
 const Login = ({ url, name }) => {
 
    const dispatch = useDispatch();
    const navigate = useNavigate()
    const currentURL = useLocation();
+   const [googleProfile, setGoogleProfile] = useState([]);
+
+
+   const googleLogin = useGoogleLogin({
+      onSuccess: (codeResponse) => setGoogleProfile(codeResponse),
+      onError: (error) => console.log('Login Failed:', error)
+   });
+
+   const configureGoogleLogin = async () => {
+
+      try {
+         const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${googleProfile.access_token}`, {
+            headers: {
+               Authorization: `Bearer ${googleProfile.access_token}`,
+               Accept: 'application/json'
+            }
+         });
+
+         const userEmail = response?.data?.email;
+
+         const userAvailable = await axiosInstance.post('/login/google', { userEmail });
+
+         const { name, token, role, id } = userAvailable.data
+
+         dispatch(userLogin({ name, token, role, id }));
+         navigate('/');
+
+      } catch (error) {
+         if (error?.response?.status === 402) {
+            toast.error('User not found')
+         }
+      }
+
+   }
+
+   useEffect(
+      () => {
+         if (googleProfile) {
+            configureGoogleLogin()
+         }
+      },
+      [googleProfile]
+   );
 
    useEffect(() => {
       if (currentURL.search === '?signup=success') {
@@ -53,9 +99,9 @@ const Login = ({ url, name }) => {
    };
 
    const navigateSignup = () => {
-      if(name === 'user'){
+      if (name === 'user') {
          navigate('/signup')
-      } else if (name === 'provider') {
+      } else if (name === 'Provider') {
          navigate('/provider/signup')
       }
    }
@@ -103,6 +149,8 @@ const Login = ({ url, name }) => {
          toast.error(errors.password)
       }
    }
+
+
 
    return (
 
@@ -178,14 +226,20 @@ const Login = ({ url, name }) => {
                                  Continue
                               </button>
                            </div>
+                          {
+                           name === 'user' ? 
+                                 <div className="relative mt-3">
+                                    <GoogleLogin onSuccess={googleLogin} />
+                                 </div> : null
+                          }
                         </form>
 
                         {
-                           name !== 'admin' ? 
-                           <div>
-                              <h3 className='text-indigo-500 hover:cursor-pointer' onClick={navigateSignup}>Don't have an account?</h3>
-                           </div>
-                        : null}
+                           name !== 'admin' ?
+                              <div>
+                                 <h3 className='text-indigo-500 hover:cursor-pointer' onClick={navigateSignup}>Don't have an account?</h3>
+                              </div>
+                              : null}
 
 
                      </div>

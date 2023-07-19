@@ -14,7 +14,7 @@ const Feed = () => {
     const fetchFeed = async() => {
         try {
             const response = await axiosInstance.get('/feed');
-            console.log(response.data.post);
+            
             setPosts(response.data.post)
         } catch (error) {
           console.log(error);  

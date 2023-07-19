@@ -292,7 +292,7 @@ const Signup = () => {
                                     <div className="flex items-center justify-between mt-2">
                                         <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-900" onClick={sendOtp}>continue</button>
 
-                                        <a href="account-password-recovery.html" className="text-blue-500">Already have an account?</a>
+                                        <a href="/provider/login" className="text-blue-500">Already have an account?</a>
                                     </div>
 
 
