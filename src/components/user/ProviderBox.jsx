@@ -46,7 +46,7 @@ const ProviderBox = () => {
     
 
     return(
-        <section className="bg-white dark:bg-gray-900">
+        <section className="bg-white dark:bg-gray-900 ">
             <div className="container px-6 py-10 mx-auto">
                 <h1 className="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl dark:text-white">Providers</h1>
 
@@ -60,7 +60,7 @@ const ProviderBox = () => {
 
                     {providers.map((provider) => {
                        return(
-                           <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent">
+                           <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent " onClick={() => navigate(`/provider/${provider._id}`)}>
                                <div className="w-full h-40" style={{ backgroundImage: `url(${provider?.coverPic})`, backgroundSize: 'cover' }}>
                                    
                                    <div className="avatar">

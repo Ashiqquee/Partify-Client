@@ -448,99 +448,119 @@ const OrderDetails = ({ token }) => {
                     </div>
                 </div>
                 <div className="order-1 bg-gray-200 m-4 p-1 shadow-md">
-                    <div>
-                        <h1 className="flex justify-center font-bold p-2">PAYMENT DETAILS </h1>
-                        {
-                            payment.map((details, index) => {
-                                return (
-                                    <div key={index} className="flex justify-between mt-2  p-2">
-                                        <div className="order-1">
-                                            <span className="order-label font-bold"> {index !== payment.length - 1 && index !== payment.length - 2 ? (
+                    {
+                        order?.status === 'completed' && role === 'user' ? 
 
-                                                details
-                                            ) : index === payment.length - 2 && role === 'user' && order?.remainingAmount !== 0 && (order?.status === 'pending' || order?.status === 'confirmed') ? (
+                        <div className="mb-4">
+                                <svg viewBox="0 0 24 24" className="text-green-600 w-16 h-16 mx-auto my-6">
+                                    <path
+                                        fill="currentColor"
+                                        d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z"
+                                    ></path>
+                                </svg>
+                                <div className="text-center">
+                                    <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">Order Completed!</h3>
+                                    <p className="text-gray-600 my-2">Thank you for completing your order with us.</p>
+                                    <p className="text-indigo-500 font-semibold  my-2 hover:cursor-pointer">Review the Provider</p>
+                                    <p> Have a great day! </p>
+                                </div>
+                            </div>
 
-                                                <>
-                                                    <label htmlFor="">Use Wallet</label> : $.{order?.customerId?.wallet || 0}
-                                                </>
-                                                ) : index === payment.length - 1 && role === 'user' && order?.remainingAmount !== 0 && (order?.status === 'pending' || order?.status === 'confirmed') ? (
+                        :
+                            <div>
+                                <h1 className="flex justify-center font-bold p-2">PAYMENT DETAILS </h1>
+                                {
+                                    payment.map((details, index) => {
+                                        return (
+                                            <div key={index} className="flex justify-between mt-2  p-2">
+                                                <div className="order-1">
+                                                    <span className="order-label font-bold"> {index !== payment.length - 1 && index !== payment.length - 2 ? (
+
+                                                        details
+                                                    ) : index === payment.length - 2 && role === 'user' && order?.remainingAmount !== 0 && (order?.status === 'pending' || order?.status === 'confirmed') ? (
+
+                                                        <>
+                                                            <label htmlFor="">Use Wallet</label> : $.{order?.customerId?.wallet || 0}
+                                                        </>
+                                                    ) : index === payment.length - 1 && role === 'user' && order?.remainingAmount !== 0 && (order?.status === 'pending' || order?.status === 'confirmed') ? (
 
 
-                                                <div>
-                                                    <select
-                                                        id="district"
-                                                        name="district"
-                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                                                        value={selectedOption}
-                                                        onChange={handleSelectChange}
-                                                    >
-                                                        {order?.status === "pending" ? (
-                                                            <>
-                                                                <option value="" disabled>Select Any</option>
-                                                                <option value="advanceAmount">Advance Amount</option>
-                                                                <option value="fullAmount">Pay Full Amount</option>
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <option value="" disabled>Select Any</option>
-                                                                <option value="fullAmount">Pay Full Amount</option>
-                                                            </>
-                                                        )}
-                                                    </select>
+                                                        <div>
+                                                            <select
+                                                                id="district"
+                                                                name="district"
+                                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                                                value={selectedOption}
+                                                                onChange={handleSelectChange}
+                                                            >
+                                                                {order?.status === "pending" ? (
+                                                                    <>
+                                                                        <option value="" disabled>Select Any</option>
+                                                                        <option value="advanceAmount">Advance Amount</option>
+                                                                        <option value="fullAmount">Pay Full Amount</option>
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <option value="" disabled>Select Any</option>
+                                                                        <option value="fullAmount">Pay Full Amount</option>
+                                                                    </>
+                                                                )}
+                                                            </select>
+                                                        </div>
+
+                                                    ) : order?.remainingAmount === 0 && index !== payment.length - 2 ?
+                                                        <div className=" lg:ml-36 md:ml-16 ">
+                                                            {
+                                                                (order?.status === 'confirmed' || order?.status === 'completed') ?
+                                                                    <p className="bg-green-100 font-bold text-center">The payment for the order has been settled </p>
+                                                                    :
+                                                                    role === 'user' ? (
+                                                                        <p className="bg-green-100 font-bold text-center">Your  refund has been credited to your wallet.</p>
+                                                                    ) : null
+                                                            }
+
+                                                        </div>
+                                                        : null}</span>
+
                                                 </div>
+                                                <div className="order-2 mx-5">
+                                                    {index === 0 ? (
+                                                        <p className="font-medium font-sans">{order?.totalAmount}</p>
+                                                    ) : index === 1 ? (
+                                                        <p className="font-medium font-sans">{order?.advanceAmount}</p>
+                                                    ) : index === 2 ? (
+                                                        <p className="font-medium font-sans">{order?.status !== 'pending' ? 'Yes' : 'No'}</p>
+                                                    ) : index === 3 ? (
+                                                        <p className="font-medium font-sans">{order?.walletAmount || 0}</p>
+                                                    ) : index === 4 ? (
+                                                        <p className="font-medium font-sans">{order?.remainingAmount}</p>
+                                                    ) : index === 5 && order?.remainingAmount !== 0 && role === 'user' && (order?.status === 'pending' || order?.status === 'confirmed') ? (
+                                                        <input
+                                                            checked={isChecked}
+                                                            onChange={handleCheckboxChange}
+                                                            type="checkbox"
+                                                            className="checkbox checkbox-primary checkbox-xs ml-3"
+                                                        />
+                                                    ) : null}
 
-                                            ) : order?.remainingAmount === 0 && index !== payment.length - 2 ?
-                                                <div className=" lg:ml-36 md:ml-16 ">
-                                                    {
-                                                        (order?.status === 'confirmed' || order?.status === 'completed' )  ?
-                                                            <p className="bg-green-100 font-bold text-center">The payment for the order has been settled </p>
-                                                            :
-                                                            role === 'user' ? (
-                                                                            <p className="bg-green-100 font-bold text-center">Your  refund has been credited to your wallet.</p>
-                                                            ):null
-                                                    }
+                                                    {index === 6 && order?.remainingAmount !== 0 && role === 'user' && (order?.status === 'pending' || order?.status === 'confirmed') ? (
+                                                        <button
+                                                            className="btn btn-sm bg-indigo-500 text-white hover:text-black"
+                                                            onClick={() => handlePayment(order?._id)}
+                                                        >
+                                                            Pay Now
+                                                        </button>
+                                                    ) : null}
 
                                                 </div>
-                                                : null}</span>
-
-                                        </div>
-                                        <div className="order-2 mx-5">
-                                            {index === 0 ? (
-                                                <p className="font-medium font-sans">{order?.totalAmount}</p>
-                                            ) : index === 1 ? (
-                                                <p className="font-medium font-sans">{order?.advanceAmount}</p>
-                                            ) : index === 2 ? (
-                                                <p className="font-medium font-sans">{order?.status !== 'pending' ? 'Yes' : 'No'}</p>
-                                            ) : index === 3 ? (
-                                                <p className="font-medium font-sans">{order?.walletAmount || 0}</p>
-                                            ) : index === 4 ? (
-                                                <p className="font-medium font-sans">{order?.remainingAmount}</p>
-                                                            ) : index === 5 && order?.remainingAmount !== 0 && role === 'user' && (order?.status === 'pending' || order?.status === 'confirmed') ? (
-                                                <input
-                                                    checked={isChecked}
-                                                    onChange={handleCheckboxChange}
-                                                    type="checkbox"
-                                                    className="checkbox checkbox-primary checkbox-xs ml-3"
-                                                />
-                                            ) : null}
-
-                                            {index === 6 && order?.remainingAmount !== 0 && role === 'user' && (order?.status === 'pending' || order?.status === 'confirmed') ?  (
-                                                <button
-                                                    className="btn btn-sm bg-indigo-500 text-white hover:text-black"
-                                                    onClick={() => handlePayment(order?._id)}
-                                                >
-                                                    Pay Now
-                                                </button>
-                                            ) : null}
-
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
+                                            </div>
+                                        )
+                                    })
+                                }
 
 
-                    </div>
+                            </div>
+                    }
                 </div>
 
             </div>

@@ -1,108 +1,76 @@
-const verthe = () => {
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axiosInstance from "../../api/axios";
+
+const Verthe  = () => {
+    const { providerId } = useParams();
+    const [provider, setProvider] = useState('');
+
+    const fetchProvider = async () => {
+        const response = await axiosInstance.get(`/provider/${providerId}`);
+
+        console.log(response.data.provider);
+        setProvider(response.data.provider)
+    }
+
+
+    useEffect(() => {
+        fetchProvider()
+    }, [])
+
     return (
-       <>
-       
-            <section className="container px-4 mx-auto">
-                <div className="sm:flex sm:items-center sm:justify-between">
-                    <div>
-                        <div className="flex items-center gap-x-3">
-                            <h2 className="text-lg font-medium text-gray-800 dark:text-white">Customers</h2>
-                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240 Customers</span>
-                        </div>
+        <>
 
-                    </div>
+           
+                
+                <section className="  w-full  ">
+                <div className="container mx-auto px-4 bg-gray-100 ">
+                    <div className=" flex flex-col min-w-0 break-words  w-full mb-6  rounded-lg pt-5 ">
+                            <div className="px-6">
+                               
+                                <div className="text-center ">
+                                <div className="avatar  mt-2">
+                                        <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 ">
+                                            <img src={provider?.profilePic} />
+                                        </div>
+                                    </div>
+                                    <h3 className="text-4xl font-semibold leading-normal  text-blueGray-700 mb-2 ">
+                                        {provider?.name}
+                                    </h3>
+                                    <div className="text-sm leading-normal mt-0 mb-2  font-bold uppercase">
+                                     
+                                        {provider?.places?.map((place, index) => {
+                                            return (
+                                                <p key={index}>{place}</p>
+                                            );
+                                        })}
 
-
-                </div>
-
-             
-
-                <div className="flex flex-col mt-6">
-                    <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                    <thead className="bg-gray-50 dark:bg-gray-800">
-                                        <tr>
-                                            <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                <button className="flex items-center gap-x-3 focus:outline-none">
-                                                    <span>Company</span>
-                                                    <svg className="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
-                                                </button>
-                                            </th>
-                                            <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                Status
-                                            </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                About
-                                            </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Users</th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Action</th>
-                                            <th scope="col" className="relative py-3.5 px-4">
-                                                <span className="sr-only">Edit</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                        <tr>
-                                            <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                                                <div>
-                                                    <h2 className="font-medium text-gray-800 dark:text-white ">Catalog</h2>
-                                                </div>
-                                            </td>
-                                            <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                <div className="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                    Customer
-                                                </div>
-                                            </td>
-                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                <div>
-                                                    <h4 className="text-gray-700 dark:text-gray-200">Content curating app</h4>
-                                                </div>
-                                            </td>
-                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                <div className="flex items-center">
-                                                    <img className="object-cover w-6 h-6 -mx-1 border-2 border-white rounded-full dark:border-gray-700 shrink-0" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80" alt="" />
-                                                </div>
-                                            </td>
-                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                <div className="w-48 h-1.5 bg-blue-200 overflow-hidden rounded-full">
-                                                    <div className="bg-blue-500 w-2/3 h-1.5"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                    </div>
+                                  
+                                    <div className="mt-2 pt-10   border-b border-blueGray-200 text-center">
+                                        <div className="flex justify-center">
+                                            <div className="w-full lg:w-9/12 px-4">
+                                            <p className="mb-4  leading-relaxed font-bold uppercase">
+                                                    {provider?.description}
+                                                </p>
+                                             
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
-                </div>
-{/* 
-                <div className="mt-6 sm:flex sm:items-center sm:justify-between ">
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                        Page <span className="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
-                    </div>
 
-                    <div className="flex items-center mt-4 gap-x-4 sm:mt-0">
-                        <a href="#" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 rtl:-scale-x-100">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            <span>Previous</span>
-                        </a>
+                </section>
+           
 
-                        <a href="#" className="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                            <span>Next</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 rtl:scale-x-100">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
-                    </div>
-                </div> */}
-            </section>
-            
-       </>
+        </>
     );
 };
 
-export default verthe;
+
+export default Verthe

@@ -165,7 +165,7 @@ const ChatUi = () => {
                             <div className="flex flex-col h-full overflow-x-auto scrollbar-hide mb-4">
                                 <div className="flex flex-col h-full">
                              
-                                    {selectedChat ?
+                                    {selectedChat && messages.length > 0 ?
                                         messages.map((message) => (
                                             <div key={message._id} className="grid grid-cols-12 gap-y-2">
                                                 {message?.senderId?._id?.toString() === userId || message?.senderId === userId ? (
