@@ -7,7 +7,7 @@ import PostComponent from '../Post'
 
 const Profile = () => {
     const token = useSelector(state => state.provider.token);
-   
+    
     const[posts,setPosts] = useState([]);
     const [dp, setDp] = useState('');
     const [profile, setProfile] = useState({
@@ -32,7 +32,8 @@ const Profile = () => {
                   'Content-Type': 'multipart/form-data',
               },
           })  ;
-            console.log(response.data.posts);
+            
+            
           setPosts(response.data.posts)
         } catch (error) {
             console.log(error);

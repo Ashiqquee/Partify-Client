@@ -7,7 +7,7 @@ const Verthe  = () => {
     const [provider, setProvider] = useState('');
 
     const fetchProvider = async () => {
-        const response = await axiosInstance.get(`/provider/${providerId}`);
+        const response = await axiosInstance.get(`/pro/${providerId}`);
 
         console.log(response.data.provider);
         setProvider(response.data.provider)

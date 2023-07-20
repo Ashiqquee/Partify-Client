@@ -25,7 +25,7 @@ const ChatUi = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+            
             const { chats } = response.data;
             console.log(chats);
             setInitialImage(chats[0]?.providerId?.profilePic);
