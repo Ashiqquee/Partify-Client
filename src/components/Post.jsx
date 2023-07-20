@@ -1,6 +1,6 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment, faEllipsisVertical, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faComment, faEllipsisVertical, faTrash, faBookmark } from '@fortawesome/free-solid-svg-icons'
 import { useState } from "react";
 import axiosInstance from '../api/axios'
 import { useSelector } from "react-redux";
@@ -9,10 +9,12 @@ import { useNavigate } from 'react-router-dom'
 
 
 
-const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
+const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPosts, profile, onSavePost, onUnsavePost }) => {
+console.log(savedPosts);
+
     const [newComment, setNewComments] = useState('');
     const [showOptionIndex, setShowOptionIndex] = useState(null);
-    const [showOption, setShowOption] = useState(false)
+    const [showOption, setShowOption] = useState(false);
     const token = useSelector(state => state.provider.token);
     const userToken = useSelector(state => state.user.token);
     const userId = useSelector(state => state.user.id);
@@ -46,6 +48,7 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
             console.log(error);
         }
     };
+
 
 
 
@@ -217,9 +220,62 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
 
     };
 
+    const handleSavePost = async (postId) => {
+        if (!userToken) return navigate('/login');
+
+        try {
+            
+            const { data } = await axiosInstance.patch(`/savePost/${postId}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            });
+
+      
+            onSavePost(data.likedPost)
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleUnsavePost = async(postId) => {
+
+        if (!userToken) return navigate('/login');
+
+        try {
+            const { data } = await axiosInstance.patch(`/unsavePost/${postId}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            });
+
+        
+            onUnsavePost(data.likedPost);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleReport = async(postId) => {
+        try {
+            const { status } = await axiosInstance.patch(`/report/${postId}`,{},{
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            });
+            console.log(status);
+            if(status === 200) {
+                setShowOption(null)
+                toast.warn('Post has been reported')
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const handlePostClick = (postId) => {
-        console.log(postId);
+
         setSelectedPost(postId);
     };
 
@@ -247,7 +303,7 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
                         </div>
                         <div className="relative">
 
-                            {role === 'provider' ?
+                            {role === 'provider' || role === 'user'  ?
                                 <FontAwesomeIcon
                                     icon={faEllipsisVertical}
                                     onClick={() => handleOptions(index)}
@@ -257,11 +313,19 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
                                 {showOption && showOptionIndex === index ?
                                     <>
                                         <ul className="py-2">
-                                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleConfirmation}  >
-                                                Delete
-                                            </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleEditPost(post?._id) || window.my_modal_2.showModal()}>
-                                                Edit
+                                          {
+                                            role === 'provider' ? 
+                                            <>
+                                                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleConfirmation}  >
+                                                            Delete
+                                                        </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleEditPost(post?._id) || window.my_modal_2.showModal()}>
+                                                            Edit
+                                                        </li>
+                                            </> : 
+                                                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleReport(post._id)}  >
+                                                Report
                                             </li>
+                                          }
                                             <dialog id="my_modal_2" className="modal">
                                                 <div method="dialog" className="modal-box">
                                                     <form className="flex justify-center p-4  w-full" onSubmit={handleSubmit}>
@@ -323,9 +387,9 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
                                                                 </div>
                                                                 {
                                                                     loading ? <button type="submit" className="loading loading-dots loading-md   font-medium text-center text-white bg-indigo-500
-                                  rounded-lg transition duration-200 hover:bg-indigo-600 ease"></button>
+                                                                    rounded-lg transition duration-200 hover:bg-indigo-600 ease"></button>
                                                                         : <button type="submit" className="w-full btn-sm  font-medium text-center text-white bg-indigo-500
-                                  rounded-lg transition duration-200 hover:bg-indigo-600 ease">Add</button>
+                                                                     rounded-lg transition duration-200 hover:bg-indigo-600 ease">Add</button>
                                                                 }
 
 
@@ -387,30 +451,49 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
                         })}
                     </div>
                     <div className="post-content px-4">
-                        {role === 'user' ? <div className="reaction-wrapper flex items-center mt-0">
-                            {post?.likes?.includes(userId) ?
-                                <FontAwesomeIcon
-                                    icon={faHeart}
-                                    className={`h-6 text-indigo-500  `}
-                                    onClick={() => handleUnLike(post?._id)}
-                                /> : <FontAwesomeIcon
-                                    icon={faHeart}
-                                    className={`h-6 text-gray-400`}
-                                    onClick={() => handleLike(post?._id)}
-                                />
-                            }
-                            {selectedPost?._id === post?._id ? <FontAwesomeIcon
-                                icon={faComment}
-                                className="h-6   text-gray-400 ml-3"
-                                onClick={() => setSelectedPost(false)}
+                        {role === 'user' ?
+                            <div className="reaction-wrapper flex items-center mt-0">
+                                <div className="flex justify-between  w-full">
+                                    <div>
+                                        {post?.likes?.includes(userId) ?
+                                            <FontAwesomeIcon
+                                                icon={faHeart}
+                                                className={`h-6 text-indigo-500  `}
+                                                onClick={() => handleUnLike(post?._id)}
+                                            /> : <FontAwesomeIcon
+                                                icon={faHeart}
+                                                className={`h-6 text-gray-400`}
+                                                onClick={() => handleLike(post?._id)}
+                                            />
+                                        }
+                                        {selectedPost?._id === post?._id ? <FontAwesomeIcon
+                                            icon={faComment}
+                                            className="h-6   text-gray-400 ml-3"
+                                            onClick={() => setSelectedPost(false)}
 
-                            /> : <FontAwesomeIcon
-                                icon={faComment}
-                                className="h-6   text-gray-400 ml-3"
-                                onClick={() => handlePostClick(post)}
+                                        /> : <FontAwesomeIcon
+                                            icon={faComment}
+                                            className="h-6   text-gray-400 ml-3"
+                                            onClick={() => handlePostClick(post)}
 
-                            />}
-                        </div> :
+                                        />}
+                                    </div>
+                                    <div>
+                                      {
+                                        savedPosts?.includes(post?._id) ?
+                                                <FontAwesomeIcon icon={faBookmark} className="h-6 text-indigo-500"
+                                                onClick={() => handleUnsavePost(post?._id)}
+                                                />
+                                                : <FontAwesomeIcon icon={faBookmark} className="h-6 text-gray-400"
+
+                                                    onClick={() => handleSavePost(post?._id)}
+
+                                                />
+                                      }
+                                    </div>
+                                </div>
+
+                            </div> :
 
                             selectedPost ? <FontAwesomeIcon
                                 icon={faComment}
@@ -433,25 +516,25 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment }) => {
                             <span className="font-bold">{post.providerId?.name}</span>{" "}
                             {post.caption}
                         </p>
-                       <div className="flex justify-between">
+                        <div className="flex justify-between">
                             <p className="post-time text-sm text-gray-500 mt-1 mb-2">
                                 {post.createdAt ? new Date(post.createdAt).toDateString() : ""}
                             </p>
                             {
                                 selectedPost?._id === post?._id ?
                                     <p className="post-time text-md text-indigo-500 mb-2 hover:cursor-pointer">
-                                      show more
+                                        show more
                                     </p> : null
                             }
-                           
-                       </div>
+
+                        </div>
                     </div>
                     {
-                        role === 'user' && selectedPost?._id !==post?._id && (
+                        role === 'user' && selectedPost?._id !== post?._id && (
                             <div className="comment-wrapper w-full h-12 mt-2 border-t border-gray-300 flex justify-between items-center">
                                 <div className="avatar">
                                     <div className="w-8 ml-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img src="https://w7.pngwing.com/pngs/223/244/png-transparent-computer-icons-avatar-user-profile-avatar-heroes-rectangle-black.png" alt="" />
+                                        <img src={profile || "https://w7.pngwing.com/pngs/223/244/png-transparent-computer-icons-avatar-user-profile-avatar-heroes-rectangle-black.png"} alt="" />
                                     </div>
                                 </div>
                                 <input

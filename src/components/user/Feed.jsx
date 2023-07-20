@@ -9,7 +9,10 @@ const Feed = () => {
 
     const userId = useSelector(state => state.user.id);
     const [posts, setPosts] = useState([]);
-    const width = useWidth()
+    const [profile, setProfile] = useState([]);
+    const width = useWidth();
+    const {token} = useSelector(state => state.user)
+    const [savedPosts,setSavedPosts] = useState([]);
 
     const fetchFeed = async() => {
         try {
@@ -54,9 +57,37 @@ const Feed = () => {
         setPosts(updatedPosts);
     }
 
-    useEffect(() => {
 
+    const userSavedPosts = async () => {
+        try {
+            if (!token) return setSavedPosts([]);
+
+            const { data } = await axiosInstance.get('/details', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+          
+            setSavedPosts(data?.user?.likedPost);
+            setProfile(data?.user?.image);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const onSavePost = (posts) => {
+        console.log(posts);
+        setSavedPosts(posts);
+    };
+
+    const onUnsavePost = posts => {
+        setSavedPosts(posts)
+    }
+
+
+    useEffect(() => {
         fetchFeed()
+        userSavedPosts()
 
     },[])
 
@@ -65,7 +96,7 @@ const Feed = () => {
             <div className={width > 1118 ? "wrapper px-4 w-5/6 " : "wrapper px-4 w-full" }>
                 <div className="left-col ">
                    
-                    <PostComponent posts={posts} role={'user'} onUnlike={onUnLike} onLike={onLike} addComment={addComment}/>
+                    <PostComponent posts={posts} role={'user'} onUnlike={onUnLike} onLike={onLike} addComment={addComment} savedPosts={savedPosts} profile={profile} onSavePost={onSavePost} onUnsavePost={onUnsavePost} />
                     
                  
                 </div>

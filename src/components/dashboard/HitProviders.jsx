@@ -16,7 +16,7 @@ const HitProviders = ({ frequentProvider }) => {
                                         className="h-full w-full"
                                     />
                                 </div>
-                                <div className="text-sm font-bold ml-3 mt-3 text-white ">
+                                <div className="text-base font-sans font-bold ml-3 mt-3 text-white ">
                                     {provider.name}
                                 </div>
 
