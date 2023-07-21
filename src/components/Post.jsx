@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPosts, profile, onSavePost, onUnsavePost }) => {
-console.log(savedPosts);
+
 
     const [newComment, setNewComments] = useState('');
     const [showOptionIndex, setShowOptionIndex] = useState(null);
@@ -18,6 +18,7 @@ console.log(savedPosts);
     const token = useSelector(state => state.provider.token);
     const userToken = useSelector(state => state.user.token);
     const userId = useSelector(state => state.user.id);
+    console.log(userId);
     const navigate = useNavigate();
     const [confirmAction, setConfirmAction] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
