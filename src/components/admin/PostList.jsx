@@ -92,6 +92,7 @@ const PostList = () => {
                                                 caption
                                             </th>
                                             <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Tags</th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Reports</th>
                                             <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Action</th>
                                            
                                         </tr>
@@ -165,9 +166,14 @@ const PostList = () => {
                                                      </form>
                                                  </dialog>
                                             </td>
+                                             <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                 <div>
+                                                     <h2 className="font-medium text-black">{post?.reports?.length}</h2>
+                                                 </div>
+                                             </td>
                                             <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                  <button className="btn-sm  bg-red-500 text-white rounded-md hover:bg-red-900" 
-                                                     onClick={handleConfirmation}
+                                                     onClick={() => handleConfirmation(posts?._id)}
                                                 
                                                  >Delete</button>
                                             </td>

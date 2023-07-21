@@ -1,9 +1,9 @@
 import Sidebar from "../../components/admin/Sidebar";
-import UserList from "../../components/admin/userList";
+import UserList from "../../components/admin/UserList";
 
 const User = () => {
     return(
-        <div className='bg-gray-100 h-full min-h-screen min-w-screen font-sans '>
+        <div className='bg-gray-100 h-full min-h-screen min-w-screen font-sans overflow-x-hidden'>
             <Sidebar />
 
 

@@ -129,10 +129,10 @@ const ProviderList = () => {
     }
 
     const handleConfirmation = (id) => {
-        console.log(id);
+        
         const provider = providerList.find((provider) => provider._id === id);
-        console.log(provider);
-        setProviderAction(provider)
+       
+        setProviderAction(provider);
         setConfirmAction(true);
     };
 

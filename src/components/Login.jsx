@@ -221,9 +221,15 @@ const Login = ({ url, name }) => {
 
                   {
                      name !== 'admin' ?
-                        <div>
-                           <h3 className='text-indigo-500 hover:cursor-pointer mt-3' onClick={navigateSignup}>Don't have an account?</h3>
+                        <div className='flex justify-between'>
+                           <div>
+                              <h3 className='text-indigo-500 hover:cursor-pointer mt-3' onClick={navigateSignup}>Don't have an account?</h3>
+                           </div>
+                           <div>
+                              <h3 className='text-indigo-500 hover:cursor-pointer mt-3' onClick={() => navigate('/forgetPassword')}>Forget Password?</h3>
+                           </div>
                         </div>
+
                         : null}
 
 

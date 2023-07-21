@@ -250,7 +250,7 @@ const Register = () => {
 
 
                   <div>
-                    <h3 className='text-indigo-500 font-semibold hover:cursor-pointer mb-5' onClick={() => navigate('/login')}>Already have an account?</h3>
+                    <h3 className='text-indigo-500  hover:cursor-pointer mb-5' onClick={() => navigate('/login')}>Already have an account?</h3>
                   </div>
 
                 </>

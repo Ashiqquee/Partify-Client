@@ -9,11 +9,13 @@ const UserList = () => {
 
     const token = useSelector((state) => state.admin.token);
 
-    const [loading, setLoading] = useState(true);
+    const[selectedUser,setSelectedUser] = useState({});
 
     const [confirmAction, setConfirmAction] = useState(false)
 
     const [userList, setUserList] = useState([]);
+
+    const [searchText, setSearchText] = useState('');
 
     
 
@@ -27,7 +29,7 @@ const UserList = () => {
             });
 
             setUserList(response.data.userData);
-            setLoading(false);
+            
         } catch (error) {
             toast.error('Something went wrong')
         }
@@ -95,15 +97,18 @@ const UserList = () => {
         }
     };
 
-    const handleConfirmation = () => {
+    const handleConfirmation = (userId) => {
+        const user = userList.find((user) => user._id === userId);
+        setSelectedUser(user)
         setConfirmAction(true); 
     };
 
-    const handleConfirmAction = (id,action) => {
-       if(action===true){
-            handleUnBlock(id)
+    const handleConfirmAction = () => {
+       if(selectedUser.isBanned===true){
+        console.log(selectedUser._id);
+            handleUnBlock(selectedUser._id)
        }else {
-        handleBlock(id)
+           handleBlock(selectedUser._id)
        }
     };
 
@@ -114,112 +119,154 @@ const UserList = () => {
 
     return (
         <>
-           
-            <div className="flex justify-center bg-white w-full m-12 border-solid border-2 border-gray-300 shadow-lg rounded-lg">
-                {loading ? (
-                    <section className="bg-white dark:bg-gray-900">
-                        <div className="container px-6 py-8 mx-auto animate-pulse">
-                            <div className="text-center">
-                                <p className="w-32 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-
-                                <div className="flex flex-wrap justify-center gap-4 mt-10">
-                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-                                    <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+            <section className="container px-4 mx-auto ">
+                <div className="sm:flex sm:items-center sm:justify-between ">
+                    <div className="flex  justify-start w-full ">
+                        <div className="flex items-center gap-x-3">
+                            <h2 className="text-lg font-medium text-gray-800 dark:text-white">Users</h2>
+                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{userList?.length || 0}</span>
+                        </div>
+                        <div className="max-w-md mx-auto ml-8">
+                            <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
+                                <div className="grid place-items-center h-full w-12 text-gray-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
                                 </div>
 
-                            </div>
-
-                            <hr className="my-6 border-gray-200 md:my-10 dark:border-gray-700" />
-
-                            <div className="flex flex-col items-center sm:flex-row sm:justify-between">
-                                <p className="w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-
-                                <p className="w-64 h-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                                <input
+                                    className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
+                                    type="text"
+                                    id="search"
+                                    placeholder="Search User.."
+                                    value={searchText}
+                                    onChange={(e) => setSearchText(e.target.value)}
+                                />
                             </div>
                         </div>
-                    </section>
-                ) : (
-                    <div className="w-full overflow-x-auto">
-                        <table className="w-full">
-                            {userList.length > 0 ? (
-                                <>
-                                    <thead className="w-full">
-                                        <tr className="w-full">
-                                            <th className="px-4 py-2 border-solid border-2 border-gray-300">#
+
+                    </div>
+                </div>
+
+
+                <div className="flex flex-col mt-6">
+                    <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                    <thead className="bg-gray-50 dark:bg-gray-800">
+                                        <tr>
+                                            <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                <button className="flex items-center gap-x-3 focus:outline-none">
+                                                    <span>Name</span>
+                                                      
+                                                </button>
                                             </th>
-                                            <th className="px-4 py-2 border-solid border-2 border-gray-300">Name</th>
-                                            <th className="px-4 py-2 border-solid border-2 border-gray-300">Phone</th>
-                                            <th className="px-4 py-2 border-solid border-2 border-gray-300">Email</th>
-                                            <th className="px-4 py-2 border-solid border-2 border-gray-300">Status</th>
-                                            <th className="px-4 py-2 border-solid border-2 border-gray-300">Action</th>
+                                            <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                Phone
+                                            </th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                Email
+                                            </th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Status</th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Action</th>
+
+                                    
+
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        {userList.map((obj, index) => (
-                                            <tr key={obj._id}>
-                                                <td className="px-4 py-2 font-bold border-solid border-2 border-gray-300">
-                                                    {index + 1}
-                                                </td>
-                                                <td className="px-4 py-2 font-bold border-solid border-2 border-gray-300 text-center">{obj.name}</td>
-                                                <td className="px-4 py-2 font-bold border-solid border-2 border-gray-300 text-center">{obj.phone}</td>
-                                                <td className="px-4 py-2 font-bold border-solid border-2 border-gray-300 text-center">{obj.email}</td>
-                                                <td className="px-4 py-2 font-bold border-solid border-2 border-gray-300 text-center">{obj.isBanned ? (
-                                                    <p>Blocked</p>
-                                                ) : (
-                                                    <p>Accessible</p>
-                                                )}</td>
-                                                <td className="px-4 py-2 border-solid border-2 border-gray-300 text-center">
-                                                    {obj.isBanned ? (
-                                                        <button
-                                                            onClick={handleConfirmation}
-                                                            className="btn-sm bg-green-900 text-white rounded shadow hover:bg-green-950"
-                                                        >
-                                                            access
-                                                        </button>
-                                                    ) : (
-                                                        <button
-                                                            onClick={handleConfirmation}
-                                                            className="btn-sm bg-red-500 text-white rounded shadow hover:bg-red-900"
-                                                        >
-                                                            block
-                                                        </button>
-                                                    )}
-                                                    {confirmAction && (
-                                                        toast.info(
-                                                            <div>
-                                                                <p>Are you sure you want to proceed?</p>
-                                                                <button className="btn-sm bg-indigo-500 text-white rounded-md" onClick={() => handleConfirmAction(obj._id, obj.isBanned)}>Confirm</button>
-                                                                <button className="btn-sm bg-red-500 ml-1 text-white rounded-md" onClick={() => setConfirmAction(false)}>Cancel</button>
-                                                            </div>,
-                                                            {
-                                                                toastId: '',
-                                                                autoClose: false,
-                                                                closeOnClick: true,
-                                                                draggable: false,
-                                                            }
-                                                        )
-                                                    )}
+                                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                                        {userList?.length > 0 ? (
+                                            userList.filter((user)=>user.name.toLowerCase().includes(searchText)).map((order) => (
+                                                <tr key={order._id}>
+                                                    <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                        <div>
+                                                            <h2 className="font-medium text-black">{order?.name}</h2>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                        <div>
+                                                            <h2 className="font-medium text-bold">{order?.phone}</h2>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                        <div>
+                                                            <h2 className="font-medium text-bold">{order?.email}</h2>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                        <div>
+                                                            <h2 className="font-medium text-bold">{order.isBanned ? (
+                                                            'Blocked'
+                                                            ) : (
+                                                             'Accessible'
+                                                            )}</h2>
+                                                        </div>
+                                                    </td>
+                                                   
+                                                    <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                        <div>
+
+                                                            {order.isBanned ? (
+                                                                <button
+                                                                    onClick={() => handleConfirmation(order?._id)}
+                                                                    className="btn-sm bg-green-900 text-white rounded shadow hover:bg-green-950"
+                                                                >
+                                                                    access
+                                                                </button>
+                                                            ) : (
+                                                                <button
+                                                                        onClick={() => handleConfirmation(order?._id)}
+                                                                    className="btn-sm bg-red-500 text-white rounded shadow hover:bg-red-900"
+                                                                >
+                                                                    block
+                                                                </button>
+                                                            )}
+                                                            {confirmAction && (
+                                                                toast.info(
+                                                                    <div>
+                                                                        <p>Are you sure you want to proceed?</p>
+                                                                        <button className="btn-sm bg-indigo-500 text-white rounded-md" onClick={() => handleConfirmAction()}>Confirm</button>
+                                                                        <button className="btn-sm bg-red-500 ml-1 text-white rounded-md" onClick={() => setConfirmAction(false)}>Cancel</button>
+                                                                    </div>,
+                                                                    {
+                                                                        toastId: '',
+                                                                        autoClose: false,
+                                                                        closeOnClick: true,
+                                                                        draggable: false,
+                                                                    }
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td className="px-4 py-4 text-sm font-medium text-gray-500" colSpan={3}>
+                                                    No User found
                                                 </td>
                                             </tr>
-                                        ))}
+                                        )}
                                     </tbody>
-                                </>
-                            ) : (
-                                <tbody>
-                                    <tr>
-                                        <td className="font-black p-24 text-center" colSpan="4">
-                                            <FontAwesomeIcon icon={faUser} /> User List is empty
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            )}
-                        </table>
+                                </table>
+
+                            </div>
+                        </div>
                     </div>
-                )}
-            </div>
+                </div>
+            </section>
+
+
+
+
+
+
+
+
+
+           
         </>
     )
 }
