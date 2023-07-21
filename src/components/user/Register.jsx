@@ -135,7 +135,8 @@ const Register = () => {
   return (
     <>
       <>
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 pt-12 lg:px-8">
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 pt-12 lg:px-8 ">
+          <div className=" ">
           {clicked ?
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
               <h1 className="font-sans text-center font-black text-indigo-500 text-3xl ">PARTIFY | SIGNUP</h1>
@@ -143,7 +144,7 @@ const Register = () => {
 
             </div> : null}
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm ">
 
             <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
               {clicked ? (
@@ -277,7 +278,7 @@ const Register = () => {
 
                     <div className="relative mt-2">
                       <p
-                        className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500 rounded-lg transition duration-200 hover:bg-indigo-600 ease"
+                            className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500 rounded-lg transition duration-200 hover:bg-indigo-600 ease hover:cursor-pointer"
                         onClick={otpVerify}
                       >
                         Signup
@@ -287,6 +288,7 @@ const Register = () => {
                 </>
               )}
             </div>
+          </div>
           </div>
         </div>
 
