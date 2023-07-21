@@ -68,7 +68,7 @@ const Signup = () => {
             window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
                 size: 'invisible',
                 callback: () => {
-
+                    toast('Otp sended succesfully');
                     sendOtp()
                 },
                 'expired-callback': () => {
@@ -91,7 +91,6 @@ const Signup = () => {
                 .then((confirmationResult) => {
                     window.confirmationResult = confirmationResult;
                     setClicked(false);
-                    toast('Otp sended succesfully');
                 }).catch((error) => {
                     toast.error(error);
                 });
@@ -205,127 +204,211 @@ const Signup = () => {
 
     return (
         <>
-            <div className="flex min-h-screen bg-white">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 pt-12 lg:px-8 ">
+                {clicked ?
+                    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                        <h1 className="font-sans text-center font-black text-indigo-500 text-3xl ">PARTIFY | SIGNUP</h1>
+                        <p className="text-sm font-semibold text-center ">parties simplified</p>
 
-                {
-                    clicked ? <div className="container mx-auto">
-                        <div className="flex items-center justify-center h-screen">
-                            <div className="w-full max-w-md">
-                                <div className="bg-white shadow-md rounded-lg px-8 py-6">
-                                    <h4 className="text-xl font-black mb-2">Partify</h4>
-                                    <p className="text-black font-bold mb-6">Everything is simple with Login.</p>
+                    </div> : null}
+            
+                    <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm ">
 
-                                    <div className="mb-4">
-                                        <label htmlFor="username" className="block text-black font-semibold">Company Name</label>
-                                        <input type="text" placeholder="Your Company name here" value={formData.name} name="name"
-                                            onChange={handleChange} className="form-input p-1 mt-1 block w-full  h-10" />
-                                    </div>
+                        <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
+                        { clicked ? 
+
+<>
+
+                                <div className="relative">
+                                    <p
+                                        className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                                                              absolute"
+                                    >
+                                        Company Name
+                                    </p>
+                                    <input
+                                        placeholder="Your company name here" value={formData.name} name="name"
+                                        onChange={handleChange}
+                                        type="text"
+                                        className="border placeholder-gray-400 focus:outline-none
+                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                             border-gray-300 rounded-md"
+                                    />
+                                </div>
 
 
+                                <div className="relative mt-3">
+                                    <p
+                                        className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                                                              absolute"
+                                    >
+                                        Phone
+                                    </p>
+                                    <input
+                                        placeholder="Your phone here" name="phone" value={formData.phone}
+                                        onChange={handleChange}
+                                        type="text"
+                                        className="border placeholder-gray-400 focus:outline-none
+                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                             border-gray-300 rounded-md"
+                                    />
+                                </div>
 
-                                    <div className="mb-4">
-                                        <label htmlFor="phone" className="block text-black font-semibold">Phone</label>
-                                        <input type="text" placeholder="Your phone here" name="phone" value={formData.phone}
-                                            onChange={handleChange} className="form-input p-1 mt-1 block w-full  h-10" />
-                                    </div>
+                                <div className="relative mt-3">
+                                    <p
+                                        className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                                                              absolute"
+                                    >
+                                        Password
+                                    </p>
+                                    <input
+                                        value={formData.password}
+                                        onChange={handleChange} placeholder="Your password here" name="password"
+                                        type="text"
+                                        className="border placeholder-gray-400 focus:outline-none
+                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                             border-gray-300 rounded-md"
+                                    />
+                                </div>
 
-                                    <div className="mb-4">
-                                        <label htmlFor="password" className="block text-black font-semibold">Password</label>
-                                        <input type="password" value={formData.password}
-                                            onChange={handleChange} placeholder="Your password here" name="password" className="form-input mt-1 p-1 block w-full h-10" />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="services" className="block text-black font-semibold">Services</label>
-                                        <Select
-                                            name="services"
-                                            options={options}
-                                            isMulti
-                                            value={formData.services.map((service) =>
-                                                options.find((option) => option.value === service)
-                                            )}
-                                            onChange={(selectedOptions) => {
-                                                const selectedServices = selectedOptions.map((option) => option.value);
+                                <div className="relative mt-4">
+                                    <p
+                                        className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                                                              "
+                                    >
+                                        Services
+                                    </p>
+                                    <Select
+                                        className="border placeholder-gray-400 focus:outline-none
+                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                             border-gray-300 rounded-md"
+                                        name="services"
+                                        options={options}
+                                        isMulti
+                                        value={formData.services.map((service) =>
+                                            options.find((option) => option.value === service)
+                                        )}
+                                        onChange={(selectedOptions) => {
+                                            const selectedServices = selectedOptions.map((option) => option.value);
+                                            setFormData((prevFormData) => ({
+                                                ...prevFormData,
+                                                services: selectedServices,
+                                            }));
+                                        }}
+                                    />
+
+                                </div>
+
+                                <div className="relative mt-4">
+                                    <p
+                                        className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                                                              "
+                                    >
+                                        Places
+                                    </p>
+                                    <Select
+                                        className="border placeholder-gray-400 focus:outline-none
+                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                             border-gray-300 rounded-md"
+                                        name="places"
+                                        options={keralaDistrictsOptions}
+                                        isMulti
+                                        value={formData.places.map((place) => ({
+                                            value: place,
+                                            label: place,
+                                        }))}
+
+                                        onChange={(selectedOptions) => {
+                                            const selectedDistrict = selectedOptions.map((option) => option.value);
+                                            if (selectedDistrict.includes('All Kerala')) {
+                                                if (selectedDistrict.length > 1) {
+                                                    toast.warn('Already Selected All Kerala');
+                                                }
                                                 setFormData((prevFormData) => ({
                                                     ...prevFormData,
-                                                    services: selectedServices,
+                                                    places: ['All Kerala']
+                                                }))
+                                            } else {
+                                                setFormData((prevFormData) => ({
+                                                    ...prevFormData,
+                                                    places: selectedDistrict.filter((place) => place !== "All Kerala"),
                                                 }));
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="services" className="block text-black font-semibold">Place</label>
-                                        <Select
-                                            name="places"
-                                            options={keralaDistrictsOptions}
-                                            isMulti
-                                            value={formData.places.map((place) => ({
-                                                value: place,
-                                                label: place,
-                                            }))}
+                                            }
+                                        }}
 
-                                            onChange={(selectedOptions) => {
-                                                const selectedDistrict = selectedOptions.map((option) => option.value);
-                                                if (selectedDistrict.includes('All Kerala')) {
-                                                    if (selectedDistrict.length > 1) {
-                                                        toast.warn('Already Selected All Kerala');
-                                                    }
-                                                    setFormData((prevFormData) => ({
-                                                        ...prevFormData,
-                                                        places: ['All Kerala']
-                                                    }))
-                                                } else {
-                                                    setFormData((prevFormData) => ({
-                                                        ...prevFormData,
-                                                        places: selectedDistrict.filter((place) => place !== "All Kerala"),
-                                                    }));
-                                                }
-                                            }}
-
-                                        />
-
-
-
-
-                                    </div>
-
-
-                                    <div className="flex items-center justify-between mt-2">
-                                        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-900" onClick={sendOtp}>continue</button>
-
-                                        <a href="/provider/login" className="text-blue-500">Already have an account?</a>
-                                    </div>
-
+                                    />
 
 
                                 </div>
-                            </div>
-                        </div>
-                        <div id="recaptcha-container"></div>
-                    </div> :
-                        <div className="container mx-auto">
-                            <div className="flex items-center justify-center h-screen">
-                                <div className="w-full max-w-md">
-                                    <div className="bg-white shadow-md rounded-lg px-8 py-6">
-                                        <h4 className="text-xl font-black mb-2">Partify</h4>
-                                        <p className="text-black font-bold mb-6">Enter Your Otp</p>
-                                        <div className="mb-4">
-                                            <label htmlFor="otp" className="block text-black font-semibold">otp</label>
-                                            <input type="text" value={otpValue}
-                                                onChange={(e) => setOtpValue(e.target.value)} placeholder="Your otp here" className="form-input mt-1 p-1 block w-full h-10" />
-                                            <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-900" onClick={otpVerify}>continue</button>
-                                            <div id="recaptcha-container"></div>
-                                        </div>
-                                    </div>
+
+
+
+
+
+
+
+
+                                <div className="relative">
+                                    <p
+                                        className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
+                  rounded-lg transition duration-200 hover:bg-indigo-600 ease hover:cursor-pointer"
+                                        onClick={sendOtp}
+                                    >
+                                        Continue
+                                    </p>
+                                </div>
+
+
+
+                                <div>
+                                    <h3 className='text-indigo-500 font-semibold hover:cursor-pointer mb-5' onClick={() => navigate('/provider/login')}>Already have an account?</h3>
+                                </div>
+
+
+
+                    <div id="recaptcha-container"></div>
+               
+                </>
+ :
+                            <>
+                                <div className="sm:mx-auto sm:w-full sm:max-w-sm mt-32">
+                                    <h1 className="font-sans text-center font-black text-indigo-500 text-3xl ">PARTIFY | SIGNUP</h1>
+                                    <p className="text-sm font-semibold text-center ">parties simplified</p>
 
                                 </div>
 
-                            </div>
 
-                        </div>
+                                <div className="relative mt-10">
+                                    <p className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
+                                        OTP
+                                    </p>
+                                    <input
+                                        placeholder="123456"
+                                        value={otpValue}
+                                        onChange={(e) => setOtpValue(e.target.value)}
+                                        name="otp"
+                                        type="text"
+                                        className="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"
+                                    />
 
+                                    <div className="relative mt-2">
+                                        <p
+                                            className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500 rounded-lg transition duration-200 hover:bg-indigo-600 ease hover:cursor-pointer"
+                                            onClick={otpVerify}
+                                        >
+                                            Signup
+                                        </p>
+                                    </div>
+                                </div>
+                            </>
 
+                      
                 }
+                    </div>
+                </div>
             </div>
+                    
+
 
         </>
     )

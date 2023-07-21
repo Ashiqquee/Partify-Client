@@ -132,10 +132,11 @@ const Login = ({ url, name }) => {
                }
             }
          } catch (error) {
+            
             if (error.response?.status === 401) {
                toast.error(error?.response?.data?.errMsg)
             } else if (error.response?.status === 402) {
-               toast.error(error?.response?.data?.errMsgx)
+               toast.warn(error?.response?.data?.errMsg)
 
             } else {
                toast.error('Something went wrong')
