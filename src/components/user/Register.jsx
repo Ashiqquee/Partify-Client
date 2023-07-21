@@ -13,7 +13,7 @@ const Register = () => {
     email: "",
     phone: "",
     password: "",
-    referalCode:""
+    referalCode: ""
   });
 
   const validateFormData = () => {
@@ -58,6 +58,7 @@ const Register = () => {
         {
           size: "invisible",
           callback: () => {
+            toast("Otp sended succesfully");
             sendOtp();
           },
           "expired-callback": () => {
@@ -81,7 +82,7 @@ const Register = () => {
         .then((confirmationResult) => {
           window.confirmationResult = confirmationResult;
           setClicked(false);
-          toast("Otp sended succesfully");
+
         })
         .catch((error) => {
           toast.error(error);
@@ -134,167 +135,162 @@ const Register = () => {
   return (
     <>
       <>
-        <div className="bg-white relative lg:py-20">
-          <div
-            className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-0 mr-auto mb-0 ml-auto max-w-7xl
-                            xl:px-5 lg:flex-row"
-          >
-            <div className="flex flex-col items-center w-full pt-5 pr-10 pb-20 pl-10 lg:pt-20 lg:flex-row">
-              <div className="w-full bg-cover relative max-w-md lg:max-w-2xl lg:w-7/12">
-                <div className="flex flex-col items-center justify-center w-full h-full relative lg:pr-10">
-                  <img
-                    src="https://res.cloudinary.com/macxenon/image/upload/v1631570592/Run_-_Health_qcghbu.png"
-                    className="btn-"
-                  />
-                </div>
-              </div>
-              <div className="w-full mt-20 mr-0 mb-0 ml-0 relative z-10 max-w-2xl lg:mt-0 lg:w-5/12">
-                <div
-                  className="flex flex-col items-start justify-start pt-10 pr-10 pb-10 pl-10 bg-white shadow-2xl rounded-xl
-            relative z-10"
-                >
-                  <p className="w-full text-4xl font-medium text-center leading-snug font-serif">
-                    <span className="font-medium">partify | </span>
-                    Sign up
-                  </p>
-                  <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-                    {clicked ? (
-                      <>
-                        <div className="relative">
-                          <p
-                            className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 pt-12 lg:px-8">
+          {clicked ?
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+              <h1 className="font-sans text-center font-black text-indigo-500 text-3xl ">PARTIFY | SIGNUP</h1>
+              <p className="text-sm font-semibold text-center ">parties simplified</p>
+
+            </div> : null}
+
+          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+
+            <div className="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
+              {clicked ? (
+                <>
+                  <div className="relative">
+                    <p
+                      className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                                                               absolute"
-                          >
-                            Username
-                          </p>
-                          <input
-                            placeholder="John"
-                            value={formData.name}
-                            name="name"
-                            onChange={handleChange}
-                            type="text"
-                            className="border placeholder-gray-400 focus:outline-none
+                    >
+                      Username
+                    </p>
+                    <input
+                      placeholder="John"
+                      value={formData.name}
+                      name="name"
+                      onChange={handleChange}
+                      type="text"
+                      className="border placeholder-gray-400 focus:outline-none
                              focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                              border-gray-300 rounded-md"
-                          />
-                        </div>
-                        <div className="relative">
-                          <p
-                            className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                             absolute"
-                          >
-                            Phone
-                          </p>
-                          <input
-                            placeholder="1234567890"
-                            value={formData.phone}
-                            name="phone"
-                            onChange={handleChange}
-                            type="text"
-                            className="border placeholder-gray-400 focus:outline-none
-                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                             border-gray-300 rounded-md"
-                          />
-                        </div>
-                        <div className="relative">
-                          <p className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
-                            Email
-                          </p>
-                          <input
-                            placeholder="123@ex.com"
-                            value={formData.email}
-                            name="email"
-                            onChange={handleChange}
-                            type="email"
-                            className="border placeholder-gray-400 focus:outline-none
-                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                             border-gray-300 rounded-md"
-                          />
-                        </div>
-                        <div className="relative">
-                          <p
-                            className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                             absolute"
-                          >
-                            Password
-                          </p>
-                          <input
-                            placeholder="Password"
-                            type="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            name="password"
-                            className="border placeholder-gray-400 focus:outline-none
-                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                  border-gray-300 rounded-md"
-                          />
-                        </div>
-
-                        <div className="relative">
-                          <p
-                            className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                             absolute"
-                          >
-                            Referal Code
-                          </p>
-                          <input
-                            placeholder="Referal Code (if any)"
-                            type="text"
-                            value={formData.referalCode}
-                            onChange={handleChange}
-                            name="referalCode"
-                            className="border placeholder-gray-400 focus:outline-none
-                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                  border-gray-300 rounded-md"
-                          />
-                        </div>
-                        <div className="relative">
-                          <p
-                            className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
-                  rounded-lg transition duration-200 hover:bg-indigo-600 ease"
-                            onClick={sendOtp}
-                          >
-                            Continue
-                          </p>
-                        </div>
-
-                       
-                       
-                            <div>
-                              <h3 className='text-indigo-500 hover:cursor-pointer' onClick={() => navigate('/login')}>Already have an account?</h3>
-                            </div>
-                          
-                      </>
-                    ) : (
-                      <div className="relative">
-                        <p className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
-                          OTP
-                        </p>
-                        <input
-                          placeholder="123456"
-                          value={otpValue}
-                          onChange={(e) => setOtpValue(e.target.value)}
-                          name="otp"
-                          type="text"
-                          className="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"
-                        />
-
-                        <div className="relative mt-2">
-                          <p
-                            className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500 rounded-lg transition duration-200 hover:bg-indigo-600 ease"
-                            onClick={otpVerify}
-                          >
-                            Signup
-                          </p>
-                        </div>
-                      </div>
-                    )}
+                    />
                   </div>
-                </div>
-              </div>
+                  <div className="relative">
+                    <p
+                      className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                             absolute"
+                    >
+                      Phone
+                    </p>
+                    <input
+                      placeholder="1234567890"
+                      value={formData.phone}
+                      name="phone"
+                      onChange={handleChange}
+                      type="text"
+                      className="border placeholder-gray-400 focus:outline-none
+                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                             border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="relative">
+                    <p className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
+                      Email
+                    </p>
+                    <input
+                      placeholder="123@ex.com"
+                      value={formData.email}
+                      name="email"
+                      onChange={handleChange}
+                      type="email"
+                      className="border placeholder-gray-400 focus:outline-none
+                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                             border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="relative">
+                    <p
+                      className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                             absolute"
+                    >
+                      Password
+                    </p>
+                    <input
+                      placeholder="Password"
+                      type="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      name="password"
+                      className="border placeholder-gray-400 focus:outline-none
+                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                  border-gray-300 rounded-md"
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <p
+                      className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                             absolute"
+                    >
+                      Referal Code
+                    </p>
+                    <input
+                      placeholder="Referal Code (if any)"
+                      type="text"
+                      value={formData.referalCode}
+                      onChange={handleChange}
+                      name="referalCode"
+                      className="border placeholder-gray-400 focus:outline-none
+                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
+                  border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="relative">
+                    <p
+                      className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
+                  rounded-lg transition duration-200 hover:bg-indigo-600 ease hover:cursor-pointer"
+                      onClick={sendOtp}
+                    >
+                      Continue
+                    </p>
+                  </div>
+
+
+
+                  <div>
+                    <h3 className='text-indigo-500 font-semibold hover:cursor-pointer mb-5' onClick={() => navigate('/login')}>Already have an account?</h3>
+                  </div>
+
+                </>
+              ) : (
+                <>
+                  <div className="sm:mx-auto sm:w-full sm:max-w-sm mt-32">
+                    <h1 className="font-sans text-center font-black text-indigo-500 text-3xl ">PARTIFY | SIGNUP</h1>
+                    <p className="text-sm font-semibold text-center ">parties simplified</p>
+
+                  </div>
+
+
+                  <div className="relative mt-10">
+                    <p className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
+                      OTP
+                    </p>
+                    <input
+                      placeholder="123456"
+                      value={otpValue}
+                      onChange={(e) => setOtpValue(e.target.value)}
+                      name="otp"
+                      type="text"
+                      className="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"
+                    />
+
+                    <div className="relative mt-2">
+                      <p
+                        className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500 rounded-lg transition duration-200 hover:bg-indigo-600 ease"
+                        onClick={otpVerify}
+                      >
+                        Signup
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
+
+
         <div id="recaptcha-container"></div>
       </>
     </>
