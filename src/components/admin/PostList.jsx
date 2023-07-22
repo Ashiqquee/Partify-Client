@@ -6,9 +6,11 @@ import { toast } from 'react-toastify';
 const PostList = () => {
     const token = useSelector(state => state.admin.token);
     const [posts,setPosts] = useState([]);
+    const[deleteId,setDeleteId] = useState([]);
     const [confirmAction, setConfirmAction] = useState(false);
     const [selectedPost, setSelectedPost] = useState([]);
-    
+    const [searchText, setSearchText] = useState('');
+
     const setPost = (post) => {
         setSelectedPost(post);
     }
@@ -27,13 +29,14 @@ const PostList = () => {
             console.log(error);
         }
     };
-    const handleConfirmation = () => {
+    const handleConfirmation = (postId) => {
+        setDeleteId(postId)
         setConfirmAction(true);
     };
 
 
-   const deletePost = async(postId) => {
-       const response = await axiosInstance.delete(`/admin/posts/${postId}`, {
+   const deletePost = async() => {
+       const response = await axiosInstance.delete(`/admin/posts/${deleteId}`, {
            headers: {
                Authorization: `Bearer ${token}`,
 
@@ -42,7 +45,7 @@ const PostList = () => {
        setConfirmAction(false)
        if (response.status === 200) {
            toast.success('Deleted Successfully');
-           setPosts(prevList => prevList.filter(post => post._id !== postId));
+           setPosts(prevList => prevList.filter(post => post._id !== deleteId));
        }
 
 
@@ -64,9 +67,26 @@ const PostList = () => {
                             <h2 className="text-lg font-medium text-gray-800 dark:text-white">Posts</h2>
                             <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{posts?.length || 0}</span>
                         </div>
-
+                       
                     </div>
+                    <div className="max-w-md mx-auto ml-8">
+                        <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
+                            <div className="grid place-items-center h-full w-12 text-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
 
+                            <input
+                                className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
+                                type="text"
+                                id="search"
+                                placeholder="Search Provider.."
+                                value={searchText}
+                                onChange={(e) => setSearchText(e.target.value)}
+                            />
+                        </div>
+                    </div>
 
                 </div>
 
@@ -101,7 +121,7 @@ const PostList = () => {
                                         
                                      {
                                      posts?.length > 0 ? (
-                                     posts?.map((post) => (
+                                                posts?.filter((post) => post?.providerId.name.toLowerCase().includes(searchText)).map((post) => (
                                         <tr key={post._id}>
                                             <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                 <div>
@@ -173,7 +193,7 @@ const PostList = () => {
                                              </td>
                                             <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                  <button className="btn-sm  bg-red-500 text-white rounded-md hover:bg-red-900" 
-                                                     onClick={() => handleConfirmation(posts?._id)}
+                                                     onClick={() => handleConfirmation(post._id)}
                                                 
                                                  >Delete</button>
                                             </td>
@@ -183,7 +203,7 @@ const PostList = () => {
                                                          <p>Are you sure you want to proceed?</p>
                                                          <button
                                                              className="btn-sm bg-indigo-500 text-white rounded-md"
-                                                             onClick={() => deletePost(post._id)}
+                                                             onClick={() => deletePost()}
                                                          >
                                                              Confirm
                                                          </button>

@@ -18,7 +18,7 @@ const Orders = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+            console.log(response?.data?.orders);
             setOrders(response?.data?.orders);
         } catch (error) {
             console.log(error);
@@ -26,7 +26,7 @@ const Orders = () => {
     };
 
     useEffect(() => {
-        fetchOrders()
+        fetchOrders();
     }, [])
 
     return (

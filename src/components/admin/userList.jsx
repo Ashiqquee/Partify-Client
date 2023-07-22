@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import axiosInstance from '../../api/axios'
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const UserList = () => {
 
@@ -177,26 +175,26 @@ const UserList = () => {
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                                         {userList?.length > 0 ? (
-                                            userList.filter((user)=>user.name.toLowerCase().includes(searchText)).map((order) => (
-                                                <tr key={order._id}>
+                                            userList.filter((user)=>user.name.toLowerCase().includes(searchText)).map((user) => (
+                                                <tr key={user._id}>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div>
-                                                            <h2 className="font-medium text-black">{order?.name}</h2>
+                                                            <h2 className="font-medium text-black">{user?.name}</h2>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div>
-                                                            <h2 className="font-medium text-bold">{order?.phone}</h2>
+                                                            <h2 className="font-medium text-bold">{user?.phone}</h2>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div>
-                                                            <h2 className="font-medium text-bold">{order?.email}</h2>
+                                                            <h2 className="font-medium text-bold">{user?.email}</h2>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div>
-                                                            <h2 className="font-medium text-bold">{order.isBanned ? (
+                                                            <h2 className="font-medium text-bold">{user.isBanned ? (
                                                             'Blocked'
                                                             ) : (
                                                              'Accessible'
@@ -207,16 +205,16 @@ const UserList = () => {
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div>
 
-                                                            {order.isBanned ? (
+                                                            {user.isBanned ? (
                                                                 <button
-                                                                    onClick={() => handleConfirmation(order?._id)}
+                                                                    onClick={() => handleConfirmation(user?._id)}
                                                                     className="btn-sm bg-green-900 text-white rounded shadow hover:bg-green-950"
                                                                 >
                                                                     access
                                                                 </button>
                                                             ) : (
                                                                 <button
-                                                                        onClick={() => handleConfirmation(order?._id)}
+                                                                        onClick={() => handleConfirmation(user?._id)}
                                                                     className="btn-sm bg-red-500 text-white rounded shadow hover:bg-red-900"
                                                                 >
                                                                     block
@@ -260,13 +258,6 @@ const UserList = () => {
 
 
 
-
-
-
-
-
-
-           
         </>
     )
 }
