@@ -166,7 +166,7 @@ const ProviderList = () => {
                 <div className="sm:flex sm:items-center sm:justify-between ">
                     <div className="flex  justify-start w-full ">
                         <div className="flex items-center gap-x-3">
-                            <h2 className="text-lg font-medium text-gray-800 dark:text-white">Users</h2>
+                            <h2 className="text-lg font-medium text-gray-800 dark:text-white">Providers</h2>
                             <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{providerList?.length || 0}</span>
                         </div>
                         <div className="max-w-md mx-auto ml-8">

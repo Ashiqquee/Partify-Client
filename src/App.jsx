@@ -27,6 +27,8 @@ import ProviderChat from './pages/provider/Chat'
 import UserFAQ from './pages/user/FAQ'
 import SingleProvider from "./pages/user/SingleProvider";
 import MorePage from "./pages/user/More";
+import UpgradeToPro from './pages/provider/Pro'
+
 
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
@@ -86,6 +88,8 @@ const App = () => {
         <Route path="/provider/orders" element={providerAuth ? <ProviderOrder /> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/order/:id" element={providerAuth ? <SingleOrderProvider /> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/chat" element={providerAuth ? <ProviderChat /> : <Navigate to='/provider/login' />}></Route>
+        <Route path="/provider/upgrade" element={providerAuth ? <UpgradeToPro /> : <Navigate to='/provider/login' />}></Route>
+
 
 
 

@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 const ServiceList = () => {
 
     const token = useSelector((state) => state.admin.token);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [serviceList, setServiceList] = useState([]);
     const [modalShow, setModalShow] = useState(true);
     const [editService, setEditService] = useState(null);
@@ -88,12 +88,13 @@ const ServiceList = () => {
     };
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
 
         const errors = validateFormData();
 
-        event.preventDefault();
 
         if (Object.keys(errors).length === 0) {
+            setLoading(true);
 
             try {
 
@@ -108,12 +109,25 @@ const ServiceList = () => {
 
                     setServiceList(prevServiceList => [...prevServiceList, response.data.newService])
                     toast.success('Service Added');
+                    setLoading(false);
+                    const timeoutId = setTimeout(() => {
+                        setModalShow(false);
+                    }, 0);
+
+                    return () => clearTimeout(timeoutId);
                 }
             } catch (error) {
                 console.log(error);
                 toast.error(error.response.data.errMsg);
             }
             setModalShow(true);
+        } else if (Object.keys(errors).length === 2) {
+            toast.error('Enter all fields')
+        } else if (errors.name) {
+            toast.error(errors.name)
+        }
+        else if (errors.file) {
+            toast.error(errors.file)
         }
     };
 
@@ -173,32 +187,14 @@ const ServiceList = () => {
 
 
             setServiceList(response.data.serviceList)
-            setLoading(false);
+            
 
         } catch (error) {
             toast.error('Something went wrong')
         }
     }
 
-    const handleModal = () => {
-        const errors = validateFormData();
-
-        if (Object.keys(errors).length === 0) {
-            const timeoutId = setTimeout(() => {
-                setModalShow(false);
-            }, 0);
-
-            return () => clearTimeout(timeoutId);
-        } else if (Object.keys(errors).length === 2) {
-            toast.error('Enter all fields')
-        } else if (errors.name) {
-            toast.error(errors.name)
-        }
-        else if (errors.file) {
-            toast.error(errors.file)
-        }
-    }
-
+  
 
     const showModal = () => {
         const dialogElement = document.getElementById('my_modal_5');
@@ -218,7 +214,7 @@ const ServiceList = () => {
                 <div className="sm:flex sm:items-center sm:justify-between  ">
                     <div className="flex w-full ">
                         <div className="flex items-center gap-x-3">
-                            <button onClick={showModal} className="font-bold text-white text-sm m-1 btn  bg-indigo-500 hover: cursor-pointer">ADD</button>
+                            <button onClick={showModal} className="font-bold text-white text-sm m-1 btn btn-sm bg-indigo-500 hover: cursor-pointer hover:text-black ">ADD</button>
 
             
                 {modalShow &&
@@ -233,13 +229,13 @@ const ServiceList = () => {
                                 <input onChange={handleFileChange} type="file" name="file" className="file-input file-input-bordered file-input-sm w-full max-w-xs" />
                             </div>
                             <div className="modal-action">
-                                <button type="submit" onClick={handleModal} className="px-4 font-semibold py-2 bg-blue-500 text-white rounded hover:bg-blue-900 my_modal_6">Add</button>
+                               <button type="submit" className="px-4 font-semibold py-2 bg-blue-500 text-white rounded hover:bg-blue-900 my_modal_6">{loading ? <span className="loading loading-dots loading-xs"> </span> : 'Add'}</button>
                             </div>
                             {formData.file && (
                                 <div className="mt-3">
                                     <h4>Selected Image:</h4>
                                    { formData.file instanceof File ? (
-                                    <img className="h-12 font-bold mt-3" src={URL.createObjectURL(formData.file)} alt="Selected" />
+                                    <img className="h-20 w-20 font-bold mt-3" src={URL.createObjectURL(formData.file)} alt="Selected" />
                                     ) : null}
                                 </div>
                             )}
@@ -301,29 +297,29 @@ const ServiceList = () => {
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                                         {serviceList?.length > 0 ? (
-                                            serviceList.filter((user) => user.serviceName.toLowerCase().includes(searchText)).map((user) => (
-                                                <tr key={user._id}>
+                                            serviceList.filter((service) => service.serviceName.toLowerCase().includes(searchText)).map((service) => (
+                                                <tr key={service._id}>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div>
-                                                            <h2 className="font-medium text-black">{user?.serviceName}</h2>
+                                                            <h2 className="font-medium text-black">{service?.serviceName}</h2>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap ">
                                                         <div>
-                                                            <img className="h-12 font-bold ml-9" src={user.serviceImage} alt="Service Image" />
+                                                            <img className="h-12 font-bold ml-9" src={service.serviceImage} alt="Service Image" />
                                                         </div>
                                                     </td>
                                                    
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                                                        <label htmlFor="my_modal_6" onClick={() => openEditModal(user)} className="btn w-14 h-1 bg-green-700 text-white rounded-md hover:cursor-pointer ">Edit</label>
+                                                      
+                                                        <button className="btn btn-sm bg-indigo-500 text-white hover:text-black" onClick={() => openEditModal(service) || window.my_modal_3.showModal()}>Edit</button>
 
-
-                                                        <input type="checkbox" id="my_modal_6" className="modal-toggle" />
-                                                        <div className="modal">
-                                                            <div className="modal-box">
+                                                        <dialog id="my_modal_3" className="modal">
                                                                 {
 
-                                                                    editService && <form className="modal-box" encType="multipart/form-data">
+                                                                    editService && 
+                                                                    
+                                                                        <form method="dialog" className="modal-box" encType="multipart/form-data">
                                                                         <h3 className="font-bold text-lg">Edit Service</h3>
                                                                         <div className="mb-4 mt-3">
                                                                             <label htmlFor="edit_name" className="block font-semibold">Service Name</label>
@@ -342,7 +338,7 @@ const ServiceList = () => {
                                                                         <div className="mt-3">
                                                                             <h4>Previous Image:</h4>
                                                                             <img
-                                                                                className="h-12 font-bold mt-3"
+                                                                                className="h-16 w-16 font-bold mt-3"
                                                                                 src={imageEdited ? editFormData.file : (editFormData.file instanceof File ? URL.createObjectURL(editFormData.file) : null)}
                                                                                 alt="Selected"
                                                                             />
@@ -357,16 +353,17 @@ const ServiceList = () => {
                                                                                 className="file-input file-input-bordered file-input-sm w-full max-w-xs"
                                                                             />
                                                                         </div>
-                                                                        <div className="modal-action">
+                                                                        <button onClick={handleEditService} htmlFor="my_modal_6" className="btn px-4 font-semibold py-2 bg-blue-500 text-white rounded hover:bg-blue-900">Update</button>
 
-                                                                            <label onClick={handleEditService} htmlFor="my_modal_6" className="btn px-4 font-semibold py-2 bg-blue-500 text-white rounded hover:bg-blue-900">Update</label>
+                                                                        <div className="modal-action">
+                                                                            <button className="btn">Close</button>
+                                                                            
 
                                                                         </div>
 
                                                                     </form>}
 
-                                                            </div>
-                                                        </div>
+                                                        </dialog>
                                                     </td>
 
                                                  
