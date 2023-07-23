@@ -3,7 +3,7 @@ import ProviderList from "../../components/admin/ProviderList";
 
 const Provider = () => {
     return (
-        <div className='bg-gray-100 h-full min-h-screen min-w-screen font-sans '>
+        <div className='bg-gray-100 h-full min-h-screen min-w-screen font-sans overflow-hidden'>
             <Sidebar />
 
 

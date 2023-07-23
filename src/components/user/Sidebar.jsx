@@ -60,7 +60,7 @@ const Sidebar = () => {
                     <NavItem icon={faWeightHanging} name={"PROVIDERS"} path={'/user/providers'} />
                     <NavItem icon={faComment} name={'CHAT'} path={'/chat'} />
                     <NavItem icon={faUser} name={"PROFILE"} path={'/profile'} />
-                    <NavItem icon={faCircleInfo} name={'More'} path={'/more'} />
+                    <NavItem icon={faCircleInfo} name={'MORE'} path={'/more'} />
                     <NavItem icon={faQuestion} name={'HELP'} path={'/help'} />
                     <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'} />
 

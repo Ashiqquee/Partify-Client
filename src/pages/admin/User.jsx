@@ -3,7 +3,7 @@ import UserList from "../../components/admin/UserList";
 
 const User = () => {
     return(
-        <div className='bg-gray-100 h-full min-h-screen min-w-screen font-sans overflow-x-hidden'>
+        <div className='bg-gray-100 h-full min-h-screen min-w-screen font-sans overflow-hidden'>
             <Sidebar />
 
 

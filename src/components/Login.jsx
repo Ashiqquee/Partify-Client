@@ -16,7 +16,7 @@ const Login = ({ url, name }) => {
    const dispatch = useDispatch();
    const navigate = useNavigate()
    const currentURL = useLocation();
-   const [googleProfile, setGoogleProfile] = useState([]);
+   const [googleProfile, setGoogleProfile] = useState({});
 
 
    const googleLogin = useGoogleLogin({

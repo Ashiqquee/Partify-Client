@@ -9,7 +9,7 @@ import UserList from './pages/admin/User';
 import ProviderSignup from './components/provider/Signup';
 import ProviderList from "./pages/admin/Provider";
 import ProviderHome from "./pages/provider/Home";
-import ManageServices from "./pages/provider/ManageSerice";
+import ManageServices from "./pages/provider/ManageService";
 import Verthe from "./components/admin/Verthe";
 import Profile from "./pages/user/Profile";
 import AddPost from "./pages/provider/AddPost";

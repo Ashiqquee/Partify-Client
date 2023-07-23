@@ -12,7 +12,7 @@ const DetailBox = ({ details }) => {
                     </svg>
 
                     <div className="mx-2">
-                        <h3 className="text-2xl font-medium text-gray-800">{details.totalUsers}</h3>
+                        <h3 className="text-2xl font-medium text-gray-800">{details?.totalUsers}</h3>
                         <p className="mt-1 text-sm text-gray-500">Users</p>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import ServiceButton from "../../components/provider/ServiceButton";
+import Services from "../../components/provider/ServiceManage";
 import Sidebar from "../../components/provider/Sidebar";
 
 
@@ -10,7 +10,7 @@ const ManageServices = () => {
 
             <div className="flex md:ml-64 lg:ml-64 ">
                 
-                <ServiceButton />
+                <Services />
             </div>
 
         </>

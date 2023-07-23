@@ -2,9 +2,9 @@ import { useSelector } from "react-redux";
 import axiosInstance from "../../api/axios";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faSquarePlus, faFaceSadCry } from "@fortawesome/free-solid-svg-icons";
+import {   faFaceSadCry } from "@fortawesome/free-solid-svg-icons";
 import { toast } from 'react-toastify';
-
+import ServiceBox from './ServiceBox'
 
 const ServiceButton = () => {
 
@@ -66,6 +66,10 @@ const ServiceButton = () => {
         }
     };
 
+    const handleRemove = serviceId => {
+        removeService(serviceId)
+    };
+ 
 
     const addService = async (serviceId) => {
         try {
@@ -95,6 +99,11 @@ const ServiceButton = () => {
             toast.error('Something went wrong');
             console.log(error);
         }
+    };
+
+    const handleAdd = serviceId => {
+        console.log(serviceId);
+        addService(serviceId);
     }
 
     useEffect(() => {
@@ -114,48 +123,26 @@ const ServiceButton = () => {
                     Service list is empty
                 </div>
             ) : (
-                <div className="container mt-4 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-                    {serviceList.map((services) => (
-                        <div
-                            key={services._id}
-                            className="bg-indigo-500 p-4 text-white font-bold text-center mx-6"
-                        >
-                            {services.serviceName}
-                            <span onClick={() => removeService(services._id)} className="mx-2 hover:cursor-pointer">
-                                <FontAwesomeIcon icon={faTrash} className="hover:text-red-600" />
-                            </span>
+                    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+                        <div className="grid gap-5 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">
+                            <ServiceBox services={serviceList} removeService={handleRemove} status={'remove'} />
+
                         </div>
-                    ))}
-                </div>
+                    </div>
             )}
 
 
 
 
-            <div className="mt-6">
+            <div >
                 <h1 className=" text-center font-black">ADD NEW SERVICE</h1>
             </div>
-            <div className="container mt-4 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-                {remainingServices.map((service) => (
-                    <div
-                        key={service._id}
-                        className="bg-indigo-500 p-4 text-white font-bold text-center mx-6"
-                    >
-                        {service.serviceName}
-                        <span
-                            onClick={() => addService(service._id)}
-                            className="mx-2 hover:cursor-pointer"
-                        >
-                            <FontAwesomeIcon
-                                icon={faSquarePlus}
-                                className="hover:text-green-600"
-                            />
-                        </span>
-                    </div>
-                ))}
+            <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+                <div className="grid gap-5 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">
+                    <ServiceBox services={remainingServices} addService={handleAdd} status={'add'} />
 
+                </div>
             </div>
-
         </div>
     )
 }

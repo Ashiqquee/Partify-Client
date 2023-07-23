@@ -10,9 +10,17 @@ const PostList = () => {
     const [confirmAction, setConfirmAction] = useState(false);
     const [selectedPost, setSelectedPost] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const[imageOpen,setImageOpen] = useState(false);
+    const [captionOpen, setCaptionOpen] = useState(false);
+    const [tagOpen, setTagOpen] = useState(false);
 
-    const setPost = (post) => {
+
+
+    const setPost = (post,open) => {
         setSelectedPost(post);
+        if (open === 'caption') return setCaptionOpen(true);
+        if(open === 'tags') return setTagOpen(true);
+        setImageOpen(true);
     }
 
     const fetchPosts = async() => {
@@ -129,7 +137,7 @@ const PostList = () => {
                                                 </div>
                                             </td>
                                             <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                
+{/*                                                 
                                                  <button className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900" onClick={() => setPost(post)|| window.my_modal_2.showModal()}>Images</button>
                                                      <dialog id="my_modal_2" className="modal">
                                                          <form method="dialog" className="modal-box">
@@ -151,40 +159,164 @@ const PostList = () => {
                                                          <form method="dialog" className="modal-backdrop">
                                                              <button>close</button>
                                                          </form>
-                                                     </dialog>
+                                                     </dialog> */}
+                                                            <button
+                                                                onClick={() => setPost(post, 'image')}
+                                                                className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+                                                            >
+                                                                Images
+                                                            </button>
+
+                                                            {imageOpen && (
+                                                                <div
+                                                                    className="fixed inset-0 z-10 overflow-y-auto"
+                                                                    aria-labelledby="modal-title"
+                                                                    role="dialog"
+                                                                    aria-modal="true"
+                                                                >
+                                                                    <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                                                                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                                                                            <div>
+
+
+                                                                                <div className="mt-2 ">
+                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
+                                                                                        Images
+                                                                                    </h3>
+                                                                                    {selectedPost && selectedPost?.postImages?.length > 0 && (
+                                                                                        <div className="py-4 font-sans font-semibold">
+                                                                                            {selectedPost?.postImages?.map((images) => (
+                                                                                                <div key={images} className="flex justify-center">
+                                                                                                    <img src={images} alt="postImages" className="w-64 h-36 mt-2" />
+                                                                                                </div>
+                                                                                            ))}
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div className="mt-5 sm:flex sm:items-center sm:justify-between">
+
+                                                                                <div className="sm:flex sm:items-center ">
+                                                                                    <button
+                                                                                        onClick={() => setImageOpen(false)}
+                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                                                    >
+                                                                                        Cancel
+                                                                                    </button>
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
                                               
                                             </td>
-                                            <td className="px-4 py-4 text-sm whitespace-nowrap" >
-                                               
-                                                 <button className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900" onClick={() => setPost(post) || window.my_modal_3.showModal()}>Caption</button>
-                                                     <dialog id="my_modal_3" className="modal">
-                                                         <form method="dialog" className="modal-box">
-                                                             <button className="btn btn-sm btn-circle btn-ghost absolute">✕</button>
-                                                             <h3 className="font-bold text-lg text-center ">Caption</h3>
-                                                         {selectedPost  && (
-                                                             <p className="py-4 font-sans font-bold">
-                                                                 {selectedPost?.caption}
-                                                             </p>
+                                            <td className="px-4 py-4 text-sm " >
+                                                            <button
+                                                                onClick={() => setPost(post, 'caption')}
+                                                                className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+                                                            >
+                                                                Caption
+                                                            </button>
 
-                                                         )}
-                                                         </form>
-                                                     </dialog>
+                                                            {captionOpen && (
+                                                                <div
+                                                                    className="fixed inset-0 z-10 overflow-y-auto"
+                                                                    aria-labelledby="modal-title"
+                                                                    role="dialog"
+                                                                    aria-modal="true"
+                                                                >
+                                                                    <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                                                                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                                                                            <div>
+                                                                               
+
+                                                                                <div className="mt-2 ">
+                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
+                                                                                        Caption
+                                                                                    </h3>
+                                                                                    <p  className="p-4  text-clip overflow-hidden ">
+                                                                                        {selectedPost?.caption}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div className="mt-5 sm:flex sm:items-center sm:justify-between">
+
+                                                                                <div className="sm:flex sm:items-center ">
+                                                                                    <button
+                                                                                        onClick={() => setCaptionOpen(false)}
+                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                                                    >
+                                                                                        Cancel
+                                                                                    </button>
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                 
                                                
                                             </td>
-                                            <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                                 <button className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900" onClick={() => setPost(post) || window.my_modal_5.showModal()}>Tagline</button>
-                                                 <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-                                                     <form method="dialog" className="modal-box">
-                                                         <h3 className="font-bold text-lg">Taglines</h3>
-                                                         {selectedPost && (
-                                                             <p className="py-4">{selectedPost?.tagline}</p>
-                                                         )}
-                                                         <div className="modal-action">
-                                                            
-                                                             <button className="btn btn-sm">Close</button>
-                                                         </div>
-                                                     </form>
-                                                 </dialog>
+                                            <td className="px-4 py-4 text-sm ">
+                                                            <button
+                                                                onClick={() => setPost(post, 'tags')}
+                                                                className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+                                                            >
+                                                                Tags
+                                                            </button>
+
+                                                            {tagOpen && (
+                                                                <div
+                                                                    className="fixed inset-0 z-10 overflow-y-auto"
+                                                                    aria-labelledby="modal-title"
+                                                                    role="dialog"
+                                                                    aria-modal="true"
+                                                                >
+                                                                    <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                                                                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                                                                            <div>
+
+
+                                                                                <div className="mt-2 ">
+                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
+                                                                                        Tags
+                                                                                    </h3>
+                                                                                    <p className="p-4  text-clip overflow-hidden ">
+                                                                                        {selectedPost?.tagline}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div className="mt-5 sm:flex sm:items-center sm:justify-between">
+
+                                                                                <div className="sm:flex sm:items-center ">
+                                                                                    <button
+                                                                                        onClick={() => setTagOpen(false)}
+                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                                                    >
+                                                                                        Cancel
+                                                                                    </button>
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
                                             </td>
                                              <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                  <div>
