@@ -1,72 +1,51 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axiosInstance from "../../api/axios";
 
 const Verthe  = () => {
-    const { providerId } = useParams();
-    const [provider, setProvider] = useState('');
-
-    const fetchProvider = async () => {
-        const response = await axiosInstance.get(`/pro/${providerId}`);
-
-        console.log(response.data.provider);
-        setProvider(response.data.provider)
-    }
-
-
-    useEffect(() => {
-        fetchProvider()
-    }, [])
-
+   
     return (
         <>
+            {/* <div className='flex w-full items-center border bg-red-900 border-gray-200 mt-4 py-6 px-4 rounded-lg w-ful; sm:w-full md:w-full lg:w-64'>
+                <div className="h-12 w-12 rounded-full border overflow-hidden ">
+                    <img
+                        src='https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688971924/hrrjnzm2zlmpz8molkvy.jpg'
+                        alt="Avatar"
+                        className="h-full w-full"
+                    />
+                </div>
+                <div className="text-sm text-white  font-semibold ml-3 ">
+                    teccas events
+                </div>
 
-           
-                
-                <section className="  w-full  ">
-                <div className="container mx-auto px-4 bg-gray-100 ">
-                    <div className=" flex flex-col min-w-0 break-words  w-full mb-6  rounded-lg pt-5 ">
-                            <div className="px-6">
-                               
-                                <div className="text-center ">
-                                <div className="avatar  mt-2">
-                                        <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 ">
-                                            <img src={provider?.profilePic} />
-                                        </div>
-                                    </div>
-                                    <h3 className="text-4xl font-semibold leading-normal  text-blueGray-700 mb-2 ">
-                                        {provider?.name}
-                                    </h3>
-                                    <div className="text-sm leading-normal mt-0 mb-2  font-bold uppercase">
-                                     
-                                        {provider?.places?.map((place, index) => {
-                                            return (
-                                                <p key={index}>{place}</p>
-                                            );
-                                        })}
+            </div> */}
+            <div className="flex flex-col mt-6 overflow-hidden ml-2">
+                <h1>RECENT CHATS</h1>
+                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 scrollbar-hide ">
+                    <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                        <div className="  flex ">
 
-                                    </div>
-                                  
-                                    <div className="mt-2 pt-10   border-b border-blueGray-200 text-center">
-                                        <div className="flex justify-center">
-                                            <div className="w-full lg:w-9/12 px-4">
-                                            <p className="mb-4  leading-relaxed font-bold uppercase">
-                                                    {provider?.description}
-                                                </p>
-                                             
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                   
+                            <div className='flex  items-center border bg-indigo-300 border-gray-200 mt-4 py-6 px-4 rounded-lg w-72 lg:w-64 ml-2'>
+                                <div className="h-12 w-12 rounded-full border overflow-hidden ">
+                                    <img
+                                        src='https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688971924/hrrjnzm2zlmpz8molkvy.jpg'
+                                        alt="Avatar"
+                                        className="h-full w-full"
+                                    />
                                 </div>
-                                
+                                <div className="text-sm text-white  font-semibold ml-3 ">
+                                    teccas events
+                                </div>
+
                             </div>
+
+
+
+
+
+
                         </div>
                     </div>
+                </div>
+            </div>
 
-                </section>
-           
 
         </>
     );
