@@ -10,8 +10,8 @@ const ServiceList = () => {
     const [adsList, setAdsList] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
-
-
+    const [confirmAction, setConfirmAction] = useState(false);
+    const [selectedAd, setSelectedAd] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         file: null,
@@ -19,6 +19,29 @@ const ServiceList = () => {
 
     });
 
+    const handleDelete = async() => {
+        try {
+        const response = await axiosInstance.delete(`/admin/ads/${selectedAd}`,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if(response.status === 200){
+            const updatedAdsList = adsList.filter((item) => item._id !== selectedAd);
+            setAdsList(updatedAdsList);
+             toast.success("Deleted Successfully");
+        }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleConfirmAction = (adId) => {
+        setSelectedAd(adId);
+        setConfirmAction(true);
+    }
 
 
     const validateFormData = () => {
@@ -292,12 +315,15 @@ const ServiceList = () => {
 
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
 
-                                                        <button className="px-4 py-2 mx-auto tracking-wide btn btn-sm text-white capitalize transition-colors duration-300 transform bg-red-500 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80" >Delete</button>
+                                                        <button className="px-4 py-2 mx-auto tracking-wide btn btn-sm text-white capitalize transition-colors duration-300 transform bg-red-500 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
+                                                            onClick={() => handleConfirmAction(ad?._id)}
+                                                        >Delete</button>
 
 
 
 
                                                     </td>
+
 
 
 
@@ -318,6 +344,21 @@ const ServiceList = () => {
                     </div>
                 </div>
             </section>
+            {confirmAction && (
+                toast.info(
+                    <div>
+                        <p>Are you sure you want to proceed?</p>
+                        <button className="btn-sm bg-indigo-500 text-white rounded-md" onClick={() => handleDelete()}>Confirm</button>
+                        <button className="btn-sm bg-red-500 ml-1 text-white rounded-md" onClick={() => setConfirmAction(false)}>Cancel</button>
+                    </div>,
+                    {
+                        toastId: '',
+                        autoClose: false,
+                        closeOnClick: true,
+                        draggable: false,
+                    }
+                )
+            )}
 
 
 
