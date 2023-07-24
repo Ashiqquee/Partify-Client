@@ -60,7 +60,7 @@ const ProviderBox = () => {
 
     const handleSearch = (value) => {
         setSearchText(value)
-    }
+    };
    
 
     return (
@@ -128,11 +128,6 @@ const ProviderBox = () => {
                                 </div>
                             )
                         })}
-
-
-
-
-
 
                 </div>
 

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import useSize from '../../utils/useWidthSize'
 import NavItem from "../NavItem";
-import { faCircleInfo, faComment, faHandshakeAngle, faHouse,faRightFromBracket, faUser,faWeightHanging } from '@fortawesome/free-solid-svg-icons'
+import { faCircleInfo, faComment, faHandshakeAngle, faHouse,faRightFromBracket, faRightToBracket, faUser,faWeightHanging } from '@fortawesome/free-solid-svg-icons'
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const widthSize = useSize();
-
+    const {token} = useSelector(state => state.user)
     const toggleSidebar = () => {
         setIsOpen(true);
     };
@@ -62,7 +63,12 @@ const Sidebar = () => {
                     <NavItem icon={faUser} name={"PROFILE"} path={'/profile'} />
                     <NavItem icon={faCircleInfo} name={'MORE'} path={'/more'} />
                     <NavItem icon={faHandshakeAngle} name={'HELP'} path={'/help'} />
-                    <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'} />
+                    {token ?
+                        <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'} />
+                        : 
+                        <NavItem icon={faRightToBracket} name={'LOGIN'} path={'/login'} />
+
+                    }
 
 
                    
