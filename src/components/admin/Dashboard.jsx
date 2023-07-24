@@ -40,14 +40,14 @@ const Dashboard = () => {
 
   const fetchChartData = async() => {
     try {
-      const respo = await axiosInstance.get('/admin/chart', {
+      const response = await axiosInstance.get('/admin/chart', {
         headers: {
           Authorization: `Bearer ${token}`,
 
         },
       });
   
-      setChartData(respo.data.result)
+      setChartData(response.data.result)
     } catch (error) {
       console.log(error);
     }
