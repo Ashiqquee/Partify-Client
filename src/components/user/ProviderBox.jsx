@@ -88,16 +88,16 @@ const ProviderBox = () => {
                     Discover service providers that meet your criteria and connect with them through messaging to place your orders.
                 </p>
 
-                <div className="flex justify-between">
+                <div className="flex justify-start">
                     <Select name="place"
                     placeholder='Select Place'
-                    className="mt-3"
+                    className="mt-3 w-64"
                     
                     options={keralaDistrictsOptions} 
                         value={selectedOptions}
                         onChange={handleSelectChange}/>
                    
-                    <div className="mt-3 w-36 ">
+                    <div className="mt-3 w-64 ml-4">
                         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                             <input
                                 type="search"

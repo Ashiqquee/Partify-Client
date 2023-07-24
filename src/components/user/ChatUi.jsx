@@ -132,7 +132,7 @@ const ChatUi = () => {
         <>
             <div className='flex overflow-hidden flex-col w-full '>
                
-                <RecentChats allChat={allChat} selectedChat={selectedChat} handleProvider={handleProvider} />
+                <RecentChats allChat={allChat} selectedChat={selectedChat} handleProvider={handleProvider} role={'user'} />
 
 
 

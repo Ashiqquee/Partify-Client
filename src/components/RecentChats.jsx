@@ -1,5 +1,5 @@
 
-const  RecentChats = ({allChat,selectedChat,handleProvider}) => {
+const  RecentChats = ({allChat,selectedChat,handleProvider ,role}) => {
 
     const setChats = (chatId) => {
         handleProvider(chatId)
@@ -9,7 +9,7 @@ const  RecentChats = ({allChat,selectedChat,handleProvider}) => {
 
     return (
         <div className="flex flex-col mt-6 overflow-hidden ml-2">
-            <h1>RECENT CHATS</h1>
+            <h1 className="font-semibold font-sans ml-3">RECENT CHATS</h1>
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 scrollbar-hide ">
                 <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                     <div className="  flex ">
@@ -21,13 +21,13 @@ const  RecentChats = ({allChat,selectedChat,handleProvider}) => {
                                         onClick={() => setChats(chat?._id)}>
                                         <div className="h-12 w-12 rounded-full border overflow-hidden ">
                                             <img
-                                                src={chat.providerId.profilePic}
+                                                src={role === 'user' ? chat.providerId.profilePic : chat.userId.image}
                                                 alt="Avatar"
                                                 className="h-full w-full"
                                             />
                                         </div>
                                         <div className="text-sm   font-semibold ml-3 text-black">
-                                            {chat.providerId.name}
+                                            {role === 'user' ? chat.providerId.name : chat?.userId.name}
                                         </div>
 
                                     </div>

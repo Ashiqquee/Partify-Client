@@ -1,6 +1,7 @@
 import { useEffect, useState,useRef } from 'react'
 import axiosInstace from '../../api/axios'
 import { useSelector } from 'react-redux'
+import RecentChats from '../RecentChats'
 import io from 'socket.io-client'
 const ENDPOINT = "http://localhost:4000";
 
@@ -131,37 +132,12 @@ const ChatUi = () => {
 
     return (
         <>
+            <div className='flex overflow-hidden flex-col w-full '>
+
+            <RecentChats allChat={allChat} selectedChat={selectedChat} handleProvider={handleProvider} role={'provider'} />
+
             <div className="flex h-screen antialiased text-gray-800 w-full">
                 <div className="flex flex-row h-full w-full overflow-x-hidden">
-                    <div className="flex flex-col py-8 pl-6 pr-2  bg-white flex-shrink-0 w-1/4">
-                        <div className="font-monoton text-2xl cursor-pointer flex items-center bg-white">
-
-
-                            Users
-
-                        </div>
-                        {allChat.map((chat) => {
-                            return (
-                                <>
-                                    <div className={`flex  items-cente border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg ${selectedChat===chat._id ? 'bg-indigo-300' : 'bg-slate-100'}  `} onClick={() => handleProvider(chat?._id)}>
-                                        <div className="h-12 w-12 rounded-full border overflow-hidden">
-                                            <img
-                                                src={chat.userId.image }
-                                                alt="Avatar"
-                                                className="h-full w-full"
-                                            />
-                                        </div>
-                                        <div className="text-sm font-semibold mt-3 ml-2">
-                                            {chat.userId.name}
-                                        </div>
-
-                                    </div>
-                                </>
-                            )
-                        })}
-
-
-                    </div>
                     <div className="flex flex-col flex-auto h-full p-6 w-full">
                         <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
                             <div className="flex flex-col h-full overflow-x-auto scrollbar-hide mb-4">
@@ -260,7 +236,7 @@ const ChatUi = () => {
                     </div>
                 </div>
             </div>
-
+</div>
         </>
     )
 
