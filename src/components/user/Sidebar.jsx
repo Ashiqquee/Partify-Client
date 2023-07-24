@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSize from '../../utils/useWidthSize'
 import NavItem from "../NavItem";
-import { faCircleInfo, faComment, faHouse, faQuestion, faRightFromBracket, faUser,faWeightHanging } from '@fortawesome/free-solid-svg-icons'
+import { faCircleInfo, faComment, faHandshakeAngle, faHouse,faRightFromBracket, faUser,faWeightHanging } from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar = () => {
 
@@ -61,7 +61,7 @@ const Sidebar = () => {
                     <NavItem icon={faComment} name={'CHAT'} path={'/chat'} />
                     <NavItem icon={faUser} name={"PROFILE"} path={'/profile'} />
                     <NavItem icon={faCircleInfo} name={'MORE'} path={'/more'} />
-                    <NavItem icon={faQuestion} name={'HELP'} path={'/help'} />
+                    <NavItem icon={faHandshakeAngle} name={'HELP'} path={'/help'} />
                     <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/login'} />
 
 
