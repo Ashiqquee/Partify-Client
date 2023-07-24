@@ -1,11 +1,9 @@
 
-const  RecentChats = ({allChat,selectedChat,handleProvider ,role}) => {
+const RecentChats = ({ allChat, selectedChat, handleProvider, role }) => {
 
     const setChats = (chatId) => {
         handleProvider(chatId)
     };
-
-   
 
     return (
         <div className="flex flex-col mt-6 overflow-hidden ml-2">
@@ -33,6 +31,7 @@ const  RecentChats = ({allChat,selectedChat,handleProvider ,role}) => {
                                     </div>
                                 </>)
                         })}
+
                     </div>
                 </div>
             </div>
@@ -40,4 +39,4 @@ const  RecentChats = ({allChat,selectedChat,handleProvider ,role}) => {
     )
 }
 
-export default  RecentChats;
+export default RecentChats;
