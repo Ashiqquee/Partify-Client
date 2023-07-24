@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
-// import FavProvider from "../../components/user/FavProvider";
 import PostComponent from '../Post'
 import useWidth from "../../utils/useWidthSize";
 import { useSelector } from "react-redux";
+import Ad from "../../components/user/Ad";
 
 const Feed = () => {
 
@@ -93,7 +93,7 @@ const Feed = () => {
 
     return(
         <section className="main w-screen  flex ">
-            <div className={width > 1118 ? "wrapper px-4 w-5/6 " : "wrapper px-4 w-full" }>
+            <div className={width > 1100   ? "wrapper px-4 w-5/6 " : "wrapper px-4 w-full" }>
                 <div className="left-col ">
                    
                     <PostComponent posts={posts} role={'user'} onUnlike={onUnLike} onLike={onLike} addComment={addComment} savedPosts={savedPosts} profile={profile} onSavePost={onSavePost} onUnsavePost={onUnsavePost} />
@@ -102,9 +102,9 @@ const Feed = () => {
                 </div>
             </div>
             {
-                width < 1118 ? null : (
+                width < 1170 ? null : (
                     <div className="wrapper px-4 w-2/4 ">
-                        {/* <FavProvider /> */}
+                        <Ad/>
                     </div>
                 )
             }

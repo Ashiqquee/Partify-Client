@@ -17,7 +17,7 @@ const Notification = () => {
             });
             const postId = response?.data?.posts?.map((post) => post._id);
 
-            setSavedPosts(postId)
+            setSavedPosts(postId);
             setPosts(response?.data?.posts);
         } catch (error) {
             console.log(error);
@@ -82,7 +82,7 @@ const Notification = () => {
                     :
                             <div className="post bg-white  mt-8 mb-8  " >
                                 <div className="info flex justify-center items-center px-4">
-                                    <h1 className='my-2 font-sans font-semibold'>You dont have any saved posts,<span className='font-bold text-indigo-500 hover:cursor-pointer ml-2'>Go to home</span> </h1>
+                                    <h1 className='my-2 font-sans font-semibold'>You dont have any saved posts,<span className='font-bold text-indigo-500 hover:cursor-pointer ml-2'>Head back to the base</span> </h1>
                                 </div>
                             </div>
                   }

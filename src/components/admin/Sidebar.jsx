@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { faUser, faHouse, faServer, faWeightHanging, faRightFromBracket,faImage, faBagShopping } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faHouse, faServer, faWeightHanging, faRightFromBracket,faImage, faBagShopping, faRectangleAd } from '@fortawesome/free-solid-svg-icons'
 import useWidthSize from "../../utils/useWidthSize";
 import NavItem from "../NavItem";
 
@@ -67,6 +67,7 @@ const Sidebar = () => {
                     <NavItem icon={faServer} name={"SERVICES"} path={'/admin/services'} />
                     <NavItem icon={faImage} name={'POSTS'} path={'/admin/posts'} />
                     <NavItem icon={faBagShopping} name={"ORDERS"} path={'/admin/orders'} />
+                    <NavItem icon={faRectangleAd} name={"ADS"} path={'/admin/ads'} />
                     <NavItem icon={faRightFromBracket} name={'LOGOUT'} path={'/admin/login'}/>
 
 

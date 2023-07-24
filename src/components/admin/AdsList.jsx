@@ -7,7 +7,7 @@ const ServiceList = () => {
 
     const token = useSelector((state) => state.admin.token);
     const [loading, setLoading] = useState(false);
-    const [serviceList, setServiceList] = useState([]);
+    const [adsList, setAdsList] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
 
@@ -81,7 +81,7 @@ const ServiceList = () => {
 
                 if (response.status === 200) {
 
-                    setServiceList(prevServiceList => [...prevServiceList, response.data.newAd])
+                    setAdsList(prevServiceList => [...prevServiceList, response.data.newAd])
                     toast.success('Service Added');
                     setLoading(false);
                     setIsOpen(false);
@@ -116,7 +116,7 @@ const ServiceList = () => {
             });
 
 
-            setServiceList(response.data.adsList)
+            setAdsList(response.data.adsList)
 
 
         } catch (error) {
@@ -271,22 +271,22 @@ const ServiceList = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                        {serviceList?.length > 0 ? (
-                                            serviceList.filter((service) => service.name.toLowerCase().includes(searchText)).map((service) => (
-                                                <tr key={service._id}>
+                                        {adsList?.length > 0 ? (
+                                            adsList.filter((ad) => ad.name.toLowerCase().includes(searchText)).map((ad) => (
+                                                <tr key={ad._id}>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div>
-                                                            <h2 className="font-medium text-black">{service?.name}</h2>
+                                                            <h2 className="font-medium text-black">{ad?.name}</h2>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap ">
                                                         <div>
-                                                            <img className="h-12 font-bold ml-9" src={service.adImage} alt="Service Image" />
+                                                            <img className="h-12 font-bold ml-9" src={ad.adImage} alt="Service Image" />
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div>
-                                                            <h2 className="font-medium text-black">{service?.adLink}</h2>
+                                                            <h2 className="font-medium text-black">{ad?.adLink}</h2>
                                                         </div>
                                                     </td>
 

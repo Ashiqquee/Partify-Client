@@ -8,7 +8,7 @@ const Home = () => {
     return (
         <>
             <Sidebar />
-            <div className="flex  md:ml-72  lg:ml-96 ">
+            <div className="flex  md:ml-72  lg:ml-72 ">
                 <Feed />
                 
             </div>    
