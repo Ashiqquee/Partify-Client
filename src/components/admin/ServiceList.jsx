@@ -354,49 +354,7 @@ const ServiceList = () => {
 
                                                                     editService && editOpen && 
                                                                     
-                                                                    //     <form method="dialog" className="modal-box" encType="multipart/form-data">
-                                                                    //     <h3 className="font-bold text-lg">Edit Service</h3>
-                                                                    //     <div className="mb-4 mt-3">
-                                                                    //         <label htmlFor="edit_name" className="block font-semibold">Service Name</label>
-                                                                    //         <input
-                                                                    //             type="text"
-                                                                    //             id="edit_name"
-                                                                    //             name="serviceName"
-                                                                    //             placeholder={editFormData.serviceName}
-                                                                    //             value={editFormData.serviceName}
-                                                                    //             onChange={handleEditChange}
-                                                                    //             className="text-black font-semibold form-input p-1 mt-1 block w-full h-10"
-                                                                    //         />
-                                                                    //     </div>
-
-
-                                                                    //     <div className="mt-3">
-                                                                    //         <h4>Previous Image:</h4>
-                                                                    //         <img
-                                                                    //             className="h-16 w-16 font-bold mt-3"
-                                                                    //             src={imageEdited ? editFormData.file : (editFormData.file instanceof File ? URL.createObjectURL(editFormData.file) : null)}
-                                                                    //             alt="Selected"
-                                                                    //         />
-                                                                    //     </div>
-
-                                                                    //     <div className="mb-4 mt-2">
-                                                                    //         <input
-                                                                    //             onChange={handleEditFileChange}
-                                                                    //             type="file"
-                                                                    //             name="serviceImage"
-
-                                                                    //             className="file-input file-input-bordered file-input-sm w-full max-w-xs"
-                                                                    //         />
-                                                                    //     </div>
-                                                                    //     <button onClick={handleEditService} htmlFor="my_modal_6" className="btn px-4 font-semibold py-2 bg-blue-500 text-white rounded hover:bg-blue-900">Update</button>
-
-                                                                    //     <div className="modal-action">
-                                                                    //         <button className="btn">Close</button>
-                                                                            
-
-                                                                    //     </div>
-
-                                                                    // </form>
+                                                                 
                                                                 <div
                                                                     className="fixed inset-0 z-10 overflow-y-auto"
                                                                     aria-labelledby="modal-title"

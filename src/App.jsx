@@ -28,7 +28,7 @@ import UserFAQ from './pages/user/FAQ'
 import SingleProvider from "./pages/user/SingleProvider";
 import MorePage from "./pages/user/More";
 import UpgradeToPro from './pages/provider/Pro'
-
+import Ads from "./pages/admin/Ads";
 
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
@@ -70,8 +70,10 @@ const App = () => {
         <Route path="/admin/providers" element={adminAuth ? <ProviderList /> : <Navigate to='/admin/login' />}></Route>
         <Route path="/admin/posts" element={adminAuth ? <PostsList /> : <Navigate to='/admin/login' />}></Route>
         <Route path="/admin/orders" element={adminAuth ? <AdminOrders /> : <Navigate to='/admin/login' />}></Route>
+        <Route path="/admin/ads" element={adminAuth ? <Ads /> : <Navigate to='/admin/login' />}></Route>
         <Route path="/admin/order/:id" element={adminAuth ? <AdminOrderDetails /> : <Navigate to='/admin/login' />}></Route>
         <Route path="/admin/verthe" element={adminAuth ? <Verthe /> : <Navigate to='/admin/login' />}></Route>
+        
         
 
 

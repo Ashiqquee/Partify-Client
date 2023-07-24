@@ -16,7 +16,7 @@ const  RecentChats = ({allChat,selectedChat,handleProvider}) => {
                         {allChat.map((chat) => {
                             return (
                                 <>
-                                    <div className={`flex items-center border bg-indigo-300 border-gray-200 mt-4 py-6 px-4 rounded-lg w-72 lg:w-64 ml-2 ${selectedChat === chat._id ? 'bg-indigo-300 ' : 'bg-slate-100 '
+                                    <div className={`flex items-center border bg-indigo-300 border-gray-200 mt-4 py-6 px-4 rounded-lg w-72 lg:w-64 ml-2 ${selectedChat === chat._id ? 'bg-indigo-300 ' : 'bg-slate-200 '
                                         }`}
                                         onClick={() => setChats(chat?._id)}>
                                         <div className="h-12 w-12 rounded-full border overflow-hidden ">

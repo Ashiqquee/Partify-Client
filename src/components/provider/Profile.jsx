@@ -236,7 +236,7 @@ const Profile = () => {
                         <div className=" rounded-md  mb-4  " >
                           
 
-                            <div className="p-4 text-cente h-48" style={{ backgroundImage: `url(${profile?.coverPic})`, backgroundSize: 'cover' }}>
+                            <div className="p-4 text-cente h-48 rounded" style={{ backgroundImage: `url(${profile?.coverPic})`, backgroundSize: 'cover' }}>
                                 <div className="avatar ">
                                     <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                                         <img src={imageSrc} alt="profile" />

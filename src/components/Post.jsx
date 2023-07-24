@@ -286,9 +286,9 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
     return (
         <>
             {posts?.map((post, index) => (
-                <div className="post bg-white border  border-gray-300 mt-8 mb-8" key={index}>
-                    <div className="info flex justify-between items-center px-4">
-                        <div className="user flex items-center">
+                <div className="post bg-white border  border-gray-300 mt-8 mb-8 " key={index}>
+                    <div className="info flex justify-between items-center px-4 ">
+                        <div className="user flex items-center ">
                             <div className="profile-pic h-16 w-10">
                                 <div className="avatar">
                                     <div className="w-11 my-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">

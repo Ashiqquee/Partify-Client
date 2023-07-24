@@ -14,23 +14,23 @@ const serviceBox = ({ services, removeService, addService,status }) => {
         
             services.map((service) => (
                 <div key={service?._id} className="overflow-hidden transition-shadow duration-300 bg-white rounded">
-                    <a href="/" aria-label="Article">
+                    <p >
                         <img
                             src={service?.serviceImage}
                             className="object-cover w-full h-64 rounded"
                             alt=""
                         />
-                    </a>
+                    </p>
                     <div className="py-5 flex justify-between">
                         <p className="-mt-16 btn btn-sm ml-2 text-xs font-semibold bg-indigo-500 text-white uppercase hover:text-black">
                             {service?.serviceName}
                         </p>
                         {status === 'remove' ? 
-                            <p className="-mt-16 btn btn-sm bg-red-600 mr-2 text-xs font-semibold text-white uppercase hover:text-black" onClick={() => handleRemove(service?._id)}>
+                            <p className="-mt-16 btn btn-sm bg-indigo-600 mr-2 text-xs font-semibold text-white uppercase hover:text-black" onClick={() => handleRemove(service?._id)}>
                                 Remove
                             </p>
                             : 
-                            <p className="-mt-16 btn btn-sm bg-green-500 mr-2 text-xs font-semibold text-white uppercase hover:text-black" onClick={() => handleAdd(service?._id)}>
+                            <p className="-mt-16 btn btn-sm bg-indigo-600 mr-2 text-xs font-semibold text-white uppercase hover:text-black" onClick={() => handleAdd(service?._id)}>
                                 Add
                             </p>
                             // <button className="-mt-16 btn btn-sm flex items-center mr-2 text-sm font-medium  bg-green-500 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-green-600 text-white gap-x-3 ">

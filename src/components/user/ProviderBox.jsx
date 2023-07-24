@@ -3,13 +3,16 @@ import axiosInstance from "../../api/axios";
 import useWidthSize from "../../utils/useWidthSize";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Select from 'react-select';
 
 
 const ProviderBox = () => {
     const { token } = useSelector(state => state.user)
     const [providers, setProviders] = useState([]);
     const size = useWidthSize();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [searchText, setSearchText] = useState('');
+    const [selectedOptions, setSelectedOptions] = useState([]);
     const fetchProviders = async () => {
         try {
             const response = await axiosInstance.get('/providersList');
@@ -42,8 +45,38 @@ const ProviderBox = () => {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
+
+    const handleSelectChange = (event) => {
+        // let values = event.map((value) =>value.value );
+        // setSelectedValues(values);
+        // let ans = providers.filter((provider) => provider.places.includes(selectedValues));
+        console.log(event);
+        setSelectedOptions(event);
+    };
+
+
+    const keralaDistricts = [
+        "Alappuzha",
+        "Ernakulam",
+        "Idukki",
+        "Kannur",
+        "Kasaragod",
+        "Kollam",
+        "Kottayam",
+        "Kozhikode",
+        "Malappuram",
+        "Palakkad",
+        "Pathanamthitta",
+        "Thiruvananthapuram",
+        "Thrissur",
+        "Wayanad",
+    ];
+    const keralaDistrictsOptions = keralaDistricts.map((district) => ({
+        value: district,
+        label: district,
+    }));
 
     return (
         <section className="bg-white dark:bg-gray-900 ">
@@ -55,10 +88,41 @@ const ProviderBox = () => {
                     Discover service providers that meet your criteria and connect with them through messaging to place your orders.
                 </p>
 
+                <div className="flex justify-between">
+                    <Select name="place"
+                    placeholder='Select Place'
+                    className="mt-3"
+                    
+                    options={keralaDistrictsOptions} 
+                        value={selectedOptions}
+                        onChange={handleSelectChange}/>
+                   
+                    <div className="mt-3 w-36 ">
+                        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                            <input
+                                type="search"
+                                className="relative h-10 m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+                                placeholder="Search Provid.."
+                                aria-label="Search"
+                                aria-describedby="button-addon1"
+                                value={searchText}
+                                onChange={(e) => setSearchText(e.target.value)}
+                            />
+
+                   
+                        
+                        </div>
+                    </div>
+
+                  
+                   
+                </div>
+                
+
                 <div className={size > 880 ? "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-2" : "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-1"}>
 
 
-                    {providers.map((provider) => {
+                    {providers.filter((provider) => provider.name.toLowerCase().includes(searchText)).map((provider) => {
                         return (
                             <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent " onClick={() => navigate(`/provider/${provider._id}`)}>
                                 <div className="w-full h-40" style={{ backgroundImage: `url(${provider?.coverPic})`, backgroundSize: 'cover' }}>
