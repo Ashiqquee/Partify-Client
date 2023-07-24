@@ -80,9 +80,9 @@ const ProviderBox = () => {
                 <div className={size > 880 ? "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-2" : "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-1"}>
 
 
-                    {providers.filter((provider) => provider.name.toLowerCase().includes(searchText) && provider.places[0]
+                    {providers.filter((provider) => provider.name.toLowerCase().includes(searchText) &&( provider.places[0]
                         .split(',').join().includes(selectedValue)
-                        || provider.places[0].split(',').join().includes("All Kerala"))
+                        || provider.places[0].split(',').join().includes("All Kerala")))
                         .map((provider) => {
                             return (
                                 <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent " onClick={() => navigate(`/provider/${provider._id}`)}>
