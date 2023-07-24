@@ -3,7 +3,7 @@ import axiosInstance from "../../api/axios";
 import useWidthSize from "../../utils/useWidthSize";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Select from 'react-select';
+import SortProvider from "./SortProvider";
 
 
 const ProviderBox = () => {
@@ -18,7 +18,7 @@ const ProviderBox = () => {
         try {
             const response = await axiosInstance.get('/providersList');
 
-            console.log(response.data.providerData);
+         
             setProviders(response.data.providerData)
 
         } catch (error) {
@@ -56,27 +56,12 @@ const ProviderBox = () => {
     };
 
 
-    const keralaDistricts = [
-        "",
-        "Alappuzha",
-        "Ernakulam",
-        "Idukki",
-        "Kannur",
-        "Kasaragod",
-        "Kollam",
-        "Kottayam",
-        "Kozhikode",
-        "Malappuram",
-        "Palakkad",
-        "Pathanamthitta",
-        "Thiruvananthapuram",
-        "Thrissur",
-        "Wayanad",
-    ];
-    const keralaDistrictsOptions = keralaDistricts.map((district) => ({
-        value: district,
-        label: district,
-    }));
+
+
+    const handleSearch = (value) => {
+        setSearchText(value)
+    }
+   
 
     return (
         <section className="bg-white dark:bg-gray-900 ">
@@ -88,35 +73,8 @@ const ProviderBox = () => {
                     Discover service providers that meet your criteria and connect with them through messaging to place your orders.
                 </p>
 
-                <div className="flex justify-start">
-                    <Select name="place"
-                        placeholder='Select Place'
-                        className="mt-3 w-64"
-
-                        options={keralaDistrictsOptions}
-                        value={selectedOptions}
-                        onChange={handleSelectChange} />
-
-                    <div className="mt-3 w-64 ml-4">
-                        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                            <input
-                                type="search"
-                                className="relative h-10 m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                                placeholder="Search Provid.."
-                                aria-label="Search"
-                                aria-describedby="button-addon1"
-                                value={searchText}
-                                onChange={(e) => setSearchText(e.target.value)}
-                            />
-
-
-
-                        </div>
-                    </div>
-
-
-
-                </div>
+             
+                <SortProvider searchText={searchText} selectedOptions={selectedOptions} setSearchText={handleSearch} handleChange={handleSelectChange} />
 
 
                 <div className={size > 880 ? "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-2" : "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-1"}>
