@@ -69,7 +69,7 @@ const PostList = () => {
         <>
 
             <section className="container px-4 mx-auto">
-                <div className="sm:flex sm:items-center sm:justify-between">
+                <div className="sm:flex sm:items-center sm:justify-start">
                     <div>
                         <div className="flex items-center gap-x-3">
                             <h2 className="text-lg font-medium text-gray-800 dark:text-white">Posts</h2>
@@ -77,22 +77,20 @@ const PostList = () => {
                         </div>
                        
                     </div>
-                    <div className="max-w-md mx-auto ml-8">
-                        <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
-                            <div className="grid place-items-center h-full w-12 text-gray-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </div>
-
+                    <div className="mt-6 w-64 ml-4">
+                        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                             <input
-                                className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
-                                type="text"
-                                id="search"
-                                placeholder="Search Provider.."
+                                type="search"
+                                className="relative h-10 m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+                                placeholder="Search Post"
+                                aria-label="Search"
+                                aria-describedby="button-addon1"
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}
                             />
+
+
+
                         </div>
                     </div>
 
