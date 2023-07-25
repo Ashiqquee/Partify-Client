@@ -10,6 +10,13 @@ const ProviderBox = () => {
     const { token } = useSelector(state => state.user)
     const [providers, setProviders] = useState([]);
     const [selectedValue, setSelectedValue] = useState('');
+
+    
+    // const [seletedService,setSelectedService] = useState('');
+
+
+    const serviceId = ["64a4fd411c533e86f794776b", "6499759a38262c763224218c"];
+
     const size = useWidthSize();
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');
@@ -17,8 +24,6 @@ const ProviderBox = () => {
     const fetchProviders = async () => {
         try {
             const response = await axiosInstance.get('/providersList');
-
-         
             setProviders(response.data.providerData)
 
         } catch (error) {
@@ -32,6 +37,9 @@ const ProviderBox = () => {
 
     const handleMessage = async (providerId) => {
         try {
+            if (!token) return navigate('/login');
+
+
             const response = await axiosInstance.post('/chat', { providerId }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -61,7 +69,7 @@ const ProviderBox = () => {
     const handleSearch = (value) => {
         setSearchText(value)
     };
-   
+
 
     return (
         <section className="bg-white dark:bg-gray-900 ">
@@ -73,16 +81,25 @@ const ProviderBox = () => {
                     Discover service providers that meet your criteria and connect with them through messaging to place your orders.
                 </p>
 
-             
+
                 <SortProvider searchText={searchText} selectedOptions={selectedOptions} setSearchText={handleSearch} handleChange={handleSelectChange} />
 
 
                 <div className={size > 880 ? "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-2" : "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-1"}>
 
 
-                    {providers.filter((provider) => provider.name.toLowerCase().includes(searchText) &&( provider.places[0]
-                        .split(',').join().includes(selectedValue)
-                        || provider.places[0].split(',').join().includes("All Kerala")))
+                    {providers.filter((provider) => provider.name.toLowerCase().includes(searchText)
+
+                        && (provider.places[0]
+                            .split(',').join().includes(selectedValue)
+                            || provider.places[0].split(',').join().includes("All Kerala"))
+                        && provider.services.some((service) => {
+                            return serviceId.includes(service._id);
+                        })
+                    )
+
+
+
                         .map((provider) => {
                             return (
                                 <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent " onClick={() => navigate(`/provider/${provider._id}`)}>

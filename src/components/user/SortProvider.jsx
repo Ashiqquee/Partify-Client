@@ -1,8 +1,24 @@
 import Select from 'react-select';
+import axiosInstance from '../../api/axios';
+import { useEffect, useState } from 'react';
 
 
 const SortProvider = ({selectedOptions,searchText,setSearchText,handleChange}) => {
     
+    const[services,setServices] = useState([]);
+
+
+    const fetchServices = async() => {
+        try {
+            const response = await axiosInstance.get('/services');
+            console.log(response?.data?.serviceList);
+            setServices(response?.data?.serviceList);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const keralaDistricts = [
         "",
         "Alappuzha",
@@ -28,9 +44,23 @@ const SortProvider = ({selectedOptions,searchText,setSearchText,handleChange}) =
         handleChange(event);
     };
 
+    // const serviceOptions = services.map((service) => ({
+    //     value:service?._id,
+    //     lable: service?.serviceName
+
+    // }))
+
     const handleSearch = (event) => {
         setSearchText(event.target.value)
-    }
+    };
+
+    // const handleService = (event) => {
+    //     console.log(event.target);
+    // }
+
+    useEffect(() => {
+        fetchServices();
+    },[])
 
     return(
         <>
@@ -59,6 +89,14 @@ const SortProvider = ({selectedOptions,searchText,setSearchText,handleChange}) =
 
                     </div>
                 </div>
+
+                {/* <Select name="services"
+                    placeholder='Select Place'
+                    className="mt-3 w-64"
+                    isMulti
+                    options={serviceOptions}
+                    
+                    onChange={handleService} /> */}
 
 
 

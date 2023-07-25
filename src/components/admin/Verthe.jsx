@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Post from "../Post";
 import Service from "../user/Service";
 import ReviewSection from "../user/ReviewSection";
+import { useSelector } from "react-redux";
 const Verthe = () => {
     const [provider, setProvider] = useState({});
 
     const { providerId } = useParams();
-
+    const {token} = useSelector(state => state.user);
     const [posts, setPosts] = useState([]);
     const [services, setServices] = useState([]);
     const [savedPosts, setSavedPosts] = useState([]);
-    const fetchFavPosts = async () => {
+    const navigate = useNavigate();
+    
+    const fetchProviderPosts = async () => {
         try {
             const response = await axiosInstance.get(`/post/${providerId}`);
 
@@ -24,7 +27,7 @@ const Verthe = () => {
     };
 
     useEffect(() => {
-        fetchFavPosts();
+        fetchProviderPosts();
     }, [])
 
     const fetchProvider = async () => {
@@ -40,7 +43,28 @@ const Verthe = () => {
 
     useEffect(() => {
         fetchProvider();
-    }, [])
+    }, []);
+
+    const handleMessage = async () => {
+        try {
+
+            if(!token) return navigate('/login');
+
+            const response = await axiosInstance.post('/chat', { providerId }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                const chatId = response?.data?.chat._id;
+
+                navigate(`/chat?id=${chatId}`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <>
@@ -48,7 +72,7 @@ const Verthe = () => {
 
                 <section className="relative py-16 bg-blueGray-200">
                     <div className="container mx-auto px-4 " >
-                        <div className="relative flex flex-col min-w-0 break-words bg-gray-50 w-full mb-6 shadow-xl rounded-lg ">
+                        <div className="relative flex flex-col min-w-0 break-words bg-gray-200 w-full mb-6 shadow-sm rounded-lg ">
                             <div className="px-6">
                                 <div className="flex flex-wrap justify-center">
                                     <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
@@ -92,6 +116,7 @@ const Verthe = () => {
                                             <button
                                                 className="bg-indigo-500 active:bg-indigo-600 md:ml-4 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
                                                 type="button"
+                                                onClick={() => handleMessage()}
                                             >
                                                 Message
                                             </button>
