@@ -29,6 +29,8 @@ import SingleProvider from "./pages/user/SingleProvider";
 import MorePage from "./pages/user/More";
 import UpgradeToPro from './pages/provider/Pro'
 import Ads from "./pages/admin/Ads";
+import ForgotPassword from './components/user/ForgotPassword'
+
 
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
@@ -46,6 +48,7 @@ const App = () => {
         <Route path="/" element={<UserHome />}></Route>
         <Route path="/login" element={userAuth ? <Navigate to='/' /> : <Login name='user'  url= 'login' /> }></Route>
         <Route path="/signup" element={userAuth ? <Navigate to='/' /> : <Register />}></Route>
+        <Route path="/forgotPassword" element={userAuth ? <Navigate to='/' /> : <ForgotPassword />}></Route>
         <Route path="/profile" element={userAuth ? <Profile /> : <Navigate to='/login' />}></Route>
         <Route path="/user/providers" element={<ProviderPage /> }></Route>
         <Route path="/order/:id" element={userAuth ? <SingleOrder /> : <Navigate to='/login' />}></Route>
