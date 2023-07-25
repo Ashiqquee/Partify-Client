@@ -22,7 +22,7 @@ const Ad = () => {
     return(
 
       <>
-    
+           
           { ads.map((ad) => {
               return(
                   <div key={ad._id} className="overflow-hidden bg-cover rounded-lg cursor-pointer h-96 group mt-8 w-72 ml-24 "

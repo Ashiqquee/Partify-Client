@@ -3,12 +3,14 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from "../api/axios";
 import { toast } from 'react-toastify'
 import OrderForm from "./provider/OrderForm";
+import Review from "./user/Review";
 const OrderDetails = ({ token }) => {
 
     const details = ['orderId', 'Customer Name', 'Customer Phone', 'Alternative Number', 'Order Date', 'Event Date'];
     const providerDetails = ['Provider Name', 'Provider Phone', 'Status', 'Services', 'Amount', 'Advance Amount'];
     const address = ['Street', 'City', 'Zip', 'District'];
     const payment = ['Total Amount', 'Advance Amount', 'Advance Paid', 'Wallet Used', 'Remaining Amount', '', ''];
+    const[showReview,setShowReview] = useState(false)
     const navigate = useNavigate();
     const [order, setOrder] = useState('');
     const location = useLocation();
@@ -461,7 +463,10 @@ const OrderDetails = ({ token }) => {
                                 <div className="text-center">
                                     <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">Order Completed!</h3>
                                     <p className="text-gray-600 my-2">Thank you for completing your order with us.</p>
-                                    <p className="text-indigo-500 font-semibold  my-2 hover:cursor-pointer">Review the Provider</p>
+                                    <p className="text-indigo-500 font-semibold  my-2 hover:cursor-pointer" onClick={() =>setShowReview(true)} >Review the Provider</p>
+                                    {
+                                        showReview ? <Review setShowReview={setShowReview} providerName={order?.providerId?.name} providerId={order?.providerId?._id} /> : null
+                                    }
                                     <p> Have a great day! </p>
                                 </div>
                             </div>
