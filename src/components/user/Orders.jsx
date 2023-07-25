@@ -16,7 +16,7 @@ const Orders = () => {
             const response = await axiosInstance.get('/orders', {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
+                    
                 },
             });
 

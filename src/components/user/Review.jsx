@@ -1,20 +1,45 @@
 import { useState } from "react";
+import {useSelector} from 'react-redux'
+import axiosInstance from '../../api/axios'
+import {toast} from 'react-toastify'
 
 const Review = ({ setShowReview, providerName,providerId }) => {
-
+        
+    const {token} = useSelector(state => state.user);
 
         const[formData,setFormData] = useState({
             rating:5,
             message:'',
         });
 
+    const handleReview = (event) => {
+        setFormData({...formData,message:event.target.value});
+    }
 
     const handleRatingChange = (event) => {
-    
         const selectedRating = parseInt(event.target.value);
-        console.log(selectedRating);
         setFormData({...formData,rating:selectedRating});
     };
+
+    const addReview = async() => {
+        try {
+            const response = await axiosInstance.post(`/review/${providerId}` , {formData},{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+
+                },
+            });
+
+            if(response.status === 200){
+                setShowReview(false)
+                toast.success("Review Added")
+            }
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     return (
@@ -51,7 +76,9 @@ const Review = ({ setShowReview, providerName,providerId }) => {
                         <div>
                             <label htmlFor="Description" className="block text-sm text-gray-500 dark:text-gray-300">Review</label>
 
-                            <textarea placeholder="Enter your review.." className="block mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"></textarea>
+                            <textarea placeholder="Enter your review.."
+                            value={formData.message} onChange={handleReview}
+                            className="block mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"></textarea>
 
                            
                         </div>
@@ -69,6 +96,7 @@ const Review = ({ setShowReview, providerName,providerId }) => {
 
                         <button
                             className="px-4 sm:mx-2 w-full py-2.5 mt-3 sm:mt-0 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                            onClick={addReview}
                         >
                             Confirm
                         </button>
