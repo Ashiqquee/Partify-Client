@@ -2,14 +2,14 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
 import { auth } from "../../api/firebase";
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import axiosInstance from "../../api/axios";
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ role }) => {
 
     const [otpValue, setOtpValue] = useState('');
     const [clicked, setClicked] = useState(true);
-    const [confirmPassword,setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [sendingOtp, setSendingOtp] = useState(false);
     const [timer, setTimer] = useState(60);
     const [formData, setFormData] = useState({
@@ -46,19 +46,19 @@ const ForgotPassword = () => {
         }
     };
 
-    const handleUser = async() => {
+    const handleUser = async () => {
         try {
-           if(formData.phone.length !== 10 )  return toast.error("Enter a valid number")
+            if (formData.phone.length !== 10) return toast.error("Enter a valid number");
+
+
+            let api = role === 'user' ? '/forgotPassword' : '/provider/forgotPassword';
+            let check = "yes";
+            let phone = formData.phone;
+            const response = await axiosInstance.patch(api, { check, phone });
+            if (response.status === 200) sendOtp();
 
 
 
-               let check = "yes";
-               let phone = formData.phone;
-               const response = await axiosInstance.patch('/forgotPassword', { check, phone });
-               if (response.status === 200) sendOtp();
-           
-
- 
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.errMsg);
@@ -66,30 +66,33 @@ const ForgotPassword = () => {
     }
 
     const sendOtp = async () => {
-       
-            onCaptchaVerify();
 
-            const phoneNo = "+91" + formData.phone;
-            const appVerifier = window.recaptchaVerifier;
-            setSendingOtp(true);
-            signInWithPhoneNumber(auth, phoneNo, appVerifier)
-                .then((confirmationResult) => {
-                    window.confirmationResult = confirmationResult;
-                    setClicked(false);
+        onCaptchaVerify();
 
-                })
-                .catch((error) => {
-                    toast.error(error);
-                });
+        const phoneNo = "+91" + formData.phone;
+        const appVerifier = window.recaptchaVerifier;
+        setSendingOtp(true);
+        signInWithPhoneNumber(auth, phoneNo, appVerifier)
+            .then((confirmationResult) => {
+                window.confirmationResult = confirmationResult;
+                setClicked(false);
+
+            })
+            .catch((error) => {
+                toast.error(error);
+            });
     };
 
     const otpVerify = () => {
         if (otpValue.length === 6) {
+            if (formData.password.length < 4) return toast.error('Enter atleast 4 digit password');
+            if (formData.password !== confirmPassword) return toast.error('The entered passwords do not match');
+
             const otpNumber = otpValue;
             window.confirmationResult
                 .confirm(otpNumber)
-                .then(async () => {         
-                        handleSubmit();
+                .then(async () => {
+                    handleSubmit();
                 })
                 .catch(() => {
                     toast.error("The entered otp do not match ");
@@ -99,22 +102,21 @@ const ForgotPassword = () => {
         }
     };
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         try {
-            if(formData.password === confirmPassword){
-                const response = await axiosInstance.patch('/forgotPassword',formData);
-                
-                if(response.status === 200){
-                    toast.success("Password changed successfully");
-                    navigate('/login')
-                }
 
 
-            } else {
-                toast.error('The entered passwords do not match')
+            let api = role === 'user' ? '/forgotPassword' : '/provider/forgotPassword';
+
+            const response = await axiosInstance.patch(api, formData);
+
+            if (response.status === 200) {
+                toast.success("Password changed successfully");
+                let redirect = role === 'user' ? '/login' : '/provider/login';
+                navigate(redirect)
             }
         } catch (error) {
-           console.log(error); 
+            console.log(error);
         }
     };
     useEffect(() => {
@@ -130,7 +132,7 @@ const ForgotPassword = () => {
         }
 
         return () => {
-            clearInterval(intervalId); 
+            clearInterval(intervalId);
         };
     }, [sendingOtp, timer]);
 
@@ -229,24 +231,24 @@ const ForgotPassword = () => {
                                             />
                                         </div>
 
-                                            <div className="relative">
-                                                <p
-                                                    className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
+                                        <div className="relative">
+                                            <p
+                                                className="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                                                       absolute"
-                                                >
-                                                    Password
-                                                </p>
-                                                <input
-                                                    placeholder="Confirm password"
-                                                    type="password"
-                                                    value={confirmPassword}
-                                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                                    name="confirmPassword"
-                                                    className="border placeholder-gray-400 focus:outline-none
+                                            >
+                                                Password
+                                            </p>
+                                            <input
+                                                placeholder="Confirm password"
+                                                type="password"
+                                                value={confirmPassword}
+                                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                                name="confirmPassword"
+                                                className="border placeholder-gray-400 focus:outline-none
                                                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                                                 border-gray-300 rounded-md"
-                                                />
-                                            </div>
+                                            />
+                                        </div>
 
                                         <div className="relative mt-2">
                                             <p
@@ -256,9 +258,9 @@ const ForgotPassword = () => {
                                                 Signup
                                             </p>
                                         </div>
-                                            <button className="mt-2 flex justify-end w-full" onClick={sendOtp} disabled={timer !== 60}>
-                                                {timer === 60 ? <span className="text-indigo-500">Resend OTP</span> : `Resend OTP in ${timer} seconds`}
-                                            </button>
+                                        <button className="mt-2 flex justify-end w-full" onClick={sendOtp} disabled={timer !== 60}>
+                                            {timer === 60 ? <span className="text-indigo-500">Resend OTP</span> : `Resend OTP in ${timer} seconds`}
+                                        </button>
                                     </div>
                                 </>
                             )}

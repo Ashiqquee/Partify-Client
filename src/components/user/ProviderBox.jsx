@@ -102,7 +102,7 @@ const ProviderBox = () => {
 
                         .map((provider) => {
                             return (
-                                <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent " onClick={() => navigate(`/provider/${provider._id}`)}>
+                                <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent " onClick={() => navigate(`/user/provider/${provider._id}`)}>
                                     <div className="w-full h-40" style={{ backgroundImage: `url(${provider?.coverPic})`, backgroundSize: 'cover' }}>
 
                                         <div className="avatar">

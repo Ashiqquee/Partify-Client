@@ -53,7 +53,7 @@ const ServiceList = () => {
         }
 
         if (!file) {
-            errors.file = 'Add a service Image';
+            errors.file = 'Add a Ad Image';
         }
         if (link.trim().length < 3) {
             errors.name = 'Enter a valid Link';
@@ -105,7 +105,7 @@ const ServiceList = () => {
                 if (response.status === 200) {
 
                     setAdsList(prevServiceList => [...prevServiceList, response.data.newAd])
-                    toast.success('Service Added');
+                    toast.success('Ad Added');
                     setLoading(false);
                     setIsOpen(false);
 

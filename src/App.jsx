@@ -48,7 +48,7 @@ const App = () => {
         <Route path="/" element={<UserHome />}></Route>
         <Route path="/login" element={userAuth ? <Navigate to='/' /> : <Login name='user'  url= 'login' /> }></Route>
         <Route path="/signup" element={userAuth ? <Navigate to='/' /> : <Register />}></Route>
-        <Route path="/forgotPassword" element={userAuth ? <Navigate to='/' /> : <ForgotPassword />}></Route>
+        <Route path="/forgotPassword" element={userAuth ? <Navigate to='/' /> : <ForgotPassword role={'user'} />}></Route>
         <Route path="/profile" element={userAuth ? <Profile /> : <Navigate to='/login' />}></Route>
         <Route path="/user/providers" element={<ProviderPage /> }></Route>
         <Route path="/order/:id" element={userAuth ? <SingleOrder /> : <Navigate to='/login' />}></Route>
@@ -56,7 +56,7 @@ const App = () => {
         <Route path="/payment/:status" element={userAuth ? <PaymentStatus /> : <Navigate to='/login' />}></Route>
         <Route path="/more" element={userAuth ? <MorePage /> : <Navigate to='/login' />}></Route>
         <Route path="/help" element={<UserFAQ />}></Route>
-        <Route path="/provider/:providerId" element={<SingleProvider />}></Route>
+        <Route path="/user/provider/:providerId" element={<SingleProvider />}></Route>
 
 
 
@@ -87,6 +87,7 @@ const App = () => {
         <Route path="/provider/signup" element={providerAuth ? <Navigate to='/provider'/> : <ProviderSignup/>}></Route>
         <Route path="/provider" element={providerAuth ? <ProviderHome/> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/login" element={providerAuth ? <Navigate to='/provider' /> : <Login name='Provider' url='provider/login' />}></Route>
+        <Route path="/providers/forgotPassword" element={providerAuth ? <Navigate to='/' /> : <ForgotPassword role={'provider'} />}></Route>
         <Route path="/provider/services" element={providerAuth ? <ManageServices/> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/addPost" element={providerAuth ? <AddPost /> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/profile" element={providerAuth ? <ProviderProfile /> : <Navigate to='/provider/login' />}></Route>
