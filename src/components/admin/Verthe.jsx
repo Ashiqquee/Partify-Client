@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
 import { useParams } from "react-router-dom";
-// import { useSelector } from "react-redux";
 import Post from "../Post";
 import Service from "../user/Service";
+import ReviewSection from "../user/ReviewSection";
 const Verthe = () => {
     const [provider, setProvider] = useState({});
 
@@ -16,9 +16,7 @@ const Verthe = () => {
         try {
             const response = await axiosInstance.get(`/post/${providerId}`);
 
-            // const postId = response?.data?.posts?.map((post) => post._id);
-
-            // setSavedPosts(postId);
+           
             setPosts(response?.data?.posts);
         } catch (error) {
             console.log(error);
@@ -50,13 +48,13 @@ const Verthe = () => {
 
                 <section className="relative py-16 bg-blueGray-200">
                     <div className="container mx-auto px-4 " >
-                        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg ">
+                        <div className="relative flex flex-col min-w-0 break-words bg-gray-50 w-full mb-6 shadow-xl rounded-lg ">
                             <div className="px-6">
                                 <div className="flex flex-wrap justify-center">
                                     <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                                         <div className="relative h-48 w-48 ">
 
-                                            <div className="avatar">
+                                            <div className="avatar mt-3">
                                                 <div className="w-full rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                                                     <img src={provider.profilePic} />
                                                 </div>
@@ -118,9 +116,9 @@ const Verthe = () => {
                     </div>
 
                 </section>
-                <section className="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-3 md:grid-cols-1 w-full">
-                    <div className="flex flex-col py-8 pl-6 pr-2  bg-white flex-shrink-0 w-full ">
-                        <h1 className='font-bold'>Services</h1>
+                <section className="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-3 md:grid-cols-1 w-full  ">
+                    <div className="flex flex-col py-8  pr-2   flex-shrink-0 w-full ">
+                        <h1 className='font-bold uppercase font-sans'>Services</h1>
 
                         <div className='   items-cente border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg h-full     '>
 
@@ -134,7 +132,7 @@ const Verthe = () => {
 
                     <div className={`flex flex-col  sm:px-8 sm:py-6 bg-white rounded-lg ${posts.length > 0 ? 'shadow-md shadow-gray-200' : 'h-full shadow-md shadow-gray-200'} md:col-span-2 md:row-span-2 gap-y-4 gap-x-8`}>
 
-                        <h1 className={`font-bold font-sans`}> Posts</h1>
+                      
 
                         {
                             posts.length > 0 ?
@@ -143,7 +141,7 @@ const Verthe = () => {
                                 :
                                 <div className="post bg-white  mt-8 mb-8  " >
                                     <div className="info flex justify-center items-center px-4">
-                                        <h1 className='my-2  font-sans font-semibold uppercase'><span className='font-bold  text-indigo-500 hover:cursor-pointer ml-2'>{provider.name}</span> didn't <span className="ml-2 md:ml-0">post anything yet</span> </h1>
+                                        <h1 className='my-2  font-sans font-semibold uppercase'><span className='font-bold  text-indigo-500 hover:cursor-pointer ml-2'>{provider.name}</span> didn't post <span className="ml-2 md:ml-0"> anything yet</span> </h1>
                                     </div>
                                 </div>
                         }
@@ -153,7 +151,13 @@ const Verthe = () => {
                 </section>
 
 
+                <ReviewSection providerId={providerId} />
+
+
+
             </main>
+
+        
 
 
         </>

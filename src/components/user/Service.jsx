@@ -11,7 +11,7 @@ const Service = ({ services }) => {
                     <p >
                         <img
                             src={service?.serviceImage}
-                            className="object-cover w-full h-64 rounded"
+                            className="object-cover w-full h-42 rounded"
                             alt=""
                         />
                     </p>
