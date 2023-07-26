@@ -101,7 +101,7 @@ const Dashboard = () => {
               <h2 className="font-medium text-gray-700">Famous Providers</h2>
               <div className="sm:flex sm:items-center sm:justify-between ">
                 
-                <HitProviders frequentProvider={frequentProvider} />
+                <HitProviders frequentProvider={frequentProvider} role={'admin'} />
               </div>
      
            

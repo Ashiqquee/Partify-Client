@@ -142,22 +142,10 @@ const Verthe = () => {
 
                 </section>
                 <section className="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-3 md:grid-cols-1 w-full  ">
-                    <div className="flex flex-col py-8  pr-2   flex-shrink-0 w-full ">
-                        <h1 className='font-bold uppercase font-sans'>Services</h1>
-
-                        <div className='   items-cente border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg h-full     '>
-
-
-                            <Service services={services} />
-
-
-                        </div>
-
-                    </div>
 
                     <div className={`flex flex-col  sm:px-8 sm:py-6 bg-white rounded-lg ${posts.length > 0 ? 'shadow-md shadow-gray-200' : 'h-full shadow-md shadow-gray-200'} md:col-span-2 md:row-span-2 gap-y-4 gap-x-8`}>
 
-                      
+
 
                         {
                             posts.length > 0 ?
@@ -172,6 +160,21 @@ const Verthe = () => {
                         }
 
                     </div>
+
+
+                    <div className="flex flex-col py-8  pr-2   flex-shrink-0 w-full ">
+                        <h1 className='font-bold uppercase font-sans'>Services</h1>
+
+                        <div className='   items-cente border  mt-4 w-full py-6 px-4 rounded-lg h-full     '>
+
+
+                            <Service services={services} />
+
+
+                        </div>
+
+                    </div>
+
 
                 </section>
 
