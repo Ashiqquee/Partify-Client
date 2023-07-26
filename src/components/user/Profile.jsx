@@ -6,8 +6,8 @@ import Orders from './Orders'
 const Profile = () => {
 
     const token = useSelector(state => state.user.token);
-
     const [dp, setDp] = useState('');
+    const[loading,setLoading] = useState(false)
     const [profile, setProfile] = useState({
         name: '',
         email: '',
@@ -50,19 +50,9 @@ const Profile = () => {
         }
         return errors;
     };
-    const [showModal, setShowModal] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
-    const closeModal = () => {
-        let close = setTimeout(() => {
-            setShowModal(false);
-            clearTimeout(close);
-        }, 50);
-
-        let show = setTimeout(() => {
-            setShowModal(true);
-            clearTimeout(show);
-        }, 100);
-    };
+  
 
     const imageSrc = dp ? URL.createObjectURL(dp) : (profile?.image || 'https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg');
 
@@ -136,6 +126,7 @@ const Profile = () => {
         if (Object.keys(errors).length === 0) {
 
         if (formData.email !== profile.email || formData.name !== profile.name || formData.place !== profile.place || formData.phone !== profile.phone) {
+            setLoading(true);
             try {
 
                 const response = await axiosInstance.patch('/profile', formData, {
@@ -152,6 +143,8 @@ const Profile = () => {
                         place: formData.place,
                         phone: formData.phone
                     }));
+                    setLoading(false);
+                    setShowModal(false);
                     toast.success('Profile Updated');
                 } else {
                     toast.error('Something went wrong');
@@ -245,7 +238,7 @@ const Profile = () => {
                                 <div className="flex justify-center mb-2">
                                     <input type="file" onChange={handleFile} className="hidden" id="fileInput" accept="image/*" />
                                     <label htmlFor="fileInput" className="bg-blue-500 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Change dp</label>
-                                    <button onClick={() => window.my_modal_3.showModal() || editForm()} type="button" className="border border-blue-500 text-blue-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
+                                    <button onClick={() => setShowModal(true) || editForm()} type="button" className="border border-blue-500 text-blue-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
                                 </div>
                             </div>
                         </div>
@@ -317,7 +310,7 @@ const Profile = () => {
                                     <div className="w-2/3">
                                         {profile?.place === undefined ? (
                                             <>
-                                                <p className="text-blue-500 font-semibold mb-0 hover:cursor-pointer" onClick={() => window.my_modal_3.showModal() || editForm()}>Add place +</p>
+                                                <p className="text-blue-500 font-semibold mb-0 hover:cursor-pointer" onClick={() => setShowModal(true) || editForm()}>Add place +</p>
 
 
                                             </>
@@ -331,74 +324,97 @@ const Profile = () => {
                             </div>
                         </div>
                         {showModal && (
-                            <dialog id="my_modal_3" className="modal">
 
-                                <form method="dialog" onSubmit={editDetails} className="modal-box flex justify-center">
-                                    <p className=" btn-ghost absolute right-2 top-2 hover:cursor-pointer" onClick={() => closeModal()}>✕</p>
+                            <div
+                                className="fixed inset-0 z-10 overflow-y-auto"
+                                aria-labelledby="modal-title"
+                                role="dialog"
+                                aria-modal="true"
+                            >
+                                <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                                    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                                        &#8203;
+                                    </span>
 
-                                    <div className="border-b border-gray-900/10 pb-12">
-                                        <h2 className="text-base font-bold leading-7 text-gray-900">Edit Personal Information</h2>
-                                        <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent phone where you can receive updates.</p>
+                                    <div className="relative inline-block p-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl sm:max-w-sm rounded-xl dark:bg-gray-900 sm:my-8 sm:w-full sm:p-6">
+                                        
 
-                                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                        <form onSubmit={editDetails} encType="multipart/form-data">
+
+                                            <div className="flex items-center justify-between w-full mt-5 gap-x-2">
+                                                <input
+                                                    type="text"
+                                                    id="name" name="name" onChange={handleChange} value={formData?.name} placeholder={formData?.name}
+                                                    className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+                                                />
 
 
-                                            <div className="sm:col-span-4">
-                                                <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">Full name</label>
-                                                <div className="mt-2">
-                                                    <input type="text" name="name" onChange={handleChange} value={formData.name} placeholder={formData.name} id="name" autoComplete="family-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                                </div>
+                                            </div>
+                                    
+                                            <div className="flex items-center justify-between w-full mt-5 gap-x-2">
+                                                <input
+                                                    type="text"
+                                                    id="phone" name="phone" onChange={handleChange} value={formData.phone} placeholder={formData.phone}
+                                                    className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+                                                />
+
+
+                                            </div>
+                                            <div className="flex items-center justify-between w-full mt-5 gap-x-2">
+                                                <input
+                    
+                                                    id="email" name="email" type="email" onChange={handleChange} value={formData.email} placeholder={formData.email}
+                                                    className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+                                                />
+
+
                                             </div>
 
-                                            <div className="sm:col-span-4">
-                                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-                                                <div className="mt-2">
-                                                    <input id="email" name="email" type="email" onChange={handleChange} value={formData.email} placeholder={formData.email} autoComplete="email" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                                </div>
-                                            </div>
-
-                                            <div className="sm:col-span-4">
-                                                <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
-                                                <div className="mt-2">
-                                                    <input id="phone" name="phone" type="text" onChange={handleChange} value={formData.phone} placeholder={formData.phone} autoComplete="phone" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                                </div>
-                                            </div>
-
-                                            <div className="sm:col-span-3">
-                                                <label htmlFor="Place" className="block text-sm font-medium leading-6 text-gray-900">Place</label>
-                                                <div className="mt-2">
-                                                    <select
-                                                        id="Place"
-                                                        name="Place"
-                                                        autoComplete="Place"
-                                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                                                        value={formData.place}
-                                                        onChange={(e) =>
-                                                            setFormData({ ...formData, place: e.target.value })
-                                                        }
-                                                    >
-                                                        <option value="" disabled hidden>
-                                                            {formData.place ? formData.place : "Select a place"}
+                                            <div className="flex items-center justify-between w-full mt-5 gap-x-2">
+                                                <select
+                                                    id="Place"
+                                                    name="Place"
+                                                    autoComplete="Place"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                                    value={formData.place}
+                                                    onChange={(e) =>
+                                                        setFormData({ ...formData, place: e.target.value })
+                                                    }
+                                                >
+                                                    <option value="" disabled hidden>
+                                                        {formData.place ? formData.place : "Select a place"}
+                                                    </option>
+                                                    {keralaDistricts.map((district) => (
+                                                        <option key={district} value={district}>
+                                                            {district}
                                                         </option>
-                                                        {keralaDistricts.map((district) => (
-                                                            <option key={district} value={district}>
-                                                                {district}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
+                                                    ))}
+                                                </select>
+
+                                       
+
                                             </div>
+                                            
 
+                                            <div className="mt-4 sm:flex sm:items-center sm:justify-between sm:mt-6 sm:-mx-2">
+                                                <button
+                                                    onClick={() => setShowModal(false)}
+                                                    className="px-4 sm:mx-2 w-full py-2.5 text-sm font-medium dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                >
+                                                    Cancel
+                                                </button>
 
-
-
-
-                                        </div>
-                                        <button onClick={closeModal} type="submit" className="bg-blue-500 mt-4 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Submit</button>
-
+                                                <button
+                                                    type="submit" className="px-4 sm:mx-2 w-full py-2.5 mt-3 sm:mt-0 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                                >
+                                                    {loading ? <span className="loading loading-dots loading-xs"> </span> : 'Confirm'}
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
-                            </dialog>
+
+                                </div>
+                            </div>
                         )}
                     </div>
 

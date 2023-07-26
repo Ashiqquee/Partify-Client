@@ -313,110 +313,7 @@ const Profile = () => {
                             </div>
                         </div>
                         {showModal && (
-                            // <dialog id="my_modal_3" className="modal">
-
-                            //     <form method="dialog" onSubmit={editDetails} className="modal-box flex justify-center  w-full">
-                            //         <p className=" btn-ghost absolute right-2 top-2 hover:cursor-pointer" onClick={() => closeModal()}>✕</p>
-
-                            //         <div className="border-b border-gray-900/10 pb-12">
-                            //             <h2 className="text-base font-bold leading-7 text-gray-900">Edit Company Information</h2>
-                            //             <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent phone where you can receive updates.</p>
-
-                            //             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-
-
-                            //                 <div className="sm:col-span-4">
-                            //                     <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">Full name</label>
-                            //                     <div className="mt-2">
-                            //                         <input type="text" name="name" onChange={handleChange} value={formData?.name} placeholder={formData?.name} id="name" autoComplete="family-name" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                            //                     </div>
-                            //                 </div>
-
-                            //                 <div className="sm:col-span-4">
-                            //                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Description</label>
-                            //                     <div className="mt-2">
-                            //                         <textarea
-                            //                             id="description"
-                            //                             name="description"
-                            //                             onChange={handleChange}
-                            //                             value={formData?.description || ''}
-                            //                             placeholder={formData?.description || ''}
-                            //                             autoComplete="description"
-                            //                             rows="4" 
-                            //                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            //                         ></textarea>
-                            //                     </div>
-                            //                 </div>
-
-                            //                 <div className="sm:col-span-4">
-                            //                     <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
-                            //                     <div className="mt-2">
-                            //                         <input id="phone" name="phone" type="text" onChange={handleChange} value={formData.phone} placeholder={formData.phone} autoComplete="phone" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                            //                     </div>
-                            //                 </div>
-
-                            //                 <div className="sm:col-span-3">
-                            //                     <label htmlFor="Place" className="block text-sm font-medium leading-6 text-gray-900">Place</label>
-                            //                     <div className="mt-2">
-                            //                         <Select
-                            //                         isMulti
-                            //                             name="places"
-                            //                             options={keralaDistricts.map(place => ({
-                            //                                 value: place,
-                            //                                 label: place
-                            //                             }))}
-                            //                             value={formData?.places?.map(place => ({
-                            //                                 value: place,
-                            //                                 label: place
-                            //                             }))}
-                            //                             onChange={selectedOptions => {
-                            //                                 const selectedDistrict = selectedOptions.map(option => option.value);
-                            //                                 if (selectedDistrict.includes('All Kerala')) {
-                            //                                     if (selectedDistrict.length > 1) {
-                            //                                         toast.warn('Already Selected All Kerala');
-                            //                                     }
-                            //                                     setFormData(prevFormData => ({
-                            //                                         ...prevFormData,
-                            //                                         places: ['All Kerala']
-                            //                                     }));
-                            //                                 } else {
-                            //                                     setFormData(prevFormData => ({
-                            //                                         ...prevFormData,
-                            //                                         places: selectedDistrict.filter(place => place !== 'All Kerala')
-                            //                                     }));
-                            //                                 }
-                            //                             }}
-                            //                         />
-
-                            //                     </div>
-                            //                 </div>
-
-
-                            //                 <div className="sm:col-span-4">
-                            //                     <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">Cover Pic</label>
-                            //                     <div className="mt-2">
-                            //                         <input id="coverPic"
-                            //                             name="coverPic"
-                            //                             type="file"
-                            //                             onChange={handleCoverPicChange} className="file-input file-input-sm w-full max-w-xs" />
-                            //                     </div>
-                            //                 </div>
-                            //                 <div className="sm:col-span-4">
-                            //                 {formData.coverPic && (
-                            //                         <img
-                            //                             src={(typeof formData.coverPic === 'string' && formData.coverPic.startsWith('https:')) ? formData.coverPic : URL.createObjectURL(formData.coverPic)}
-                            //                             className="w-16 h-16"
-                            //                             alt="Selected Cover Image"
-                            //                         />
-
-                            //                 )}
-                            //                 </div>
-                            //             </div>
-                            //             <button onClick={closeModal} type="submit" className="bg-blue-500 mt-4 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer mb-3">Submit</button>
-
-                            //         </div>
-                            //     </form>
-                            // </dialog>
+                        
                             <div
                                 className="fixed inset-0 z-10 overflow-y-auto"
                                 aria-labelledby="modal-title"
@@ -487,17 +384,7 @@ const Profile = () => {
 
 
                                             </div>
-                                            {/* <div className="flex items-center justify-between w-full mt-5 gap-x-2">
-                                                <textarea
-                                                    type="text"
-                                                    id="description" name="description" onChange={handleChange}
-                                                      value={formData?.description || ''}
-                                                     placeholder={formData?.description || ''}
-                                                    
-                                                ></textarea>
-
-
-                                            </div> */}
+                                
                                             <div>
                                                 <label htmlFor="Description" className="block text-sm text-gray-500 dark:text-gray-300">Description</label>
 
