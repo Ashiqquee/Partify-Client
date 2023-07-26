@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 
-const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPosts, profile, onSavePost, onUnsavePost }) => {
+const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPosts, profile, onSavePost, onUnsavePost, removeSavedPost }) => {
 
 
     const [newComment, setNewComments] = useState('');
@@ -31,6 +31,11 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
             setShowOptionIndex(index);
         }
     };
+
+    const handleRemoveSavedPost = (id) => {
+        console.log(id+":idddd");
+        removeSavedPost(id)
+    }
 
 
     const handleDelete = async (postId) => {
@@ -225,21 +230,21 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
         if (!userToken) return navigate('/login');
 
         try {
-            
+
             const { data } = await axiosInstance.patch(`/savePost/${postId}`, {}, {
                 headers: {
                     Authorization: `Bearer ${userToken}`,
                 },
             });
 
-      
+
             onSavePost(data.likedPost)
         } catch (error) {
             console.log(error);
         }
     };
 
-    const handleUnsavePost = async(postId) => {
+    const handleUnsavePost = async (postId) => {
 
         if (!userToken) return navigate('/login');
 
@@ -250,23 +255,25 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                 },
             });
 
-        
-            onUnsavePost(data.likedPost);
+            if(onSavePost) {
+                onUnsavePost(data.likedPost);
+
+            }
 
         } catch (error) {
             console.log(error);
         }
     };
 
-    const handleReport = async(postId) => {
+    const handleReport = async (postId) => {
         try {
-            const { status } = await axiosInstance.patch(`/report/${postId}`,{},{
+            const { status } = await axiosInstance.patch(`/report/${postId}`, {}, {
                 headers: {
                     Authorization: `Bearer ${userToken}`,
                 },
             });
             console.log(status);
-            if(status === 200) {
+            if (status === 200) {
                 setShowOption(null)
                 toast.warn('Post has been reported')
             }
@@ -299,29 +306,29 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                             </div>
                             <div className="username flex  font-bold text-black text-sm ml-6 ">
                                 <p>{post.providerId?.name}</p>
-                               {
-                                post?.providerId?.isUpgraded ? 
-                                
+                                {
+                                    post?.providerId?.isUpgraded ?
+
                                         <p className="ml-2 tooltip hover:cursor-pointer" data-tip='verified badge'>
-                                            <svg width="20" height="24" strokeWidth="1.5" 
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor">
-                                                 <path d="M10.5213 2.62368C11.3147 1.75255 12.6853 1.75255 13.4787 2.62368L14.4989 3.74391C14.8998 4.18418 15.4761 4.42288 16.071 4.39508L17.5845 4.32435C18.7614 4.26934 19.7307 5.23857 19.6757 6.41554L19.6049 7.92905C19.5771 8.52388 19.8158 9.10016 20.2561 9.50111L21.3763 10.5213C22.2475 11.3147 22.2475 12.6853 21.3763 13.4787L20.2561 14.4989C19.8158 14.8998 19.5771 15.4761 19.6049 16.071L19.6757 17.5845C19.7307 18.7614 18.7614 19.7307 17.5845 19.6757L16.071 19.6049C15.4761 19.5771 14.8998 19.8158 14.4989 20.2561L13.4787 21.3763C12.6853 22.2475 11.3147 22.2475 10.5213 21.3763L9.50111 20.2561C9.10016 19.8158 8.52388 19.5771 7.92905 19.6049L6.41553 19.6757C5.23857 19.7307 4.26934 18.7614 4.32435 17.5845L4.39508 16.071C4.42288 15.4761 4.18418 14.8998 3.74391 14.4989L2.62368 13.4787C1.75255 12.6853 1.75255 11.3147 2.62368 10.5213L3.74391 9.50111C4.18418 9.10016 4.42288 8.52388 4.39508 7.92905L4.32435 6.41553C4.26934 5.23857 5.23857 4.26934 6.41554 4.32435L7.92905 4.39508C8.52388 4.42288 9.10016 4.18418 9.50111 3.74391L10.5213 2.62368Z" 
-                                                 stroke="#ffffff" strokeWidth="0"
-                                                  id="mainIconPathAttribute" fill="blue">
-                                                    </path> <path d="M9 12L11 14L15 10"
-                                                     stroke="#ffffff" strokeLinecap="round"
-                                                      strokeLinejoin="round" id="mainIconPathAttribute"
-                                                       fill="blue"></path> </svg>
-                                </p>
-                                
-                                : null
-                               }
+                                            <svg width="20" height="24" strokeWidth="1.5"
+                                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor">
+                                                <path d="M10.5213 2.62368C11.3147 1.75255 12.6853 1.75255 13.4787 2.62368L14.4989 3.74391C14.8998 4.18418 15.4761 4.42288 16.071 4.39508L17.5845 4.32435C18.7614 4.26934 19.7307 5.23857 19.6757 6.41554L19.6049 7.92905C19.5771 8.52388 19.8158 9.10016 20.2561 9.50111L21.3763 10.5213C22.2475 11.3147 22.2475 12.6853 21.3763 13.4787L20.2561 14.4989C19.8158 14.8998 19.5771 15.4761 19.6049 16.071L19.6757 17.5845C19.7307 18.7614 18.7614 19.7307 17.5845 19.6757L16.071 19.6049C15.4761 19.5771 14.8998 19.8158 14.4989 20.2561L13.4787 21.3763C12.6853 22.2475 11.3147 22.2475 10.5213 21.3763L9.50111 20.2561C9.10016 19.8158 8.52388 19.5771 7.92905 19.6049L6.41553 19.6757C5.23857 19.7307 4.26934 18.7614 4.32435 17.5845L4.39508 16.071C4.42288 15.4761 4.18418 14.8998 3.74391 14.4989L2.62368 13.4787C1.75255 12.6853 1.75255 11.3147 2.62368 10.5213L3.74391 9.50111C4.18418 9.10016 4.42288 8.52388 4.39508 7.92905L4.32435 6.41553C4.26934 5.23857 5.23857 4.26934 6.41554 4.32435L7.92905 4.39508C8.52388 4.42288 9.10016 4.18418 9.50111 3.74391L10.5213 2.62368Z"
+                                                    stroke="#ffffff" strokeWidth="0"
+                                                    id="mainIconPathAttribute" fill="blue">
+                                                </path> <path d="M9 12L11 14L15 10"
+                                                    stroke="#ffffff" strokeLinecap="round"
+                                                    strokeLinejoin="round" id="mainIconPathAttribute"
+                                                    fill="blue"></path> </svg>
+                                        </p>
+
+                                        : null
+                                }
                             </div>
 
                         </div>
                         <div className="relative">
 
-                            {role === 'provider' || role === 'user'  ?
+                            {role === 'provider' || role === 'user' ?
                                 <FontAwesomeIcon
                                     icon={faEllipsisVertical}
                                     onClick={() => handleOptions(index)}
@@ -331,19 +338,19 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                                 {showOption && showOptionIndex === index ?
                                     <>
                                         <ul className="py-2">
-                                          {
-                                            role === 'provider' ? 
-                                            <>
+                                            {
+                                                role === 'provider' ?
+                                                    <>
                                                         <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleConfirmation}  >
                                                             Delete
                                                         </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleEditPost(post?._id) || window.my_modal_2.showModal()}>
                                                             Edit
                                                         </li>
-                                            </> : 
+                                                    </> :
                                                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleReport(post._id)}  >
-                                                Report
-                                            </li>
-                                          }
+                                                        Report
+                                                    </li>
+                                            }
                                             <dialog id="my_modal_2" className="modal">
                                                 <div method="dialog" className="modal-box">
                                                     <form className="flex justify-center p-4  w-full" onSubmit={handleSubmit}>
@@ -497,17 +504,17 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                                         />}
                                     </div>
                                     <div>
-                                      {
-                                        savedPosts?.includes(post?._id) ?
+                                        {
+                                            savedPosts?.includes(post?._id) ?
                                                 <FontAwesomeIcon icon={faBookmark} className="h-6 text-indigo-500"
-                                                onClick={() => handleUnsavePost(post?._id)}
+                                                    onClick={() => handleRemoveSavedPost(post?._id) || handleUnsavePost(post?._id) }
                                                 />
                                                 : <FontAwesomeIcon icon={faBookmark} className="h-6 text-gray-400"
 
                                                     onClick={() => handleSavePost(post?._id)}
 
                                                 />
-                                      }
+                                        }
                                     </div>
                                 </div>
 
