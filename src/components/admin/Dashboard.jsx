@@ -91,7 +91,7 @@ const Dashboard = () => {
 
         <section className="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-3 md:grid-cols-2 ">
           
-          <DetailBox details={details}/>
+          <DetailBox details={details} role={'admin'}/>
 
          
             <ChartComponent chartData={chartData} />

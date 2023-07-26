@@ -8,7 +8,7 @@ import HitProviders from "../dashboard/HitProviders";
 const Dashboard = () => {
 
     const [details, setDetails] = useState({
-        totalUsers: '',
+        interaction: '',
         totalOrders: '',
         totalProviders: ''
     });
@@ -31,8 +31,23 @@ const Dashboard = () => {
         }
     };
 
+    const fetchInteraction = async() => {
+        try {
+            const response = await axiosInstance.get('/provider/interaction', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+
+                },
+            });
+            setDetails({...details,interaction:response?.data?.interaction})
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         fetchChartData();
+        fetchInteraction();
     },[])
 
    return(
@@ -48,7 +63,7 @@ const Dashboard = () => {
 
                <section className="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-3 md:grid-cols-2 ">
 
-                   <DetailBox details={details} />
+                   <DetailBox details={details} role={'provider'}/>
 
 
                    <ChartComponent chartData={chartData} />
