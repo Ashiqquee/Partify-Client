@@ -20,7 +20,8 @@ const ReviewSection = ({ providerId }) => {
     },[])
 
     return(
-        <section className="py-24 2xl:py-44 bg-blueGray-100 rounded-t-10xl overflow-hidden">
+        <section className="py-24 2xl:py-44 bg-blueGray-100 rounded-t-10xl overflow-hidden 
+        ">
             <div className="container px-4 mx-auto">
 
 

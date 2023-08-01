@@ -19,7 +19,7 @@ const RecentChats = ({ allChat, selectedChat, handleProvider, role }) => {
                                         onClick={() => setChats(chat?._id)}>
                                         <div className="h-12 w-12 rounded-full border overflow-hidden ">
                                             <img
-                                                src={role === 'user' ? chat.providerId.profilePic : chat.userId.image}
+                                                src={role === 'user' ? chat.providerId.profilePic : chat.userId.image || 'https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg'}
                                                 alt="Avatar"
                                                 className="h-full w-full"
                                             />

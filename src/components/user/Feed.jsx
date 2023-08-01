@@ -4,6 +4,7 @@ import PostComponent from '../Post'
 import useWidth from "../../utils/useWidthSize";
 import { useSelector } from "react-redux";
 import Ad from "../../components/user/Ad";
+import Spinner from "../Spinner";
 
 const Feed = () => {
 
@@ -11,24 +12,24 @@ const Feed = () => {
     const [posts, setPosts] = useState([]);
     const [profile, setProfile] = useState([]);
     const width = useWidth();
-    const {token} = useSelector(state => state.user)
-    const [savedPosts,setSavedPosts] = useState([]);
-
-    const fetchFeed = async() => {
+    const { token } = useSelector(state => state.user)
+    const [savedPosts, setSavedPosts] = useState([]);
+    const [spinner, setSpinner] = useState(true);
+    const fetchFeed = async () => {
         try {
             const response = await axiosInstance.get('/feed');
-            
-            setPosts(response.data.post)
+            setPosts(response.data.post);
+            setSpinner(false);
         } catch (error) {
-          console.log(error);  
+            console.log(error);
         }
     }
     const onUnLike = (postId) => {
-        
+
 
         const updatedPosts = posts.map(post => {
             if (post._id === postId) {
-                
+
                 const updatedLikes = post.likes.filter(id => id !== userId);
                 return { ...post, likes: updatedLikes };
             }
@@ -38,10 +39,10 @@ const Feed = () => {
     };
 
     const onLike = (postId) => {
-        
+
         const updatedPosts = posts.map(post => {
             if (post._id === postId) {
-                
+
                 const updatedLikes = [...post.likes, userId];
                 return { ...post, likes: updatedLikes };
             }
@@ -67,7 +68,7 @@ const Feed = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-          
+
             setSavedPosts(data?.user?.likedPost);
             setProfile(data?.user?.image);
         } catch (error) {
@@ -76,7 +77,6 @@ const Feed = () => {
     };
 
     const onSavePost = (posts) => {
-        console.log(posts);
         setSavedPosts(posts);
     };
 
@@ -89,26 +89,35 @@ const Feed = () => {
         fetchFeed()
         userSavedPosts()
 
-    },[])
+    }, [])
 
-    return(
-        <section className="main w-screen  flex ">
-            <div className={width > 1100   ? "wrapper px-4 w-5/6 " : "wrapper px-4 w-full" }>
-                <div className="left-col ">
-                   
-                    <PostComponent posts={posts} role={'user'} onUnlike={onUnLike} onLike={onLike} addComment={addComment} savedPosts={savedPosts} profile={profile} onSavePost={onSavePost} onUnsavePost={onUnsavePost} />
-                    
-                 
-                </div>
-            </div>
+    return (
+        <>
             {
-                width < 1170 ? null : (
-                    <div className="wrapper px-4 w-2/4 ">
-                        <Ad/>
-                    </div>
-                )
+                spinner ?
+                    <Spinner/>
+                    :
+                    <section className="main w-screen  flex ">
+                        <div className={width > 1100 ? "wrapper px-4 w-5/6 " : "wrapper px-4 w-full"}>
+                            <div className="left-col ">
+
+                                <PostComponent posts={posts} role={'user'} onUnlike={onUnLike} onLike={onLike} addComment={addComment} savedPosts={savedPosts} profile={profile} onSavePost={onSavePost} onUnsavePost={onUnsavePost} />
+
+
+                            </div>
+                        </div>
+                        {
+                            width < 1170 ? null : (
+                                <div className="wrapper px-4 w-2/4 ">
+                                    <Ad />
+                                </div>
+                            )
+                        }
+                    </section>
             }
-        </section>
+
+
+        </>
 
 
     )

@@ -141,15 +141,15 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
         return errors;
     };
 
-    const handleEditPost = (postId) => {
-        const post = posts?.find((post) => post._id === postId);
-        setFormData({
-            _id: post?._id,
-            caption: post?.caption,
-            tagline: post?.tagline,
-            file: post?.postImages
-        })
-    };
+    // const handleEditPost = (postId) => {
+    //     const post = posts?.find((post) => post._id === postId);
+    //     setFormData({
+    //         _id: post?._id,
+    //         caption: post?.caption,
+    //         tagline: post?.tagline,
+    //         file: post?.postImages
+    //     })
+    // };
 
 
     const handleNewComment = (event) => {
@@ -343,9 +343,10 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                                                     <>
                                                         <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleConfirmation}  >
                                                             Delete
-                                                        </li> <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleEditPost(post?._id) || window.my_modal_2.showModal()}>
+                                                        </li> 
+                                                        {/* <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleEditPost(post?._id) || window.my_modal_2.showModal()}>
                                                             Edit
-                                                        </li>
+                                                        </li> */}
                                                     </> :
                                                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleReport(post._id)}  >
                                                         Report

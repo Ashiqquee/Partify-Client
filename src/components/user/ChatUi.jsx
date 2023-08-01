@@ -154,7 +154,7 @@ const ChatUi = () => {
                                                                     <div className="flex items-center justify-start flex-row-reverse mt-1">
                                                                         <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                                                             <img
-                                                                                src={message.senderId.image}
+                                                                                src={message.senderId.image ||'https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg' }
                                                                                 alt="Avatar"
                                                                                 className="h-full w-full rounded-full"
                                                                             />
@@ -175,7 +175,7 @@ const ChatUi = () => {
                                                                 <div className="flex flex-row items-center">
                                                                     <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                                                         <img
-                                                                            src={message?.senderId?.profilePic || message?.profilePic}
+                                                                                src={message?.senderId?.profilePic || message?.profilePic || 'https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg'}
                                                                             alt="Avatar"
                                                                             className="h-full w-full rounded-full"
                                                                         />

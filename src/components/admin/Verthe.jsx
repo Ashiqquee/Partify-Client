@@ -162,10 +162,10 @@ const Verthe = () => {
                     </div>
 
 
-                    <div className="flex flex-col py-8  pr-2   flex-shrink-0 w-full ">
+                    <div className="flex flex-col py-8  pr-2  flex-shrink-0 w-full ">
                         <h1 className='font-bold uppercase font-sans'>Services</h1>
 
-                        <div className='   items-cente border  mt-4 w-full py-6 px-4 rounded-lg h-full     '>
+                        <div className='   items-cente   mt-4 w-full py-6 px-4 rounded-lg h-full     '>
 
 
                             <Service services={services} />
