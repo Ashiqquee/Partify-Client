@@ -7,10 +7,9 @@ import AdminHome from './pages/admin/Home'
 import Service from "./pages/admin/Service";
 import UserList from './pages/admin/User';
 import ProviderSignup from './components/provider/Signup';
-import ProviderList from "./pages/admin/Provider";
+import ProviderList from "./pages/admin/Provider"; 
 import ProviderHome from "./pages/provider/Home";
 import ManageServices from "./pages/provider/ManageService";
-import Verthe from "./components/admin/Verthe";
 import Profile from "./pages/user/Profile";
 import AddPost from "./pages/provider/AddPost";
 import ProviderPage from "./pages/user/Provider";
@@ -75,7 +74,6 @@ const App = () => {
         <Route path="/admin/orders" element={adminAuth ? <AdminOrders /> : <Navigate to='/admin/login' />}></Route>
         <Route path="/admin/ads" element={adminAuth ? <Ads /> : <Navigate to='/admin/login' />}></Route>
         <Route path="/admin/order/:id" element={adminAuth ? <AdminOrderDetails /> : <Navigate to='/admin/login' />}></Route>
-        <Route path="/admin/verthe" element={adminAuth ? <Verthe /> : <Navigate to='/admin/login' />}></Route>
         
         
 

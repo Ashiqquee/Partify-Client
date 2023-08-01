@@ -1,5 +1,5 @@
 import Sidebar from "../../components/user/Sidebar";
-import SinglePage from "../../components/admin/Verthe";
+import SinglePage from "../../components/user/SingleProvider";
 
 const SingleProvider = () => {
     return (
