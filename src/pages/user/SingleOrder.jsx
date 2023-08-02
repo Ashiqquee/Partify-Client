@@ -13,7 +13,7 @@ const SingleOrder = () => {
                 <OrderDetails token={token}/>
 
             </div>
-            <div className="flex  md:ml-64  lg:ml-64 ">
+            <div className="flex  md:ml-64  lg:ml-64 mt-10">
                 <Footer />
             </div>
         </div>

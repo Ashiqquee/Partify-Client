@@ -10,7 +10,7 @@ const Dashboard = () => {
     const [details, setDetails] = useState({
         interaction: '',
         totalOrders: '',
-        mostInteracted:'',
+        totalRevenue:'',
     });
     const[mostLikedPost,setMostLikedPosts] = useState([]);
     const [chartData, setChartData] = useState([]);
@@ -25,8 +25,14 @@ const Dashboard = () => {
 
                 },
             });
-
+            let totalSum = response?.data?.totalRevenue[0]?.totalAmountSum;
+            console.log(response);
+            setDetails((prevDetails) => ({
+                ...prevDetails,
+                totalRevenue: totalSum
+            }));
             setChartData(response.data.result);
+
         } catch (error) {
             console.log(error);
         }

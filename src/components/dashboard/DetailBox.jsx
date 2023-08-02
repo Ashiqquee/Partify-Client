@@ -24,7 +24,7 @@ const DetailBox = ({ details, role }) => {
                         <>
                             <FontAwesomeIcon icon={faUserSecret} className=' h-8 text-indigo-400' />
                             <div className="mx-2">
-                                <h3 className="text-2xl font-medium text-gray-800 ml-2">{details.totalProviders}</h3>
+                                <h3 className="text-2xl font-medium text-gray-800 ml-2">{details.totalProviders || 0}</h3>
                                 <p className="mt-1 text-sm text-gray-500 ml-2">Providers</p>
                             </div>
 
@@ -32,7 +32,7 @@ const DetailBox = ({ details, role }) => {
                         <>
                             <FontAwesomeIcon icon={faMoneyBillTrendUp} className=' h-8 text-indigo-400' />
                             <div className="mx-2">
-                                <h3 className="text-2xl font-medium text-gray-800 ml-2">{details.totalProviders || 0} </h3>
+                                <h3 className="text-2xl font-medium text-gray-800 ml-2">{details.totalRevenue || 0 } </h3>
                                 <p className="mt-1 text-sm text-gray-500 ml-2 font-semibold">Revenue</p>
                             </div>
                         </>
