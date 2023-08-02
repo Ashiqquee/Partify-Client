@@ -121,14 +121,14 @@ const UserList = () => {
                 <div className="sm:flex sm:items-center sm:justify-between ">
                     <div className="flex  justify-start w-full ">
                         <div className="flex items-center gap-x-3">
-                            <h2 className="text-lg font-medium text-gray-800 dark:text-white">Users</h2>
-                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{userList?.length || 0}</span>
+                            <h2 className="text-lg font-medium text-gray-800 d-text-white">Users</h2>
+                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full d-bg-gray-800 d-text-blue-400">{userList?.length || 0}</span>
                         </div>
                         <div className="mt-6 w-64 ml-4">
                             <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                                 <input
                                     type="search"
-                                    className="relative h-10 m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+                                    className="relative h-10 m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none d-border-neutral-600 d-text-neutral-200 d-placeholder:text-neutral-200 d-focus:border-primary"
                                     placeholder="Search User"
                                     aria-label="Search"
                                     aria-describedby="button-addon1"
@@ -148,30 +148,30 @@ const UserList = () => {
                 <div className="flex flex-col mt-6">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                    <thead className="bg-gray-50 dark:bg-gray-800">
+                            <div className="overflow-hidden border border-gray-200 d-border-gray-700 md:rounded-lg">
+                                <table className="min-w-full divide-y divide-gray-200 d-divide-gray-700">
+                                    <thead className="bg-gray-50 d-bg-gray-800">
                                         <tr>
-                                            <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 d-text-gray-400">
                                                 <button className="flex items-center gap-x-3 focus:outline-none">
                                                     <span>Name</span>
                                                       
                                                 </button>
                                             </th>
-                                            <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 d-text-gray-400">
                                                 Phone
                                             </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 d-text-gray-400">
                                                 Email
                                             </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Status</th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Action</th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 d-text-gray-400">Status</th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 d-text-gray-400">Action</th>
 
                                     
 
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                                    <tbody className="divide-y divide-gray-200 d-divide-gray-700 d-bg-gray-900">
                                         {userList?.length > 0 ? (
                                             userList.filter((user)=>user.name.toLowerCase().includes(searchText)).map((user) => (
                                                 <tr key={user._id}>

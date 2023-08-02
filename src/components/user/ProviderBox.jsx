@@ -74,11 +74,11 @@ const ProviderBox = () => {
                 spinner ?
                     <Spinner />
                     :
-                    <section className="bg-white dark:bg-gray-900 ">
+                    <section className="bg-white -bg-gray-900 ">
                         <div className="container px-6 py-10 mx-auto">
-                            <h1 className="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl dark:text-white">Providers</h1>
+                            <h1 className="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl -text-white">Providers</h1>
 
-                            <p className="max-w-2xl mx-auto my-6 text-center text-gray-500 dark:text-gray-300">
+                            <p className="max-w-2xl mx-auto my-6 text-center text-gray-500 -text-gray-300">
 
                                 Discover service providers that meet your criteria and connect with them through messaging to place your orders.
                             </p>
@@ -107,7 +107,7 @@ const ProviderBox = () => {
 
                                         .map((provider) => {
                                             return (
-                                                <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent " onClick={() => navigate(`/user/provider/${provider._id}`)}>
+                                                <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 -border-gray-700 -hover:border-transparent " onClick={() => navigate(`/user/provider/${provider._id}`)}>
                                                     <div className="w-full h-40" style={{ backgroundImage: `url(${provider?.coverPic})`, backgroundSize: 'cover' }}>
 
                                                         <div className="avatar">
@@ -116,7 +116,7 @@ const ProviderBox = () => {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="mt-4 flex text-2xl font-semibold text-gray-700 capitalize dark:text-white group-hover:text-white">
+                                                    <div className="mt-4 flex text-2xl font-semibold text-gray-700 capitalize -text-white group-hover:text-white">
                                                         <h1>{provider?.name}</h1>
                                                         {
                                                             provider?.isUpgraded ?
@@ -167,7 +167,7 @@ const ProviderBox = () => {
 
                                         .map((provider) => {
                                             return (
-                                                <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 dark:border-gray-700 dark:hover:border-transparent " onClick={() => navigate(`/user/provider/${provider._id}`)}>
+                                                <div key={provider._id} className="flex flex-col items -center p-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-indigo-500 -border-gray-700 -hover:border-transparent " onClick={() => navigate(`/user/provider/${provider._id}`)}>
                                                     <div className="w-full h-40" style={{ backgroundImage: `url(${provider?.coverPic})`, backgroundSize: 'cover' }}>
 
                                                         <div className="avatar">
@@ -176,7 +176,7 @@ const ProviderBox = () => {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="mt-4 flex text-2xl font-semibold text-gray-700 capitalize dark:text-white group-hover:text-white">
+                                                    <div className="mt-4 flex text-2xl font-semibold text-gray-700 capitalize -text-white group-hover:text-white">
                                                         <h1>{provider?.name}</h1>
                                                         {
                                                             provider?.isUpgraded ?

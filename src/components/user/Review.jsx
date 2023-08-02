@@ -56,7 +56,7 @@ const Review = ({ setShowReview, providerName,providerId }) => {
             >
                 <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                 <div
-                    className="relative inline-block p-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl sm:max-w-sm rounded-xl dark:bg-gray-900 sm:my-8 sm:w-full sm:p-6"
+                    className="relative inline-block p-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl sm:max-w-sm rounded-xl -bg-gray-900 sm:my-8 sm:w-full sm:p-6"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="flex flex-col items-center justify-center mx-auto">
@@ -74,11 +74,11 @@ const Review = ({ setShowReview, providerName,providerId }) => {
 
                     <div className="flex items-center justify-center w-full mt-5 gap-x-2 ">
                         <div>
-                            <label htmlFor="Description" className="block text-sm text-gray-500 dark:text-gray-300">Review</label>
+                            <label htmlFor="Description" className="block text-sm text-gray-500 -text-gray-300">Review</label>
 
                             <textarea placeholder="Enter your review.."
                             value={formData.message} onChange={handleReview}
-                            className="block mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"></textarea>
+                            className="block mt-2 w-full placeholder-gray-400/70 -placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 -border-gray-600 -bg-gray-900 -text-gray-300 -focus:border-blue-300"></textarea>
 
                            
                         </div>
@@ -89,7 +89,7 @@ const Review = ({ setShowReview, providerName,providerId }) => {
                     <div className="mt-4 sm:flex sm:items-center sm:justify-between sm:mt-6 sm:-mx-2">
                         <button
                             onClick={() => setShowReview(false)}
-                            className="px-4 sm:mx-2 w-full py-2.5 text-sm font-medium dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                            className="px-4 sm:mx-2 w-full py-2.5 text-sm font-medium -text-gray-200 -border-gray-700 -hover:bg-gray-800 tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
                         >
                             Cancel
                         </button>

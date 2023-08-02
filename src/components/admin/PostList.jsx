@@ -72,8 +72,8 @@ const PostList = () => {
                 <div className="sm:flex sm:items-center sm:justify-start">
                     <div>
                         <div className="flex items-center gap-x-3">
-                            <h2 className="text-lg font-medium text-gray-800 dark:text-white">Posts</h2>
-                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{posts?.length || 0}</span>
+                            <h2 className="text-lg font-medium text-gray-800 -text-white">Posts</h2>
+                            <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full -bg-gray-800 -text-blue-400">{posts?.length || 0}</span>
                         </div>
                        
                     </div>
@@ -81,7 +81,7 @@ const PostList = () => {
                         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                             <input
                                 type="search"
-                                className="relative h-10 m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+                                className="relative h-10 m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none -border-neutral-600 -text-neutral-200 -placeholder:text-neutral-200 -focus:border-primary"
                                 placeholder="Search Post"
                                 aria-label="Search"
                                 aria-describedby="button-addon1"
@@ -101,29 +101,29 @@ const PostList = () => {
                 <div className="flex flex-col mt-6">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                    <thead className="bg-gray-50 dark:bg-gray-800">
+                            <div className="overflow-hidden border border-gray-200 -border-gray-700 md:rounded-lg">
+                                <table className="min-w-full divide-y divide-gray-200 -divide-gray-700">
+                                    <thead className="bg-gray-50 -bg-gray-800">
                                         <tr>
-                                            <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 -text-gray-400">
                                                 <button className="flex items-center gap-x-3 focus:outline-none">
                                                     <span>Provider</span>
                                                     <svg className="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
                                                 </button>
                                             </th>
-                                            <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 -text-gray-400">
                                                 Post Images
                                             </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 -text-gray-400">
                                                 caption
                                             </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Tags</th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Reports</th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Action</th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 -text-gray-400">Tags</th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 -text-gray-400">Reports</th>
+                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 -text-gray-400">Action</th>
                                            
                                         </tr>
                                     </thead>
-                                    <tbody className=" divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900 ">
+                                    <tbody className=" divide-y divide-gray-200 -divide-gray-700 -bg-gray-900 ">
                                         
                                      {
                                      posts?.length > 0 ? (
@@ -153,12 +153,12 @@ const PostList = () => {
                                                                     <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                                                                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right -bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
                                                                             <div>
 
 
                                                                                 <div className="mt-2 ">
-                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
+                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize -text-white" id="modal-title">
                                                                                         Images
                                                                                     </h3>
                                                                                     {selectedPost && selectedPost?.postImages?.length > 0 && (
@@ -178,7 +178,7 @@ const PostList = () => {
                                                                                 <div className="sm:flex sm:items-center ">
                                                                                     <button
                                                                                         onClick={() => setImageOpen(false)}
-                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 -text-gray-200 -border-gray-700 -hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
                                                                                     >
                                                                                         Cancel
                                                                                     </button>
@@ -210,12 +210,12 @@ const PostList = () => {
                                                                     <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                                                                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right -bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
                                                                             <div>
                                                                                
 
                                                                                 <div className="mt-2 ">
-                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
+                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize -text-white" id="modal-title">
                                                                                         Caption
                                                                                     </h3>
                                                                                     <p  className="p-4  text-clip overflow-hidden ">
@@ -229,7 +229,7 @@ const PostList = () => {
                                                                                 <div className="sm:flex sm:items-center ">
                                                                                     <button
                                                                                         onClick={() => setCaptionOpen(false)}
-                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 -text-gray-200 -border-gray-700 -hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
                                                                                     >
                                                                                         Cancel
                                                                                     </button>
@@ -262,12 +262,12 @@ const PostList = () => {
                                                                     <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                                                                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right dark:bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+                                                                        <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl rtl:text-right -bg-gray-900 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
                                                                             <div>
 
 
                                                                                 <div className="mt-2 ">
-                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize dark:text-white" id="modal-title">
+                                                                                    <h3 className="text-lg text-center font-medium leading-6 text-gray-800 capitalize -text-white" id="modal-title">
                                                                                         Tags
                                                                                     </h3>
                                                                                     <p className="p-4  text-clip overflow-hidden ">
@@ -281,7 +281,7 @@ const PostList = () => {
                                                                                 <div className="sm:flex sm:items-center ">
                                                                                     <button
                                                                                         onClick={() => setTagOpen(false)}
-                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                                                        className="w-full px-4 py-2 mt-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:mt-0 sm:w-auto sm:mx-2 -text-gray-200 -border-gray-700 -hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
                                                                                     >
                                                                                         Cancel
                                                                                     </button>

@@ -332,7 +332,7 @@ const Profile = () => {
                                                     &#8203;
                                                 </span>
 
-                                                <div className="relative inline-block p-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl sm:max-w-sm rounded-xl dark:bg-gray-900 sm:my-8 sm:w-full sm:p-6">
+                                                <div className="relative inline-block p-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl sm:max-w-sm rounded-xl -bg-gray-900 sm:my-8 sm:w-full sm:p-6">
                                                     <div className="flex items-center justify-center mx-auto">
                                                         {formData.coverPic && (
                                                             <img className=" rounded-lg w-64 h-48" src={(typeof formData.coverPic === 'string' && formData.coverPic.startsWith('https:')) ? formData.coverPic : URL.createObjectURL(formData.coverPic)} alt="Selected" />
@@ -345,7 +345,7 @@ const Profile = () => {
                                                             <input
                                                                 type="text"
                                                                 id="name" name="name" onChange={handleChange} value={formData?.name} placeholder={formData?.name}
-                                                                className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+                                                                className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md -bg-gray-900 -text-gray-300 -border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 -focus:border-blue-300 focus:outline-none focus:ring"
                                                             />
 
 
@@ -386,16 +386,16 @@ const Profile = () => {
                                                             <input
                                                                 type="text"
                                                                 id="phone" name="phone" onChange={handleChange} value={formData.phone} placeholder={formData.phone}
-                                                                className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+                                                                className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md -bg-gray-900 -text-gray-300 -border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 -focus:border-blue-300 focus:outline-none focus:ring"
                                                             />
 
 
                                                         </div>
 
                                                         <div>
-                                                            <label htmlFor="Description" className="block text-sm text-gray-500 dark:text-gray-300">Description</label>
+                                                            <label htmlFor="Description" className="block text-sm text-gray-500 -text-gray-300">Description</label>
 
-                                                            <textarea className="block mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
+                                                            <textarea className="block mt-2 w-full placeholder-gray-400/70 -placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 -border-gray-600 -bg-gray-900 -text-gray-300 -focus:border-blue-300"
                                                                 id="description" name="description" onChange={handleChange}
                                                                 value={formData?.description || ''}
                                                                 placeholder={formData?.description || ''}
@@ -404,15 +404,15 @@ const Profile = () => {
 
                                                         </div>
                                                         <div>
-                                                            <label htmlFor="image" className="block text-sm text-gray-500 dark:text-gray-300 mt-4">Cover Pic</label>
+                                                            <label htmlFor="image" className="block text-sm text-gray-500 -text-gray-300 mt-4">Cover Pic</label>
 
-                                                            <input type="file" onChange={handleCoverPicChange} name="file" className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full dark:file:bg-gray-800 dark:file:text-gray-200 dark:text-gray-300 placeholder-gray-400/70 dark:placeholder-gray-500 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:focus:border-blue-300" />
+                                                            <input type="file" onChange={handleCoverPicChange} name="file" className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full -file:bg-gray-800 -file:text-gray-200 -text-gray-300 placeholder-gray-400/70 -placeholder-gray-500 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 -border-gray-600 -bg-gray-900 -focus:border-blue-300" />
                                                         </div>
 
                                                         <div className="mt-4 sm:flex sm:items-center sm:justify-between sm:mt-6 sm:-mx-2">
                                                             <button
                                                                 onClick={() => setShowModal(false)}
-                                                                className="px-4 sm:mx-2 w-full py-2.5 text-sm font-medium dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                                className="px-4 sm:mx-2 w-full py-2.5 text-sm font-medium -text-gray-200 -border-gray-700 -hover:bg-gray-800 tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
                                                             >
                                                                 Cancel
                                                             </button>
