@@ -135,29 +135,7 @@ const PostList = () => {
                                                 </div>
                                             </td>
                                             <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
-{/*                                                 
-                                                 <button className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900" onClick={() => setPost(post)|| window.my_modal_2.showModal()}>Images</button>
-                                                     <dialog id="my_modal_2" className="modal">
-                                                         <form method="dialog" className="modal-box">
-                                                             <h3 className="font-bold text-lg text-center ">Post Images</h3>
-                                                             <div className="py-4 font-sans font-semibold">
-                                                               
-                                                             {selectedPost && selectedPost?.postImages?.length > 0  && (
-                                                                 <div className="py-4 font-sans font-semibold">
-                                                                     {selectedPost?.postImages?.map((images) => (
-                                                                         <div key={images} className="flex justify-center">
-                                                                             <img src={images} alt="postImages" className="w-64 h-36 mt-2" />
-                                                                         </div>
-                                                                     ))}
-                                                                 </div>
-                                                             )}
-                                                             
-                                                             </div>
-                                                         </form>
-                                                         <form method="dialog" className="modal-backdrop">
-                                                             <button>close</button>
-                                                         </form>
-                                                     </dialog> */}
+
                                                             <button
                                                                 onClick={() => setPost(post, 'image')}
                                                                 className="btn-sm  bg-indigo-500 text-white rounded-md hover:bg-indigo-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"

@@ -6,13 +6,16 @@ const Home = () => {
    
    
     return (
-        <>
+        <div className="bg-gray-100" >
             <Sidebar />
             <div className="flex  md:ml-72  lg:ml-72 ">
                 <Feed />
                 
-            </div>    
-        </>
+            </div>   
+            <div className="flex  md:ml-72  lg:ml-72 ">
+              </div>
+        </div>
+        
     )
 }
 

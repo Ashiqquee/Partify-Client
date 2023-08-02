@@ -6,13 +6,13 @@ const SingleOrder = () => {
 
     let token = useSelector(state => state.user.token);
     return (
-        <>
+        < div className="bg-gray-100">
             <Sidebar />
             <div className="  md:ml-64  lg:ml-64">
                 <OrderDetails token={token}/>
 
             </div>
-        </>
+        </div>
     )
 }
 

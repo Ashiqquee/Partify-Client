@@ -150,7 +150,7 @@ const Verthe = () => {
                         </section>
                         <section className="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-3 md:grid-cols-1 w-full  ">
 
-                            <div className={`flex flex-col  sm:px-8 sm:py-6 bg-white rounded-lg ${posts.length > 0 ? 'shadow-md shadow-gray-200' : 'h-full shadow-md shadow-gray-200'} md:col-span-2 md:row-span-2 gap-y-4 gap-x-8`}>
+                            <div className={`flex flex-col  sm:px-8 sm:py-6 bg-white rounded-lg ${posts.length > 0 ? 'shadow-lg shadow-gray-200' : 'h-full shadow-lg shadow-gray-200'} md:col-span-2 md:row-span-2 gap-y-4 gap-x-8`}>
 
 
 

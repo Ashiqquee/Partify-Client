@@ -12,16 +12,15 @@ const ProviderBox = () => {
     const [selectedValue, setSelectedValue] = useState('');
 
 
-    // const [seletedService,setSelectedService] = useState('');
-
-
-    const serviceId = ["64a4fd411c533e86f794776b", "6499759a38262c763224218c"];
+    // const serviceId = ["64a4fd411c533e86f794776b", "6499759a38262c763224218c"];
 
     const size = useWidthSize();
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [spinner,setSpinner]= useState(true)
+    const [selectedService, setSelectedService] = useState([]);
+    const [selectedServiceId, setSelectedServiceId] = useState([]);
+    const [spinner, setSpinner] = useState(true)
     const fetchProviders = async () => {
         try {
             const response = await axiosInstance.get('/providersList');
@@ -74,7 +73,7 @@ const ProviderBox = () => {
 
 
     return (
-       <>
+        <>
             {
                 spinner ?
                     <Spinner />
@@ -89,7 +88,8 @@ const ProviderBox = () => {
                             </p>
 
 
-                            <SortProvider searchText={searchText} selectedOptions={selectedOptions} setSearchText={handleSearch} handleChange={handleSelectChange} />
+                            <SortProvider setSelectedServiceId={setSelectedServiceId} selectedService={selectedService} setSelectedService={setSelectedService} searchText={searchText} selectedOptions={selectedOptions} setSearchText={handleSearch} handleChange={handleSelectChange} />
+
 
 
                             <div className={size > 880 ? "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-2" : "grid grid-cols-1 gap-8 mt-8 xl:mt-16 xl:grid-cols-3 h-5 md:grid-cols-1"}>
@@ -103,7 +103,7 @@ const ProviderBox = () => {
                                             .split(',').join().includes(selectedValue)
                                             || provider.places[0].split(',').join().includes("All Kerala"))
                                         && provider.services.some((service) => {
-                                            return serviceId.includes(service._id);
+                                            return selectedServiceId.includes(service._id);
                                         })
                                     )
 
@@ -160,7 +160,7 @@ const ProviderBox = () => {
                                         .split(',').join().includes(selectedValue)
                                         || provider.places[0].split(',').join().includes("All Kerala"))
                                     && provider.services.some((service) => {
-                                        return serviceId.includes(service._id);
+                                        return selectedServiceId.includes(service._id);
                                     })
                                 ).length === 0 && (
                                         <div className="flex justify-center lg:mt-20  items-center lg:w-96  lg:ml-80 text-gray-500   ml">
@@ -173,7 +173,7 @@ const ProviderBox = () => {
                         </div>
                     </section>
             }
-       </>
+        </>
     )
 }
 

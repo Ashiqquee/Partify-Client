@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const Ad = () => {
     
     const [ads,setAds] = useState([]);
-
+    const navigate = useNavigate()
     const fetchAds = async() => {
         try {
           const {data} = await axiosInstance.get('/ads');
@@ -29,7 +30,9 @@ const Ad = () => {
                       style={{ backgroundImage: `url('${ad.adImage}')` }}>
                       <div className="flex flex-col justify-center w-full h-full px-8 py-4 transition-opacity duration-700 opacity-0 backdrop-blur-sm bg-gray-800/60 group-hover:opacity-100">
                           <h2 className="mt-4 text-xl font-semibold text-white capitalize">{ad.name}</h2>
-                          <a className="mt-2 text-lg tracking-wider text-indigo-200 uppercase" href={`https://${ad.adLink}`} target="_blank" rel="noopener noreferrer">Visit Website</a>
+                          <a className="mt-2 text-lg tracking-wider text-indigo-200 uppercase" 
+                          onClick={() => navigate(ad.adLink)}
+                          >Visit Provider</a>
                       </div>
                   </div>
               )

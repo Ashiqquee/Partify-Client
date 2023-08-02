@@ -6,7 +6,7 @@ const SingleOrder = () => {
     let token = useSelector(state => state.provider.token);
 
     return(
-        <>
+        <div className="bg-gray-100">
             <Sidebar />
 
 
@@ -15,7 +15,7 @@ const SingleOrder = () => {
                 <OrderDetails token={token}/>
             </div>
             \
-        </>
+        </div>
     )
 }
 
