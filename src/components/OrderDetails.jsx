@@ -48,23 +48,8 @@ const OrderDetails = ({ token }) => {
             });
 
             if (response?.status === 200) {
-                setOrder((prevOrder) => ({
-                    ...prevOrder,
-                    alternativeNumber: editFormData.alternativePhone,
-                    eventDate: editFormData.eventDate,
-                    totalAmount: editFormData.amount,
-                    services: editFormData.services.map((service) => ({
-                        _id: service.value,
-                        serviceName: service.label,
-                    })),
-                    address: {
-                        ...prevOrder.address,
-                        city: editFormData.city,
-                        district: editFormData.district,
-                        zip: editFormData.zip,
-                        street: editFormData.street,
-                    },
-                }));
+                console.log(response?.data?.updatedOrder);
+                setOrder(response?.data?.updatedOrder);
                 setTimeout(() => {
 
                     setModalOpen(false)
@@ -120,7 +105,6 @@ const OrderDetails = ({ token }) => {
 
             if (response.status === 200) {
                 setOrder(response.data.order);
-                setSpinner(false);
                 const { alternativeNumber, eventDate, services, totalAmount, address } = response.data.order;
                 console.log(services);
                 const serviceIds = services.map(service => ({ value: service._id, serviceName: service.serviceName }));
@@ -135,7 +119,7 @@ const OrderDetails = ({ token }) => {
                     district: address.district
                 })
             }
-
+            setSpinner(false);  
         } catch (error) {
             console.log(error);
 
@@ -280,19 +264,7 @@ const OrderDetails = ({ token }) => {
                                 Edit
                             </label>
                         ) : null}
-                        {modalOpen ?
-                            <>
-                            <input type="checkbox" id="my_modal_6" className="modal-toggle" />
-                        <div className="modal">
-                            <div className="modal-box">
-                                
-                                <OrderForm onFormChange={handleFormChange} formData={editFormData} onSubmit={handleSubmit}  action='edit' />
-                                <div className="modal-action">
-                                    <label htmlFor="my_modal_6" className="btn btn-sm">Close!</label>
-                                </div>
-                            </div>
-                        </div>
-                            </> : null}
+                       
                         {
                             (order.status === 'pending' || order.status === 'confirmed') && (Date.now() < new Date(order?.eventDate)  - 48 * 60 * 60 * 1000) ? 
                                 <button className="btn btn-sm bg-red-500 text-white hover:text-black" onClick={handleConfirmation}>Cancel</button>
@@ -551,6 +523,20 @@ const OrderDetails = ({ token }) => {
                 </div>
 
             </div> */}
+            {modalOpen ?
+                <>
+                    <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+                    <div className="modal">
+                        <div className="modal-box">
+
+                            <OrderForm onFormChange={handleFormChange} formData={editFormData} onSubmit={handleSubmit} action='edit' />
+                            <div className="modal-action">
+                                <label htmlFor="my_modal_6" className="btn btn-sm">Close!</label>
+                            </div>
+                        </div>
+                    </div>
+                </> : null}
+
 
            {
             spinner ? 
@@ -806,14 +792,14 @@ const OrderDetails = ({ token }) => {
                                                 {
                                                     order?.status === 'pending' ?
                                                         <> <div>
-                                                            <p
-
+                                                            <label
+                                                                htmlFor="my_modal_6"
                                                                 className="inline-flex items-center justify-center w-full h-12 px-6 mb-4 font-medium tracking-wide text-white bg-indigo-500 transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:cursor-pointer hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
 
-                                                                onClick={() => handlePayment(order?._id)}
+                                                               
                                                             >
                                                                 Edit
-                                                            </p>
+                                                            </label>
 
                                                         </div>
                                                             <div>
