@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import RecentChats from '../RecentChats';
 
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = import.meta.VITE_SERVER_ENDPOINT;
 
 let socket;
 
