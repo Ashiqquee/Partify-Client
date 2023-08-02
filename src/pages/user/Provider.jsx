@@ -1,5 +1,6 @@
 import Sidebar from '../../components/user/Sidebar';
 import ProviderBox from '../../components/user/ProviderBox';
+import Footer from '../../components/Footer';
 
 
 const ProviderPage = () => {
@@ -11,6 +12,9 @@ const ProviderPage = () => {
                 
                 <ProviderBox />
             </div>
+            {/* <div className="flex  md:ml-64  lg:ml-64 ">
+                <Footer />
+            </div> */}
         </>
 
     )

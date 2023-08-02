@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom'
 
 const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPosts, profile, onSavePost, onUnsavePost, removeSavedPost }) => {
 
-
     const [newComment, setNewComments] = useState('');
     const [showOptionIndex, setShowOptionIndex] = useState(null);
     const [showOption, setShowOption] = useState(false);
@@ -33,7 +32,7 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
     };
 
     const handleRemoveSavedPost = (id) => {
-        console.log(id+":idddd");
+        console.log(id + ":idddd");
         removeSavedPost(id)
     }
 
@@ -112,14 +111,7 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
     const [loading, setLoading] = useState(false);
 
 
-    const handleFileChange = (event) => {
-        const files = Array.from(event.target.files);
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            file: files
-        }));
 
-    };
 
     const validateFormData = () => {
         const { caption, tagline, file } = formData;
@@ -255,7 +247,7 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                 },
             });
 
-            if(onSavePost) {
+            if (onSavePost) {
                 onUnsavePost(data.likedPost);
 
             }
@@ -343,7 +335,7 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                                                     <>
                                                         <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleConfirmation}  >
                                                             Delete
-                                                        </li> 
+                                                        </li>
                                                         {/* <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleEditPost(post?._id) || window.my_modal_2.showModal()}>
                                                             Edit
                                                         </li> */}
@@ -508,7 +500,7 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                                         {
                                             savedPosts?.includes(post?._id) ?
                                                 <FontAwesomeIcon icon={faBookmark} className="h-6 text-indigo-500"
-                                                    onClick={() => handleRemoveSavedPost(post?._id) || handleUnsavePost(post?._id) }
+                                                    onClick={() => handleRemoveSavedPost(post?._id) || handleUnsavePost(post?._id)}
                                                 />
                                                 : <FontAwesomeIcon icon={faBookmark} className="h-6 text-gray-400"
 
@@ -560,7 +552,12 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                             <div className="comment-wrapper w-full h-12 mt-2 border-t border-gray-300 flex justify-between items-center">
                                 <div className="avatar">
                                     <div className="w-8 ml-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img src={profile || "https://img.freepik.com/premium-photo/top-view-abstract-paper-texture-background_225709-2718.jpg?w=2000"} alt="" />
+                                        {
+                                            profile == '' || profile == undefined ?
+                                                <img src="https://res.cloudinary.com/dq0tq9rf5/image/upload/v1688557091/tpqthkuzphqpykfyre7i.jpg" alt="" />
+                                                : <img src={profile} alt="" />
+
+                                        }
                                     </div>
                                 </div>
                                 <input
