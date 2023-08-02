@@ -463,7 +463,7 @@ const OrderDetails = ({ token }) => {
 
                                         </div>
                                         {
-                                            role === 'user' && order?.remainingAmount !== 0 ?
+                                            role === 'user' && order?.remainingAmount !== 0 && (order?.status === 'pending' || order?.status === 'confirmed') ?
                                                 <>
                                                     <div className="flex justify-between text-md text-gray-700 mt-1 font-semibold pt-2">
                                                         <p >Wallet - {order?.customerId?.wallet || 0}  </p>
@@ -484,7 +484,7 @@ const OrderDetails = ({ token }) => {
                                                         value={selectedOption}
                                                         onChange={handleSelectChange}
                                                     >
-                                                        {order?.status === "pending" ? (
+                                                        {order?.status === "pending"  ? (
                                                             <>
                                                                 <option value="" disabled>Select Payment</option>
                                                                 <option value="advanceAmount">Advance Amount</option>
@@ -508,7 +508,7 @@ const OrderDetails = ({ token }) => {
                                     </div>
                                 </div>
                                 {
-                                    role === 'user' && order?.remainingAmount !== 0 ?
+                                    role === 'user' && order?.remainingAmount !== 0 && (order?.status === 'pending' || order?.status === 'confirmed') ?
                                         <div>
                                             <p
 

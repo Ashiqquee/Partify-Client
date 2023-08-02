@@ -259,6 +259,9 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
 
     const handleReport = async (postId) => {
         try {
+
+            if(!userToken) return navigate('/login')
+
             const { status } = await axiosInstance.patch(`/report/${postId}`, {}, {
                 headers: {
                     Authorization: `Bearer ${userToken}`,
