@@ -822,7 +822,11 @@ const OrderDetails = ({ token }) => {
 
                                             </> : null
                                     }
-
+                                    {
+                                        order.status === 'confirmed' && Date.now() > new Date(order?.eventDate).getTime() + 24 * 60 * 60 * 1000 ?
+                                            <button className="inline-flex items-center justify-center w-full h-12 px-6 mb-4 font-medium tracking-wide text-white bg-green-500 transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:cursor-pointer hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none" onClick={() => handleCompleted(order?._id)}>Complete</button>
+                                            : null
+                                    }
 
 
                                 </>

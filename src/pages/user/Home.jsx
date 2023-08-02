@@ -1,6 +1,6 @@
 import Sidebar from "../../components/user/Sidebar";
 import Feed from "../../components/user/Feed";
-// import FavProvider  from "../../components/user/FavProvider";
+import Footer from "../../components/Footer";
 
 const Home = () => {
    
@@ -12,8 +12,10 @@ const Home = () => {
                 <Feed />
                 
             </div>   
-            <div className="flex  md:ml-72  lg:ml-72 ">
-              </div>
+            <div className="flex  md:ml-64  lg:ml-64 ">
+              <Footer/>  
+            </div>
+             
         </div>
         
     )
