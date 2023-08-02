@@ -29,7 +29,7 @@ import MorePage from "./pages/user/More";
 import UpgradeToPro from './pages/provider/Pro'
 import Ads from "./pages/admin/Ads";
 import ForgotPassword from './components/user/ForgotPassword'
-
+import PageNotFound from "./components/404";
 
 const App = () => {
   const userAuth = Boolean(useSelector((state) => state.user.token));
@@ -94,7 +94,7 @@ const App = () => {
         <Route path="/provider/chat" element={providerAuth ? <ProviderChat /> : <Navigate to='/provider/login' />}></Route>
         <Route path="/provider/upgrade" element={providerAuth ? <UpgradeToPro /> : <Navigate to='/provider/login' />}></Route>
 
-
+        <Route path='*' element={<PageNotFound/>} />
 
 
 

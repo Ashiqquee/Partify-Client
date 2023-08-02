@@ -13,5 +13,6 @@ export default {
     },
   },
   plugins: [require("tailwind-scrollbar-hide"), require("daisyui")],
+  darkMode: 'false',
 }
 
