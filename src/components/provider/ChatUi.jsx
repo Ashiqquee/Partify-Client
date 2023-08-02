@@ -3,7 +3,7 @@ import axiosInstace from '../../api/axios'
 import { useSelector } from 'react-redux'
 import RecentChats from '../RecentChats'
 import io from 'socket.io-client'
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = "https://partify.shop";
 
 let socket;
 

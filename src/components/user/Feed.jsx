@@ -21,7 +21,7 @@ const Feed = () => {
             setPosts(response.data.post);
             setSpinner(false);
         } catch (error) {
-            console.log(error);
+            console.log("error"+error);
         }
     }
     const onUnLike = (postId) => {

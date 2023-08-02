@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import RecentChats from '../RecentChats';
 
 
-const ENDPOINT = import.meta.VITE_SERVER_ENDPOINT;
+const ENDPOINT = "https://partify.shop";
 
 let socket;
 

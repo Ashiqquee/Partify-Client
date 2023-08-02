@@ -58,7 +58,7 @@ const Register = () => {
         {
           size: "invisible",
           callback: () => {
-            toast("Otp sended succesfully");
+            toast("Otp sent succesfully");
             sendOtp();
           },
           "expired-callback": () => {
@@ -85,6 +85,7 @@ const Register = () => {
 
         })
         .catch((error) => {
+          console.log(error);
           toast.error(error);
         });
     } else if (Object.keys(errors).length === 4) {

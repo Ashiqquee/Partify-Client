@@ -68,7 +68,7 @@ const Signup = () => {
             window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
                 size: 'invisible',
                 callback: () => {
-                    toast('Otp sended succesfully');
+                    toast('Otp sent succesfully');
                     sendOtp()
                 },
                 'expired-callback': () => {

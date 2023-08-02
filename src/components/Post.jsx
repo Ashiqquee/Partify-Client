@@ -560,7 +560,7 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
                             <div className="comment-wrapper w-full h-12 mt-2 border-t border-gray-300 flex justify-between items-center">
                                 <div className="avatar">
                                     <div className="w-8 ml-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img src={profile || "https://w7.pngwing.com/pngs/223/244/png-transparent-computer-icons-avatar-user-profile-avatar-heroes-rectangle-black.png"} alt="" />
+                                        <img src={profile || "https://img.freepik.com/premium-photo/top-view-abstract-paper-texture-background_225709-2718.jpg?w=2000"} alt="" />
                                     </div>
                                 </div>
                                 <input
