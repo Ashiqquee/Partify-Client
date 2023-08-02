@@ -4,7 +4,7 @@ import axiosInstance from "../../api/axios";
 import DetailBox from "../dashboard/DetailBox";
 import ChartComponent from "../dashboard/Chart";
 import HitProviders from "../dashboard/HitProviders";
-
+import Spinner from '../Spinner'
 const Dashboard = () => {
 
     const [details, setDetails] = useState({
@@ -14,6 +14,7 @@ const Dashboard = () => {
     });
     const[mostLikedPost,setMostLikedPosts] = useState([]);
     const [chartData, setChartData] = useState([]);
+    const[spinner,setSpinner] = useState(true);
     const { token } = useSelector(state => state.provider);
 
     const fetchChartData = async() => {
@@ -77,7 +78,7 @@ const Dashboard = () => {
                 },
             });
             setMostLikedPosts(response?.data?.posts);
-
+            setSpinner(false);
         } catch (error) {
             console.log(error);
         }
@@ -95,35 +96,40 @@ const Dashboard = () => {
 
    return(
     <>
-           <main id="content" className="flex-1 pb-12 space-y-6  md:space-y-8">
+          {
+            spinner ? 
+            <Spinner/>
+            :
+                   <main id="content" className="flex-1 pb-12 space-y-6  md:space-y-8">
 
-               <section className="flex flex-col w-full px-6 md:justify-between md:items-center md:flex-row">
-                   <div>
-                       <h2 className="text-3xl font-medium text-gray-800">Provider Dashboard</h2>
+                       <section className="flex flex-col w-full px-6 md:justify-between md:items-center md:flex-row">
+                           <div>
+                               <h2 className="text-3xl font-medium text-gray-800">Provider Dashboard</h2>
 
-                   </div>
-               </section>
+                           </div>
+                       </section>
 
-               <section className="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-3 md:grid-cols-2 ">
+                       <section className="grid grid-cols-1 gap-8 px-6 xl:grid-cols-3 2xl:grid-cols-3 md:grid-cols-2 ">
 
-                   <DetailBox details={details} role={'provider'}/>
-
-
-                   <ChartComponent chartData={chartData} />
-
-
-                   <div className="flex flex-col justify-center px-8 py-6 bg-white rounded-lg shadow-md shadow-gray-200 md:col-span-1 md:row-span-1 gap-y-1 gap-x-8 ">
-                       <h2 className="font-medium text-gray-700">Most Interacted Post</h2>
-                       <div className="sm:flex sm:items-center sm:justify-between ">
-
-                           <HitProviders mostLikedPost={mostLikedPost} role={'provider'} />
-                       </div>
+                           <DetailBox details={details} role={'provider'} />
 
 
+                           <ChartComponent chartData={chartData} />
 
-                   </div>
-               </section>
-           </main>
+
+                           <div className="flex flex-col justify-center px-8 py-6 bg-white rounded-lg shadow-md shadow-gray-200 md:col-span-1 md:row-span-1 gap-y-1 gap-x-8 ">
+                               <h2 className="font-medium text-gray-700">Most Interacted Post</h2>
+                               <div className="sm:flex sm:items-center sm:justify-between ">
+
+                                   <HitProviders mostLikedPost={mostLikedPost} role={'provider'} />
+                               </div>
+
+
+
+                           </div>
+                       </section>
+                   </main>
+          }
     </>
    )
    

@@ -4,12 +4,13 @@ import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import PostComponent from '../Post'
-
+import Spinner from '../Spinner'
 const Profile = () => {
     const token = useSelector(state => state.provider.token);
     
     const[posts,setPosts] = useState([]);
     const [dp, setDp] = useState('');
+    const [spinner, setSpinner] = useState(true);
     const [loading,setLoading] = useState(false)
     const [profile, setProfile] = useState({
         name: '',
@@ -35,7 +36,8 @@ const Profile = () => {
           })  ;
             
             
-          setPosts(response.data.posts)
+          setPosts(response.data.posts);
+          setSpinner(false)
         } catch (error) {
             console.log(error);
         }
@@ -221,223 +223,230 @@ const Profile = () => {
 
 
     return (
-        <section className=" flex ml-6 ">
-            <div className="container py-5 ">
+       <>
+       {
+        spinner ? 
+        <Spinner/>
+        :
+                    <section className=" flex ml-6 ">
+                        <div className="container py-5 ">
 
 
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 ">
-                    <div className="col-span-1 ">
-                        <div className=" rounded-md  mb-4  " >
-                          
-
-                            <div className="p-4 text-cente h-48 rounded" style={{ backgroundImage: `url(${profile?.coverPic})`, backgroundSize: 'cover' }}>
-                                <div className="avatar ">
-                                    <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img src={imageSrc} alt="profile" />
-                                    </div>
-                                </div>
-
-                                
-                            </div>
-                            <div className="flex justify-center mb-2 mt-1">
-                                <input type="file" onChange={handleFile} className="hidden" id="fileInput" accept="image/*" />
-                                <label htmlFor="fileInput" className="bg-indigo-500 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Change dp</label>
-                                <button onClick={() => setShowModal(true) || editForm()} type="button" className="border border-indigo-500 text-indigo-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className="col-span-3">
-                        <div className="bg-white rounded-md shadow-md mb-4">
-                            <div className="p-4">
-                                <div className="flex items-center">
-                                    <div className="w-1/3">
-                                        <p className="mb-0">Company Name</p>
-                                    </div>
-                                    <div className="w-2/3">
-                                        <p className="text-gray-500 mb-0">{profile?.name}</p>
-                                    </div>
-                                </div>
-                                
-                              
-                                <hr className="my-4" />
-                                <div className="flex items-center">
-                                    <div className="w-1/3">
-                                        <p className="mb-0">Phone</p>
-                                    </div>
-                                    <div className="w-2/3">
-                                        <p className="text-gray-500 mb-0">{profile?.phone}</p>
-                                    </div>
-                                </div>
-                                <hr className="my-4" />
-                 
-                                <div className="flex items-center">
-                                    <div className="w-1/3">
-                                        <p className="mb-0">Description</p>
-                                    </div>
-                                    <div className="w-2/3">
-                                        {profile?.description === undefined ? (
-                                            <>
-                                                <p className="text-blue-500 font-semibold mb-0 hover:cursor-pointer" onClick={() => setShowModal(true) || editForm()}>Add description +</p>
+                            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 ">
+                                <div className="col-span-1 ">
+                                    <div className=" rounded-md  mb-4  " >
 
 
-                                            </>
+                                        <div className="p-4 text-cente h-48 rounded" style={{ backgroundImage: `url(${profile?.coverPic})`, backgroundSize: 'cover' }}>
+                                            <div className="avatar ">
+                                                <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                                    <img src={imageSrc} alt="profile" />
+                                                </div>
+                                            </div>
 
 
-                                        ) : (
-                                            <p className="text-gray-500 mb-0">{profile?.description}</p>
-                                        )}
-                                    </div>
-                                </div>
-                                <hr className="my-4" />
-                                <div className="flex items-center">
-                                    <div className="w-1/3">
-                                        <p className="mb-0">Places</p>
-                                    </div>
-                                    <div className="w-2/3">
-                                        <p className="text-gray-500 mb-0">{profile?.places?.map((place,index) => <span key={index}> {place } ,</span> )}</p>
-                                    </div>
-                                </div>
-                                <hr className="my-4" />
-                               
-                                <div className="flex items-center">
-                                    <div className="w-1/3">
-                                        <p className="mb-0">Services</p>
-                                    </div>
-                                    <div className="w-2/3">
-                                        <p className="text-gray-500 mb-0">{profile?.services?.map((service) => <span key={service?._id}> {service.serviceName} ,</span>)}</p>
-
-                                    </div>
-                                </div>
-                          
-                            </div>
-                        </div>
-                        {showModal && (
-                        
-                            <div
-                                className="fixed inset-0 z-10 overflow-y-auto"
-                                aria-labelledby="modal-title"
-                                role="dialog"
-                                aria-modal="true"
-                            >
-                                <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                                    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-                                        &#8203;
-                                    </span>
-
-                                    <div className="relative inline-block p-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl sm:max-w-sm rounded-xl dark:bg-gray-900 sm:my-8 sm:w-full sm:p-6">
-                                        <div className="flex items-center justify-center mx-auto">
-                                            {formData.coverPic &&  (
-                                                <img className=" rounded-lg w-64 h-48" src={(typeof formData.coverPic === 'string' && formData.coverPic.startsWith('https:')) ? formData.coverPic : URL.createObjectURL(formData.coverPic)} alt="Selected" />
-                                            )}
                                         </div>
-
-                                        <form onSubmit={editDetails} encType="multipart/form-data">
-
-                                            <div className="flex items-center justify-between w-full mt-5 gap-x-2">
-                                                <input
-                                                    type="text"
-                                                    id="name" name="name" onChange={handleChange} value={formData?.name} placeholder={formData?.name} 
-                                                    className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
-                                                />
-
-
-                                            </div>
-                                            <div className="flex items-center justify-between w-full mt-5 gap-x-2">
-                                                <Select
-                                                    isMulti
-                                                        name="places"
-                                                        options={keralaDistricts.map(place => ({
-                                                            value: place,
-                                                            label: place
-                                                        }))}
-                                                        value={formData?.places?.map(place => ({
-                                                            value: place,
-                                                            label: place
-                                                        }))}
-                                                        onChange={selectedOptions => {
-                                                            const selectedDistrict = selectedOptions.map(option => option.value);
-                                                            if (selectedDistrict.includes('All Kerala')) {
-                                                                if (selectedDistrict.length > 1) {
-                                                                    toast.warn('Already Selected All Kerala');
-                                                                }
-                                                                setFormData(prevFormData => ({
-                                                                    ...prevFormData,
-                                                                    places: ['All Kerala']
-                                                                }));
-                                                            } else {
-                                                                setFormData(prevFormData => ({
-                                                                    ...prevFormData,
-                                                                    places: selectedDistrict.filter(place => place !== 'All Kerala')
-                                                                }));
-                                                            }
-                                                        }}
-                                                    />
-
-                                            </div>
-                                            <div className="flex items-center justify-between w-full mt-5 gap-x-2">
-                                                <input
-                                                    type="text"
-                                                    id="phone" name="phone"  onChange={handleChange} value={formData.phone} placeholder={formData.phone}
-                                                    className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
-                                                />
-
-
-                                            </div>
-                                
-                                            <div>
-                                                <label htmlFor="Description" className="block text-sm text-gray-500 dark:text-gray-300">Description</label>
-
-                                                <textarea className="block mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
-                                                    id="description" name="description" onChange={handleChange}
-                                                    value={formData?.description || ''}
-                                                    placeholder={formData?.description || ''}
-                                                ></textarea>
-
-                                                
-                                            </div>
-                                            <div>
-                                                <label htmlFor="image" className="block text-sm text-gray-500 dark:text-gray-300 mt-4">Cover Pic</label>
-
-                                                <input type="file" onChange={handleCoverPicChange} name="file" className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full dark:file:bg-gray-800 dark:file:text-gray-200 dark:text-gray-300 placeholder-gray-400/70 dark:placeholder-gray-500 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:focus:border-blue-300" />
-                                            </div>
-
-                                            <div className="mt-4 sm:flex sm:items-center sm:justify-between sm:mt-6 sm:-mx-2">
-                                                <button
-                                                    onClick={() => setShowModal(false)}
-                                                    className="px-4 sm:mx-2 w-full py-2.5 text-sm font-medium dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
-                                                >
-                                                    Cancel
-                                                </button>
-
-                                                <button
-                                                    type="submit" className="px-4 sm:mx-2 w-full py-2.5 mt-3 sm:mt-0 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                                >
-                                                    {loading ? <span className="loading loading-dots loading-xs"> </span> : 'Confirm'}
-                                                </button>
-                                            </div>
-                                        </form>
+                                        <div className="flex justify-center mb-2 mt-1">
+                                            <input type="file" onChange={handleFile} className="hidden" id="fileInput" accept="image/*" />
+                                            <label htmlFor="fileInput" className="bg-indigo-500 text-white font-medium py-2 px-4 rounded-md mr-1 cursor-pointer">Change dp</label>
+                                            <button onClick={() => setShowModal(true) || editForm()} type="button" className="border border-indigo-500 text-indigo-500 font-medium py-2 px-4 rounded-md">Edit Profile</button>
+                                        </div>
                                     </div>
 
                                 </div>
+                                <div className="col-span-3">
+                                    <div className="bg-white rounded-md shadow-md mb-4">
+                                        <div className="p-4">
+                                            <div className="flex items-center">
+                                                <div className="w-1/3">
+                                                    <p className="mb-0">Company Name</p>
+                                                </div>
+                                                <div className="w-2/3">
+                                                    <p className="text-gray-500 mb-0">{profile?.name}</p>
+                                                </div>
+                                            </div>
+
+
+                                            <hr className="my-4" />
+                                            <div className="flex items-center">
+                                                <div className="w-1/3">
+                                                    <p className="mb-0">Phone</p>
+                                                </div>
+                                                <div className="w-2/3">
+                                                    <p className="text-gray-500 mb-0">{profile?.phone}</p>
+                                                </div>
+                                            </div>
+                                            <hr className="my-4" />
+
+                                            <div className="flex items-center">
+                                                <div className="w-1/3">
+                                                    <p className="mb-0">Description</p>
+                                                </div>
+                                                <div className="w-2/3">
+                                                    {profile?.description === undefined ? (
+                                                        <>
+                                                            <p className="text-blue-500 font-semibold mb-0 hover:cursor-pointer" onClick={() => setShowModal(true) || editForm()}>Add description +</p>
+
+
+                                                        </>
+
+
+                                                    ) : (
+                                                        <p className="text-gray-500 mb-0">{profile?.description}</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <hr className="my-4" />
+                                            <div className="flex items-center">
+                                                <div className="w-1/3">
+                                                    <p className="mb-0">Places</p>
+                                                </div>
+                                                <div className="w-2/3">
+                                                    <p className="text-gray-500 mb-0">{profile?.places?.map((place, index) => <span key={index}> {place} ,</span>)}</p>
+                                                </div>
+                                            </div>
+                                            <hr className="my-4" />
+
+                                            <div className="flex items-center">
+                                                <div className="w-1/3">
+                                                    <p className="mb-0">Services</p>
+                                                </div>
+                                                <div className="w-2/3">
+                                                    <p className="text-gray-500 mb-0">{profile?.services?.map((service) => <span key={service?._id}> {service.serviceName} ,</span>)}</p>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    {showModal && (
+
+                                        <div
+                                            className="fixed inset-0 z-10 overflow-y-auto"
+                                            aria-labelledby="modal-title"
+                                            role="dialog"
+                                            aria-modal="true"
+                                        >
+                                            <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                                                <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                                                    &#8203;
+                                                </span>
+
+                                                <div className="relative inline-block p-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl sm:max-w-sm rounded-xl dark:bg-gray-900 sm:my-8 sm:w-full sm:p-6">
+                                                    <div className="flex items-center justify-center mx-auto">
+                                                        {formData.coverPic && (
+                                                            <img className=" rounded-lg w-64 h-48" src={(typeof formData.coverPic === 'string' && formData.coverPic.startsWith('https:')) ? formData.coverPic : URL.createObjectURL(formData.coverPic)} alt="Selected" />
+                                                        )}
+                                                    </div>
+
+                                                    <form onSubmit={editDetails} encType="multipart/form-data">
+
+                                                        <div className="flex items-center justify-between w-full mt-5 gap-x-2">
+                                                            <input
+                                                                type="text"
+                                                                id="name" name="name" onChange={handleChange} value={formData?.name} placeholder={formData?.name}
+                                                                className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+                                                            />
+
+
+                                                        </div>
+                                                        <div className="flex items-center justify-between w-full mt-5 gap-x-2">
+                                                            <Select
+                                                                isMulti
+                                                                name="places"
+                                                                options={keralaDistricts.map(place => ({
+                                                                    value: place,
+                                                                    label: place
+                                                                }))}
+                                                                value={formData?.places?.map(place => ({
+                                                                    value: place,
+                                                                    label: place
+                                                                }))}
+                                                                onChange={selectedOptions => {
+                                                                    const selectedDistrict = selectedOptions.map(option => option.value);
+                                                                    if (selectedDistrict.includes('All Kerala')) {
+                                                                        if (selectedDistrict.length > 1) {
+                                                                            toast.warn('Already Selected All Kerala');
+                                                                        }
+                                                                        setFormData(prevFormData => ({
+                                                                            ...prevFormData,
+                                                                            places: ['All Kerala']
+                                                                        }));
+                                                                    } else {
+                                                                        setFormData(prevFormData => ({
+                                                                            ...prevFormData,
+                                                                            places: selectedDistrict.filter(place => place !== 'All Kerala')
+                                                                        }));
+                                                                    }
+                                                                }}
+                                                            />
+
+                                                        </div>
+                                                        <div className="flex items-center justify-between w-full mt-5 gap-x-2">
+                                                            <input
+                                                                type="text"
+                                                                id="phone" name="phone" onChange={handleChange} value={formData.phone} placeholder={formData.phone}
+                                                                className="flex-1 block h-10 px-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+                                                            />
+
+
+                                                        </div>
+
+                                                        <div>
+                                                            <label htmlFor="Description" className="block text-sm text-gray-500 dark:text-gray-300">Description</label>
+
+                                                            <textarea className="block mt-2 w-full placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
+                                                                id="description" name="description" onChange={handleChange}
+                                                                value={formData?.description || ''}
+                                                                placeholder={formData?.description || ''}
+                                                            ></textarea>
+
+
+                                                        </div>
+                                                        <div>
+                                                            <label htmlFor="image" className="block text-sm text-gray-500 dark:text-gray-300 mt-4">Cover Pic</label>
+
+                                                            <input type="file" onChange={handleCoverPicChange} name="file" className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full dark:file:bg-gray-800 dark:file:text-gray-200 dark:text-gray-300 placeholder-gray-400/70 dark:placeholder-gray-500 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:focus:border-blue-300" />
+                                                        </div>
+
+                                                        <div className="mt-4 sm:flex sm:items-center sm:justify-between sm:mt-6 sm:-mx-2">
+                                                            <button
+                                                                onClick={() => setShowModal(false)}
+                                                                className="px-4 sm:mx-2 w-full py-2.5 text-sm font-medium dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40"
+                                                            >
+                                                                Cancel
+                                                            </button>
+
+                                                            <button
+                                                                type="submit" className="px-4 sm:mx-2 w-full py-2.5 mt-3 sm:mt-0 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                                            >
+                                                                {loading ? <span className="loading loading-dots loading-xs"> </span> : 'Confirm'}
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
                             </div>
-                        )}
-                    </div>
+                            <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
 
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-1">
-
-                    <div className="bg-white rounded-md shadow-md lg:w-3/4">
-                        <div className="p-4  ">
-                            <p className="mb-4">
-                                <span className="text-indigo-500 italic font-medium mr-1">Latest</span> posts
-                            </p>
-                            <PostComponent posts={posts} role={'provider'} onDeletePost={deletePost} />    
+                                <div className="bg-white rounded-md shadow-md lg:w-3/4">
+                                    <div className="p-4  ">
+                                        <p className="mb-4">
+                                            <span className="text-indigo-500 italic font-medium mr-1">Latest</span> posts
+                                        </p>
+                                        <PostComponent posts={posts} role={'provider'} onDeletePost={deletePost} />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                    </section>
+       }
+       </>
     );
 }
 
