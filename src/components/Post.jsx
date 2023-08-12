@@ -290,17 +290,18 @@ const Post = ({ posts, onDeletePost, role, onUnlike, onLike, addComment, savedPo
             {posts?.map((post, index) => (
                 <div className="post bg-white border  border-gray-300 mt-8 mb-8 " key={index}>
                     <div className="info flex justify-between items-center px-4 ">
-                        <div className="user flex items-center ">
+                        <div className="user flex items-center hover:cursor-pointer " onClick={() => navigate(`/user/provider/${post?.providerId?._id}`)} >
                             <div className="profile-pic h-16 w-10">
                                 <div className="avatar">
                                     <div className="w-11 my-2 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img src={post?.providerId?.profilePic} alt="" />
+                                        <img 
+                                        src={post?.providerId?.profilePic} alt="" />
 
                                     </div>
                                 </div>
                             </div>
                             <div className="username flex  font-bold text-black text-sm ml-6 ">
-                                <p>{post.providerId?.name}</p>
+                                <p  >{post.providerId?.name}</p>
                                 {
                                     post?.providerId?.isUpgraded ?
 

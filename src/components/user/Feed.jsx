@@ -100,7 +100,7 @@ const Feed = () => {
                     <section className="main w-screen  flex ">
                         <div className={width > 1100 ? "wrapper px-4 w-5/6 " : "wrapper px-4 w-full"}>
                             <div className="left-col ">
-
+                
                                 <PostComponent posts={posts} role={'user'} onUnlike={onUnLike} onLike={onLike} addComment={addComment} savedPosts={savedPosts} profile={profile} onSavePost={onSavePost} onUnsavePost={onUnsavePost} />
 
 

@@ -8,10 +8,6 @@ import Spinner from "./Spinner";
 import useWidth from '../utils/useWidthSize'
 const OrderDetails = ({ token }) => {
 
-    const details = ['orderId', 'Customer Name', 'Customer Phone', 'Alternative Number', 'Order Date', 'Event Date'];
-    const providerDetails = ['Provider Name', 'Provider Phone', 'Status', 'Services', 'Amount', 'Advance Amount'];
-    const address = ['Street', 'City', 'Zip', 'District'];
-    const payment = ['Total Amount', 'Advance Amount', 'Advance Paid', 'Wallet Used', 'Remaining Amount', '', ''];
     const [showReview, setShowReview] = useState(false)
     const navigate = useNavigate();
     const [order, setOrder] = useState('');
